@@ -310,7 +310,18 @@ get_header();
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                                    
+                                    <?php
+                                        // Get the current user's name
+                                        $current_user = wp_get_current_user();
+                                        $user_name = $current_user->display_name;
+
+                                        // Display the user's name
+                                        echo $user_name;
+                                    ?>
+
+                                </span>
                                 <img class="img-profile rounded-circle"
                                     src="img/undraw_profile.svg">
                             </a>
@@ -367,7 +378,7 @@ get_header();
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2021</span>
+                        <span>Copyright &copy; ShiaComputer.com</span>
                     </div>
                 </div>
             </footer>
@@ -398,7 +409,7 @@ get_header();
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+                    <a class="btn btn-primary" href="<?php echo wp_logout_url( home_url() ); ?>">Logout</a>
                 </div>
             </div>
         </div>
