@@ -33,23 +33,47 @@ function add_theme_scripts(){
 add_action( 'wp_enqueue_scripts', 'add_theme_scripts' );
 
 
+//custom wp thme settings start
+
+
+
+//wp-admin
+function custom_dashboard_redirect() {
+    if (!current_user_can('administrator') && !is_admin()) {
+        wp_redirect('https://localhost/shiacomputer/index.php/adminpanel'); // Replace 'https://example.com/custom-dashboard' with the URL of your custom dashboard page
+        exit;
+    }
+}
+add_action('admin_init', 'custom_dashboard_redirect');
+
+
+
+//custom wp thme settings start
+
 
 
 function hide_admin_bar() {
-    if (current_user_can('administrator')) {
+    if (!current_user_can('administrator')) {
         show_admin_bar(false);
     }
 }
 add_action('after_setup_theme', 'hide_admin_bar');
 
+function Chide_admin_bar() {
+    if (current_user_can('administrator')) {
+        show_admin_bar(false);
+    }
+}
+add_action('after_setup_theme', 'Chide_admin_bar');
+
 
 
 //admin login syesteam start
 
-    //lOGIN PAGE REDIRECT//
+    //lOGIN PAGE REDIRECT disable wp-login page//
         function goto_login_page() {
             global $page_id;
-        $login_page = home_url();
+        $login_page = 'https://localhost/shiacomputer';
             $page = basename($_SERVER['REQUEST_URI']);
             
                 if( $page == 'wp-login.php' && $_SERVER['REQUEST_METHOD'] == 'GET') {
@@ -61,7 +85,7 @@ add_action('after_setup_theme', 'hide_admin_bar');
 
         function goto_login_pageWWP() {
             global $page_id;
-        $login_page = home_url();
+        $login_page = 'https://localhost/shiacomputer';
             $page = basename($_SERVER['REQUEST_URI']);
             
                 if( $page == 'wp-login' && $_SERVER['REQUEST_METHOD'] == 'GET') {
@@ -70,6 +94,17 @@ add_action('after_setup_theme', 'hide_admin_bar');
                 }
             }
         add_action('init','goto_login_pageWWP');
-    //lOGIN PAGE REDIRECT//
+
+
+        function restrict_wp_admin() {
+            if (is_admin() && !current_user_can('administrator') && !wp_doing_ajax()) {
+                wp_redirect('https://localhost/shiacomputer'); // Replace 'https://example.com/custom-page' with the URL of your custom page
+                exit();
+            }
+        }
+        add_action('admin_init', 'restrict_wp_admin');
+        
+        
+    //lOGIN PAGE REDIRECT disable wp-login page//
 
 //admin login syesteam End
