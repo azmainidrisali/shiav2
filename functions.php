@@ -71,6 +71,29 @@ add_action('after_setup_theme', 'Chide_admin_bar');
 //admin login syesteam start
 
     //lOGIN PAGE REDIRECT disable wp-login page//
+
+
+        function redirect_to_custom_dashboard($redirect_to, $request, $user) {
+            if (isset($user->roles) && is_array($user->roles)) {
+                $allowed_roles = array('subscriber', 'contributor', 'author'); // Replace with your desired roles
+                $intersect_roles = array_intersect($user->roles, $allowed_roles);
+                
+                if (!empty($intersect_roles)) {
+                    return home_url('/index.php/adminpanel'); // Replace '/custom-dashboard' with the URL slug or path of your custom dashboard page
+                }
+            }
+            return $redirect_to;
+        }
+        add_filter('login_redirect', 'redirect_to_custom_dashboard', 10, 3);
+    
+    
+        function redirect_to_custom_logout() {
+            wp_redirect('https://localhost/shiacomputer'); // Replace 'https://example.com/custom-logout' with the URL of your custom logout page
+            exit();
+        }
+        add_action('wp_logout', 'redirect_to_custom_logout');
+        
+
         function goto_login_page() {
             global $page_id;
         $login_page = 'https://localhost/shiacomputer';
@@ -82,6 +105,13 @@ add_action('after_setup_theme', 'Chide_admin_bar');
                 }
             }
         add_action('init','goto_login_page');
+
+        function redirect_to_custom_login($login_url, $redirect, $force_reauth) {
+            $custom_login_url = 'https://localhost/shiacomputer'; // Replace 'https://example.com/custom-login' with the URL of your custom login page
+            return $custom_login_url;
+        }
+        add_filter('login_url', 'redirect_to_custom_login', 10, 3);
+        
 
         function goto_login_pageWWP() {
             global $page_id;
@@ -103,6 +133,7 @@ add_action('after_setup_theme', 'Chide_admin_bar');
             }
         }
         add_action('admin_init', 'restrict_wp_admin');
+        
         
         
     //lOGIN PAGE REDIRECT disable wp-login page//
