@@ -25,7 +25,27 @@ get_header();
             <li class="nav-item active">
                 <a class="nav-link" href="index.html">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashbgoard</span></a>
+                    <span>Dashbgoard
+                    <?php
+
+                            
+
+                            if (isset($shiacomputeroption['logoutPageLink'])) {
+                                $selected_page_id = $shiacomputeroption['logoutPageLink']; // Get the selected page ID
+
+                                if ($selected_page_id) {
+                                    $selected_page_link = get_permalink($selected_page_id); // Get the permalink of the selected page
+
+                                    if ($selected_page_link) {
+                                        echo '<a href="' . esc_url($selected_page_link) . '">' . esc_url($selected_page_link) . '</a>';
+                                    }
+                                }
+                            }
+
+
+                    ?>
+
+                    </span></a>
             </li>
 
             <!-- Divider -->

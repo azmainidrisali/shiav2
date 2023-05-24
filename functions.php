@@ -33,18 +33,12 @@ function add_theme_scripts(){
 add_action( 'wp_enqueue_scripts', 'add_theme_scripts' );
 
 
-//custom wp thme settings start
 
+//reduc framework connect
 
-
-//wp-admin
-function custom_dashboard_redirect() {
-    if (!current_user_can('administrator') && !is_admin()) {
-        wp_redirect('https://localhost/shiacomputer/index.php/adminpanel'); // Replace 'https://example.com/custom-dashboard' with the URL of your custom dashboard page
-        exit;
-    }
-}
-add_action('admin_init', 'custom_dashboard_redirect');
+require_once('plugins/redux/ReduxCore/framework.php');
+require_once('plugins/redux/sample/sample-config.php');
+global $shiacomputeroption;
 
 
 
@@ -78,8 +72,19 @@ add_action('after_setup_theme', 'Chide_admin_bar');
                 $allowed_roles = array('subscriber', 'contributor', 'author'); // Replace with your desired roles
                 $intersect_roles = array_intersect($user->roles, $allowed_roles);
                 
+                global $shiacomputeroption;
+
+                if (isset($shiacomputeroption['adminPanelLink'])) {
+                    $get_adminpanel_id = $shiacomputeroption['adminPanelLink']; // Get the selected page ID
+
+                    if ($get_adminpanel_id) {
+                        $get_adminpanel_link = get_permalink($get_adminpanel_id); // Get the permalink of the selected page
+                    }
+                }
+
+
                 if (!empty($intersect_roles)) {
-                    return home_url('/index.php/adminpanel'); // Replace '/custom-dashboard' with the URL slug or path of your custom dashboard page
+                    return $get_adminpanel_link; // Replace '/custom-dashboard' with the URL slug or path of your custom dashboard page
                 }
             }
             return $redirect_to;
@@ -88,7 +93,18 @@ add_action('after_setup_theme', 'Chide_admin_bar');
     
     
         function redirect_to_custom_logout() {
-            wp_redirect('https://localhost/shiacomputer'); // Replace 'https://example.com/custom-logout' with the URL of your custom logout page
+
+            global $shiacomputeroption;
+
+                if (isset($shiacomputeroption['logoutPageLink'])) {
+                    $get_logout_id = $shiacomputeroption['logoutPageLink']; // Get the selected page ID
+
+                    if ($get_logout_id) {
+                        $get_logout_link = get_permalink($get_logout_id); // Get the permalink of the selected page
+                    }
+                }
+
+            wp_redirect($get_logout_link); // Replace 'https://example.com/custom-logout' with the URL of your custom logout page
             exit();
         }
         add_action('wp_logout', 'redirect_to_custom_logout');
@@ -96,30 +112,56 @@ add_action('after_setup_theme', 'Chide_admin_bar');
 
         function goto_login_page() {
             global $page_id;
-        $login_page = 'https://localhost/shiacomputer';
+            global $shiacomputeroption;
+
+                if (isset($shiacomputeroption['loginPageLink'])) {
+                    $get_loginpage_id = $shiacomputeroption['loginPageLink']; // Get the selected page ID
+
+                    if ($get_loginpage_id) {
+                        $get_loginpage_link = get_permalink($get_loginpage_id); // Get the permalink of the selected page
+                    }
+                }
             $page = basename($_SERVER['REQUEST_URI']);
             
                 if( $page == 'wp-login.php' && $_SERVER['REQUEST_METHOD'] == 'GET') {
-                wp_redirect($login_page);
+                wp_redirect($get_loginpage_link);
                 exit;
                 }
             }
         add_action('init','goto_login_page');
 
         function redirect_to_custom_login($login_url, $redirect, $force_reauth) {
-            $custom_login_url = 'https://localhost/shiacomputer'; // Replace 'https://example.com/custom-login' with the URL of your custom login page
-            return $custom_login_url;
+            global $page_id;
+            global $shiacomputeroption;
+
+                if (isset($shiacomputeroption['loginPageLink'])) {
+                    $get_loginpage_id = $shiacomputeroption['loginPageLink']; // Get the selected page ID
+
+                    if ($get_loginpage_id) {
+                        $get_loginpage_link = get_permalink($get_loginpage_id); // Get the permalink of the selected page
+                    }
+                }
+            // $custom_login_url = 'https://localhost/shiacomputer'; // Replace 'https://example.com/custom-login' with the URL of your custom login page
+            return $get_loginpage_link;
         }
         add_filter('login_url', 'redirect_to_custom_login', 10, 3);
         
 
         function goto_login_pageWWP() {
             global $page_id;
-        $login_page = 'https://localhost/shiacomputer';
+            global $shiacomputeroption;
+
+                if (isset($shiacomputeroption['loginPageLink'])) {
+                    $get_loginpage_id = $shiacomputeroption['loginPageLink']; // Get the selected page ID
+
+                    if ($get_loginpage_id) {
+                        $get_loginpage_link = get_permalink($get_loginpage_id); // Get the permalink of the selected page
+                    }
+                }
             $page = basename($_SERVER['REQUEST_URI']);
             
                 if( $page == 'wp-login' && $_SERVER['REQUEST_METHOD'] == 'GET') {
-                wp_redirect($login_page);
+                wp_redirect($get_loginpage_link);
                 exit;
                 }
             }
@@ -127,8 +169,20 @@ add_action('after_setup_theme', 'Chide_admin_bar');
 
 
         function restrict_wp_admin() {
+            global $shiacomputeroption;
+
+                if (isset($shiacomputeroption['studentPanelLink'])) {
+                    $get_StudentPanel_id = $shiacomputeroption['studentPanelLink']; // Get the selected page ID
+
+                    if ($get_StudentPanel_id) {
+                        $get_StudentPanel_link = get_permalink($get_StudentPanel_id); // Get the permalink of the selected page
+                    }
+                };
             if (is_admin() && !current_user_can('administrator') && !wp_doing_ajax()) {
-                wp_redirect('https://localhost/shiacomputer'); // Replace 'https://example.com/custom-page' with the URL of your custom page
+
+                
+
+                wp_redirect($get_StudentPanel_link); // Replace 'https://example.com/custom-page' with the URL of your custom page
                 exit();
             }
         }
