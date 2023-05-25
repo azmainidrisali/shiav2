@@ -338,6 +338,13 @@
                 'data'    => 'pages',
                 'default' => '',
             ),
+            array(
+                'id'      => 'adminStudentList',
+                'type'    => 'select',
+                'title'   => 'Student List',
+                'data'    => 'pages',
+                'default' => '',
+            ),
         ),
     ) );
     
