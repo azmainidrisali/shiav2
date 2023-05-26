@@ -75,6 +75,58 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                             </button>
                                             </td>
                                         </tr>
+                                        <tr class="alert" role="alert">
+                                            <td>8108743</td>
+                                            <td>8032743</td>
+                                            <td>Day</td>
+                                            <td class="d-flex align-items-center">
+                                                <div class="img">
+                                                    <img width="50" src="https://worlditfoundation.org/images/admission/64363c756c125.JPG">
+                                                </div>
+                                            </td>
+                                            <td>MD. ABU RAIHAN</td>
+                                            <td>MD. AIZUL HAQUE</td>
+                                            <td>Diploma in Computer Science</td>
+                                            <td>01775176748</td>
+                                            <td>16 Apr 23</td>
+                                            <td class="status"><a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                                class="fa-solid fa-check text-white-50"></i> Compleate</a></td>
+                                            <td>
+                                                <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                                class="fas fa-download fa-sm text-white-50"></i> View Admission</a>
+                                                <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                                class="fas fa-download fa-sm text-white-50"></i> Admit Card</a>
+                                                <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                                class="fas fa-download fa-sm text-white-50"></i> Registration Card</a>
+                                            </button>
+                                            </td>
+                                        </tr>
+                                        <tr class="alert" role="alert">
+                                            <td>8108743</td>
+                                            <td>8032743</td>
+                                            <td>Day</td>
+                                            <td class="d-flex align-items-center">
+                                                <div class="img">
+                                                    <img width="50" src="https://worlditfoundation.org/images/admission/64363c756c125.JPG">
+                                                </div>
+                                            </td>
+                                            <td>MD. ABU RAIHAN</td>
+                                            <td>MD. AIZUL HAQUE</td>
+                                            <td>Diploma in Computer Science</td>
+                                            <td>01775176748</td>
+                                            <td>16 Apr 23</td>
+                                            <td class="status"><a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                                class="fa-solid fa-check text-white-50"></i> Compleate</a></td>
+                                            <td>
+                                                <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                                class="fas fa-download fa-sm text-white-50"></i> View Admission</a>
+                                                <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                                class="fas fa-download fa-sm text-white-50"></i> Admit Card</a>
+                                                <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                                class="fas fa-download fa-sm text-white-50"></i> Registration Card</a>
+                                            </button>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
