@@ -345,6 +345,28 @@
                 'data'    => 'pages',
                 'default' => '',
             ),
+            array(
+                'id'      => 'adminStudentAdmission',
+                'type'    => 'select',
+                'title'   => 'Admission Student',
+                'data'    => 'pages',
+                'default' => '',
+            ),
+        ),
+    ) );
+    Redux::setSection($opt_name,array(
+        'title'      => 'Course Options',
+        'id'         => 'Course_options',
+        'subsection' => true,
+        'fields'     => array(
+            array(
+                'id'       => 'options',
+                'type'     => 'sortable',
+                'title'    => 'Options',
+                'subtitle' => 'Add or remove options',
+                'desc'     => 'Click "Add More Option" to add new options',
+                'options'  => array(), // Placeholder for dynamic options
+            ),
         ),
     ) );
     

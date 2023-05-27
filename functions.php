@@ -19,6 +19,8 @@ function add_theme_scripts(){
         wp_enqueue_style( 'Cl_main', get_template_directory_uri(). '/extfiles/colorlib/css/main.css', array(), '1.1', 'all' );
     //colorlibLoginPage End
 
+    
+
     //adminPanel start
         wp_enqueue_style( 'admin_sb-admin-2', get_template_directory_uri(). '/extfiles/admin/css/sb-admin-2.min.css', array(), '1.1', 'all' );
         wp_enqueue_style( 'admin_fontAwsome', get_template_directory_uri(). '/extfiles/admin/vendor/fontawesome-free/css/all.min.css', array(), '1.1', 'all' );
@@ -31,7 +33,6 @@ function add_theme_scripts(){
     wp_enqueue_script( 'bootstrapmain', get_template_directory_uri(). '/plugins/bootstrap/js/bootstrap.min.js', true );
 }
 add_action( 'wp_enqueue_scripts', 'add_theme_scripts' );
-
 
 
 //reduc framework connect
