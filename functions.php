@@ -35,6 +35,72 @@ function add_theme_scripts(){
 add_action( 'wp_enqueue_scripts', 'add_theme_scripts' );
 
 
+// Handle category submission form
+function handle_category_submission() {
+    if (isset($_POST['action']) && $_POST['action'] === 'submit_category') {
+      $category_name = sanitize_text_field($_POST['category_name']);
+      $category_description = sanitize_text_field($_POST['category_description']);
+  
+      // Create a new category
+      $category_args = array(
+        'cat_name' => $category_name,
+        'category_description' => $category_description,
+        // Add any other desired parameters for the category
+      );
+      $category_id = wp_insert_category($category_args);
+  
+      // Optionally, you can perform additional actions after category submission
+      // For example, displaying a success message or redirecting the user
+      // to another page.
+  
+      // Redirect the user to a success page
+      global $shiacomputeroption;
+
+        if (isset($shiacomputeroption['adminBatch'])) {
+            $get_adminBatchRed_id = $shiacomputeroption['adminBatch']; // Get the selected page ID
+
+            if ($get_adminBatchRed_id) {
+                $get_adminBatchRed_link = get_permalink($get_adminBatchRed_id); // Get the permalink of the selected page
+            }
+        }
+      wp_redirect($get_adminBatchRed_link);
+      exit;
+    }
+  }
+  add_action('admin_post_nopriv_submit_category', 'handle_category_submission');
+  add_action('admin_post_submit_category', 'handle_category_submission');
+
+  // Handle category deletion
+function handle_category_deletion() {
+    if (isset($_POST['action']) && $_POST['action'] === 'delete_category') {
+      $category_id = isset($_POST['category_id']) ? intval($_POST['category_id']) : 0;
+  
+      if ($category_id > 0) {
+        wp_delete_category($category_id);
+  
+        // Optionally, you can perform additional actions after category deletion.
+        // For example, displaying a success message or redirecting the user.
+  
+        // Redirect the user back to the same page
+        global $shiacomputeroption;
+
+        if (isset($shiacomputeroption['adminBatch'])) {
+            $get_adminBatchRed_id = $shiacomputeroption['adminBatch']; // Get the selected page ID
+
+            if ($get_adminBatchRed_id) {
+                $get_adminBatchRed_link = get_permalink($get_adminBatchRed_id); // Get the permalink of the selected page
+            }
+        }
+      wp_redirect($get_adminBatchRed_link);
+      exit;;
+      }
+    }
+  }
+  add_action('admin_post_nopriv_delete_category', 'handle_category_deletion');
+  add_action('admin_post_delete_category', 'handle_category_deletion');
+  
+  
+
 //reduc framework connect
 
 require_once('plugins/redux/ReduxCore/framework.php');

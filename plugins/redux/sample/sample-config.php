@@ -352,6 +352,20 @@
                 'data'    => 'pages',
                 'default' => '',
             ),
+            array(
+                'id'      => 'adminStudentDraft',
+                'type'    => 'select',
+                'title'   => 'Student Draft',
+                'data'    => 'pages',
+                'default' => '',
+            ),
+            array(
+                'id'      => 'adminBatch',
+                'type'    => 'select',
+                'title'   => 'Student Batch',
+                'data'    => 'pages',
+                'default' => '',
+            ),
         ),
     ) );
     Redux::setSection($opt_name,array(

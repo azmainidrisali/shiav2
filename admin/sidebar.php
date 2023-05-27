@@ -59,15 +59,37 @@
 
                 <a class="collapse-item" href="<?php echo($get_StudentList_link) ?>">Student List</a>
                 <?php
-            if (isset($shiacomputeroption['adminStudentAdmission'])) {
-                $get_adminStudentAdmission_id = $shiacomputeroption['adminStudentAdmission']; // Get the selected page ID
+                    if (isset($shiacomputeroption['adminStudentAdmission'])) {
+                        $get_adminStudentAdmission_id = $shiacomputeroption['adminStudentAdmission']; // Get the selected page ID
 
-                if ($get_adminStudentAdmission_id) {
-                    $get_adminStudentAdmission_link = get_permalink($get_adminStudentAdmission_id); // Get the permalink of the selected page
-                }
-            }
-        ?>
+                        if ($get_adminStudentAdmission_id) {
+                            $get_adminStudentAdmission_link = get_permalink($get_adminStudentAdmission_id); // Get the permalink of the selected page
+                        }
+                    }
+                ?>
                 <a class="collapse-item" href="<?php echo($get_adminStudentAdmission_link) ?>">Student Admission</a>
+                
+                <?php
+                    if (isset($shiacomputeroption['adminStudentDraft'])) {
+                        $get_adminStudentDraft_id = $shiacomputeroption['adminStudentDraft']; // Get the selected page ID
+
+                        if ($get_adminStudentDraft_id) {
+                            $get_adminStudentDraft_link = get_permalink($get_adminStudentDraft_id); // Get the permalink of the selected page
+                        }
+                    }
+                ?>
+                <a class="collapse-item" href="<?php echo($get_adminStudentDraft_link) ?>">Student Draft List</a>
+                
+                <?php
+                    if (isset($shiacomputeroption['adminBatch'])) {
+                        $get_adminBatch_id = $shiacomputeroption['adminBatch']; // Get the selected page ID
+
+                        if ($get_adminBatch_id) {
+                            $get_adminBatch_link = get_permalink($get_adminBatch_id); // Get the permalink of the selected page
+                        }
+                    }
+                ?>
+                <a class="collapse-item" href="<?php echo($get_adminBatch_link) ?>">BATCH</a>
             </div>
         </div>
     </li>
