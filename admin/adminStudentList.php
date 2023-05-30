@@ -32,7 +32,20 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                     <div class="row">
                         <div class="col-md-12">
                             <div class="table-wrap">
-                                <table class="table table-responsive-xl">
+                            <div class="form-group">
+                                <label for="searchInput">Search:</label>
+                                <input type="text" class="form-control" id="searchInput" placeholder="Enter Roll number, registration number or name or subject">
+                            </div>
+                            <div class="form-group">
+                            <label for="rowsPerPageSelect">Rows per page:</label>
+                                <select id="rowsPerPageSelect" class="form-control" onchange="changeRowsPerPage(this.value)">
+                                    <option value="10">10</option>
+                                    <option value="20">20</option>
+                                    <option value="30">30</option>
+                                    <option value="30">1000</option>
+                                </select>
+                            </div>
+                                <table id="myTable" class="table table-responsive-xl">
                                     <thead>
                                         <tr>
                                             <th>REG No.</th>
@@ -49,86 +62,201 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr class="alert" role="alert">
-                                            <td>8108743</td>
-                                            <td>8032743</td>
-                                            <td>Day</td>
-                                            <td class="d-flex align-items-center">
-                                                <div class="img">
-                                                    <img width="50" src="https://worlditfoundation.org/images/admission/64363c756c125.JPG">
-                                                </div>
-                                            </td>
-                                            <td>MD. ABU RAIHAN</td>
-                                            <td>MD. AIZUL HAQUE</td>
-                                            <td>Diploma in Computer Science</td>
-                                            <td>01775176748</td>
-                                            <td>16 Apr 23</td>
-                                            <td class="status"><a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                                class="fa-solid fa-check text-white-50"></i> Compleate</a></td>
-                                            <td>
-                                                <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                                class="fas fa-download fa-sm text-white-50"></i> View Admission</a>
-                                                <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                                class="fas fa-download fa-sm text-white-50"></i> Admit Card</a>
-                                                <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                                class="fas fa-download fa-sm text-white-50"></i> Registration Card</a>
-                                            </button>
-                                            </td>
-                                        </tr>
-                                        <tr class="alert" role="alert">
-                                            <td>8108743</td>
-                                            <td>8032743</td>
-                                            <td>Day</td>
-                                            <td class="d-flex align-items-center">
-                                                <div class="img">
-                                                    <img width="50" src="https://worlditfoundation.org/images/admission/64363c756c125.JPG">
-                                                </div>
-                                            </td>
-                                            <td>MD. ABU RAIHAN</td>
-                                            <td>MD. AIZUL HAQUE</td>
-                                            <td>Diploma in Computer Science</td>
-                                            <td>01775176748</td>
-                                            <td>16 Apr 23</td>
-                                            <td class="status"><a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                                class="fa-solid fa-check text-white-50"></i> Compleate</a></td>
-                                            <td>
-                                                <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                                class="fas fa-download fa-sm text-white-50"></i> View Admission</a>
-                                                <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                                class="fas fa-download fa-sm text-white-50"></i> Admit Card</a>
-                                                <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                                class="fas fa-download fa-sm text-white-50"></i> Registration Card</a>
-                                            </button>
-                                            </td>
-                                        </tr>
-                                        <tr class="alert" role="alert">
-                                            <td>8108743</td>
-                                            <td>8032743</td>
-                                            <td>Day</td>
-                                            <td class="d-flex align-items-center">
-                                                <div class="img">
-                                                    <img width="50" src="https://worlditfoundation.org/images/admission/64363c756c125.JPG">
-                                                </div>
-                                            </td>
-                                            <td>MD. ABU RAIHAN</td>
-                                            <td>MD. AIZUL HAQUE</td>
-                                            <td>Diploma in Computer Science</td>
-                                            <td>01775176748</td>
-                                            <td>16 Apr 23</td>
-                                            <td class="status"><a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                                class="fa-solid fa-check text-white-50"></i> Compleate</a></td>
-                                            <td>
-                                                <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                                class="fas fa-download fa-sm text-white-50"></i> View Admission</a>
-                                                <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                                class="fas fa-download fa-sm text-white-50"></i> Admit Card</a>
-                                                <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                                class="fas fa-download fa-sm text-white-50"></i> Registration Card</a>
-                                            </button>
-                                            </td>
-                                        </tr>
+                                    <?php
+                                        $args = array(
+                                            'post_type' => 'admissions', // Replace 'your_custom_post_type' with the name of your custom post type
+                                            'posts_per_page' => -1, // Retrieves all posts of the custom post type
+                                            'post_status'   => 'publish',
+                                        );
+
+                                        $custom_query = new WP_Query($args);
+
+                                        if ($custom_query->have_posts()) {
+                                            while ($custom_query->have_posts()) {
+                                                $custom_query->the_post();
+                                                // Display the content or any other desired information of each post
+                                                ?>
+                                                <tr class="alert" role="alert">
+                                                    <td><?php the_title(); ?></td>
+                                                    <td>8032743</td>
+                                                    <td><?php $custom_meta_value1 = get_post_meta(get_the_ID(), 'student_purpose_register', true); echo $custom_meta_value1; ?></td>
+                                                    <td class="d-flex align-items-center">
+                                                        <div class="img">
+                                                            <img width="50" src="https://worlditfoundation.org/images/admission/64363c756c125.JPG">
+                                                        </div>
+                                                    </td>
+                                                    <td><?php $custom_meta_value2 = get_post_meta(get_the_ID(), 'custom_student_select_course', true);?></td>
+                                                    <td>MD. AIZUL HAQUE</td>
+                                                    <td>Diploma in Computer Science</td>
+                                                    <td>01775176748</td>
+                                                    <td>16 Apr 23</td>
+                                                    <td class="status"><a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                                        class="fa-solid fa-check text-white-50"></i> Compleate</a></td>
+                                                    <td>    
+                                                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                                        class="fas fa-download fa-sm text-white-50"></i> View Admission</a>
+                                                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                                        class="fas fa-download fa-sm text-white-50"></i> Admit Card</a>
+                                                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                                        class="fas fa-download fa-sm text-white-50"></i> Registration Card</a>
+                                                    </button>
+                                                    </td>
+                                                </tr>
+                                                <?php
+                                            }
+                                        } else {
+                                            // No posts found
+                                        }
+                                        wp_reset_postdata(); // Reset the query
+                                    ?>
                                     </tbody>
                                 </table>
+                                <nav aria-label="Table pagination">
+                                    <ul class="pagination px-4" id="pagination-links">
+                                        <li class="page-item">
+                                        <a class="page-link" href="javascript:void(0)" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                            <span class="sr-only">Previous</span>
+                                        </a>
+                                        </li>
+                                        <li class="page-item active">
+                                        <a class="page-link" href="javascript:void(0)">1</a>
+                                        </li>
+                                        <li class="page-item">
+                                        <a class="page-link" href="javascript:void(0)">2</a>
+                                        </li>
+                                        <li class="page-item">
+                                        <a class="page-link" href="javascript:void(0)">3</a>
+                                        </li>
+                                        <li class="page-item">
+                                        <a class="page-link" href="javascript:void(0)" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                            <span class="sr-only">Next</span>
+                                        </a>
+                                        </li>
+                                    </ul>
+                                </nav>
+
+
+
+                                <script>
+                                    var table = document.getElementById("myTable");
+                                    var rows = table.getElementsByTagName("tr");
+                                    var rowsPerPage = 10;
+                                    var currentPage = 1;
+                                    var totalPages = Math.ceil(rows.length / rowsPerPage);
+
+                                    // Show initial rows based on the current page
+                                    showRows();
+
+                                    // Function to show rows based on the current page
+                                    function showRows() {
+                                    var startIndex = (currentPage - 1) * rowsPerPage;
+                                    var endIndex = startIndex + rowsPerPage;
+
+                                    for (var i = 0; i < rows.length; i++) {
+                                        if (rowsPerPage === "all" || (i >= startIndex && i < endIndex)) {
+                                        rows[i].style.display = "";
+                                        } else {
+                                        rows[i].style.display = "none";
+                                        }
+                                    }
+
+                                    renderPagination();
+                                    }
+
+                                    // Function to render pagination links
+                                    function renderPagination() {
+                                    var paginationLinks = document.getElementById("pagination-links");
+                                    paginationLinks.innerHTML = "";
+
+                                    // Add previous page link
+                                    if (currentPage > 1) {
+                                        var prevLink = createPaginationLink(currentPage - 1, "Previous");
+                                        paginationLinks.appendChild(prevLink);
+                                    }
+
+                                    // Add page links
+                                    for (var i = 1; i <= totalPages; i++) {
+                                        var pageLink = createPaginationLink(i, i);
+                                        paginationLinks.appendChild(pageLink);
+                                    }
+
+                                    // Add next page link
+                                    if (currentPage < totalPages) {
+                                        var nextLink = createPaginationLink(currentPage + 1, "Next");
+                                        paginationLinks.appendChild(nextLink);
+                                    }
+                                    }
+
+                                    // Function to create pagination link
+                                    function createPaginationLink(pageNum, label) {
+                                    var pageLink = document.createElement("a");
+                                    pageLink.href = "javascript:void(0)";
+                                    pageLink.textContent = label;
+
+                                    if (pageNum === currentPage) {
+                                        pageLink.classList.add("active");
+                                    }
+
+                                    pageLink.addEventListener("click", function () {
+                                        currentPage = pageNum;
+                                        showRows();
+                                    });
+
+                                    return pageLink;
+                                    }
+
+                                    // Function to change the number of rows per page
+                                    function changeRowsPerPage(value) {
+                                    rowsPerPage = value;
+                                    currentPage = 1;
+                                    totalPages = Math.ceil(rows.length / rowsPerPage);
+                                    showRows();
+                                    }
+
+                                    // Get the search input element
+                                    var searchInput = document.getElementById("searchInput");
+
+                                    // Add an event listener for input changes
+                                    searchInput.addEventListener("input", function() {
+                                    // Get the filter value
+                                    var filterValue = searchInput.value.toLowerCase();
+
+                                    // Loop through all table rows and hide/show based on the filter value
+                                    for (var i = 0; i < rows.length; i++) {
+                                        var cells = rows[i].getElementsByTagName("td");
+                                        var foundMatch = false;
+
+                                        for (var j = 0; j < cells.length; j++) {
+                                        var cell = cells[j];
+                                        if (cell.textContent.toLowerCase().indexOf(filterValue) > -1) {
+                                            foundMatch = true;
+                                            break;
+                                        }
+                                        }
+
+                                        if (foundMatch) {
+                                        rows[i].style.display = "";
+                                        } else {
+                                        rows[i].style.display = "none";
+                                        }
+                                    }
+
+                                    // Reset pagination to the first page
+                                    currentPage = 1;
+                                    renderPagination();
+                                    });
+
+                                    // Get the rows per page select element
+                                    var rowsPerPageSelect = document.getElementById("rowsPerPageSelect");
+
+                                    // Add an event listener for rows per page changes
+                                    rowsPerPageSelect.addEventListener("change", function() {
+                                    var selectedValue = rowsPerPageSelect.value;
+                                    changeRowsPerPage(selectedValue);
+                                    });
+                                </script>
                             </div>
                         </div>
                     </div>

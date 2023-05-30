@@ -1,6 +1,7 @@
 <?php 
 /* Template Name: Admin Student Admission */
 require_once(get_template_directory(). '/admin/header.php');
+global $wp_error, $current_user, $wp_roles, $post_id;
 ?>
 
 <?php
@@ -21,34 +22,97 @@ if (is_user_logged_in() && current_user_can('administrator')) {
 
             <!-- Content Row -->
             
+            <?php
+                    if (isset($_POST['submit'])) {
+                        
+                    }
 
+                        if (isset( $_POST['cpt_nonce_field'] ) && wp_verify_nonce( $_POST['cpt_nonce_field'], 'cpt_nonce_action' ) ) {
+
+                            // create post object with the form values
+
+                            $post_Student_course_register                       = $_POST['selectCourse'];
+                            $post_Student_course_register2                       = $_POST['Purpose'];
+                            
+
+                            $my_cptpost_args = array(
+
+                            'post_title'    => $_POST['selectCourse'],
+                            'post_author'  => get_current_user_id(),
+
+                            'post_status'   => $_POST['submitType'],
+
+                            'post_type' => 'admissions',
+
+                            );
+
+                            $cpt_id = wp_insert_post( $my_cptpost_args, $wp_error);
+
+                            add_post_meta( $cpt_id, 'student_purpose_register', $post_Student_course_register, false );
+                            add_post_meta( $cpt_id, 'student_select_course_register', $post_Student_course_register2, false );
+
+                            // $location = home_url().'/'.$bangladeshbdooption['donar_Profile_dashboard']; 
+                            $location = home_url(); 
+
+                            echo "<meta http-equiv='refresh' content='0;url=$location' />";
+                            exit;
+
+                        }
+
+
+                    ?>
 
             
             <div class="row align-items-center justify-content-center">
                 <div class="col-md-10 py-5">
                     <h3>Student Admission</h3>
                     <p class="mb-4">Student Admission Information</p>
-                    <form action="#" method="post">
+                    <form method="post">
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="fname">Purpose</label>
-                                        <select name="SSC_board" id="SSC_board" class="form-control" required>
-                                            <option value="">Select</option>
-                                            <option value="Barisal">Barisal</option>
-                                            <option value="Chittagong">Chittagong</option>
-                                            <option value="Cumilla">Cumilla</option>
+                                        <select name="submitType" id="SSC_board" class="form-control" required>
+                                            <option value="draft">draft</option>
+                                            <option value="publish">publish</option>
+                                        </select>
+                                </div>    
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group first">
+                                    <label for="fname">Purpose</label>
+                                        <select name="Purpose" id="SSC_board" class="form-control" required>
+                                            <option value="--Select Purpose--">--Select Purpose--</option><option value="1">3 M Regi</option>
+                                            <option value="6 M Regi">6 M Regi</option>
+                                            <option value="1 Year Regi">1 Year Regi</option>
+                                            <option value="2 Year Regi">2 Year Regi</option>
+                                            <option value="6 M Regi (600tk)">6 M Regi (600tk)</option>
+                                            <option value="3 M Regi (600tk)">3 M Regi (600tk)</option>
+                                            <option value="6 M Regi (500tk)">6 M Regi (500tk)</option>
+                                            <option value="3 M Regi (500tk)">3 M Regi (500tk)</option>
+                                            <option value="6 M Regi (1000 tk)">6 M Regi (1000 tk)</option>
+                                            <option value="6 M Regi Freelancing">6 M Regi Freelancing</option>
+                                            <option value="6 M Regi  2000 Taka (Freelancing & Outsourcing)">6 M Regi  2000 Taka (Freelancing &amp; Outsourcing)</option>
+                                            <option value="combo:  6 M Regi (3000 taka)">combo:  6 M Regi (3000 taka)</option>
                                         </select>
                                 </div>    
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="lname">Select Course</label>
-                                    <select name="SSC_board" id="SSC_board" class="form-control" required>
-                                        <option value="">Select</option>
-                                        <option value="Barisal">Barisal</option>
-                                        <option value="Chittagong">Chittagong</option>
-                                        <option value="Cumilla">Cumilla</option>
+                                    <select name="selectCourse" id="SSC_board" class="form-control" required>
+                                        <option value="">--Select Course--</option>
+                                        <option value="Basic Graphic Design">Basic Graphic Design</option>
+                                        <option value="Advanced Excel">Advanced Excel</option>
+                                        <option value="Basic Hardware Maintenance">Basic Hardware Maintenance</option>
+                                        <option value="Certificate in Computer Science & Application">Certificate in Computer Science &amp; Application</option>
+                                        <option value="Basic Application (MS Office)">Basic Application (MS Office)</option>
+                                        <option value="Advanced Excel">Advanced Excel</option>
+                                        <option value="Rapid Skill Development ( Typing + E-fielding)">Rapid Skill Development ( Typing + E-fielding)</option>
+                                        <option value="STAAD Pro">STAAD Pro</option>
+                                        <option value="C Programming for Beginners">C Programming for Beginners</option>
                                     </select>
                                 </div>    
                             </div>
@@ -300,8 +364,11 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                         </div>
                         </div>
 
+                        <input type='hidden' name='post_type' id='post_type' value='my_custom_post_type' />
+
+                        <?php wp_nonce_field( 'cpt_nonce_action', 'cpt_nonce_field' ); ?>
+
                         <input type="submit" value="Register" class="btn px-5 btn-primary">
-                        <input type="submit" value="Save Draft" class="btn px-5 btn-secondary">
 
                     </form>
                 </div>
