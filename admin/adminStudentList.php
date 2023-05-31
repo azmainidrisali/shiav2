@@ -82,7 +82,8 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                                     <td><?php $custom_meta_value1 = get_post_meta(get_the_ID(), 'student_purpose_register', true); echo $custom_meta_value1; ?></td>
                                                     <td class="d-flex align-items-center">
                                                         <div class="img">
-                                                            <img width="50" src="https://worlditfoundation.org/images/admission/64363c756c125.JPG">
+                                                            <?php $thumbnail_url = get_the_post_thumbnail_url();?>
+                                                            <img width="50" src="<?php echo $thumbnail_url ?>">
                                                         </div>
                                                     </td>
                                                     <td><?php $custom_meta_value2 = get_post_meta(get_the_ID(), 'custom_student_select_course', true);?></td>

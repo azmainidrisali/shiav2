@@ -185,12 +185,40 @@ add_action('after_setup_theme', 'Chide_admin_bar');
             }
         }
         add_action('admin_init', 'restrict_wp_admin');
-        
+
+		
+		function redirect_admin_after_login($user_login, $user) {
+			// Check if the user is an administrator
+			if (in_array('administrator', $user->roles)) {
+				global $shiacomputeroption;
+
+                if (isset($shiacomputeroption['adminPanelLink'])) {
+                    $get_adminpanel_id = $shiacomputeroption['adminPanelLink']; // Get the selected page ID
+
+                    if ($get_adminpanel_id) {
+                        $get_adminpanel_link = get_permalink($get_adminpanel_id); // Get the permalink of the selected page
+                    }
+                }
+				$redirect_url = $get_adminpanel_link;
+				wp_redirect($redirect_url);
+				exit;
+			}
+		}
+		add_action('wp_login', 'redirect_admin_after_login', 10, 2);
+
+
         
         
     //lOGIN PAGE REDIRECT disable wp-login page//
 
 //admin login syesteam End
+
+
+
+
+
+
+
 
 
 // Handle category submission form
@@ -202,6 +230,7 @@ add_action('after_setup_theme', 'Chide_admin_bar');
       // Create a new category
       $category_args = array(
         'cat_name' => $category_name,
+		'taxonomy' => 'batch',
         'category_description' => $category_description,
         // Add any other desired parameters for the category
       );
@@ -227,41 +256,56 @@ add_action('after_setup_theme', 'Chide_admin_bar');
   }
   add_action('admin_post_nopriv_submit_category', 'handle_category_submission');
   add_action('admin_post_submit_category', 'handle_category_submission');
-
-  // Handle category deletion
-    function handle_category_deletion() {
-    if (isset($_POST['action']) && $_POST['action'] === 'delete_category') {
-      $category_id = isset($_POST['category_id']) ? intval($_POST['category_id']) : 0;
-  
-      if ($category_id > 0) {
-        wp_delete_category($category_id);
-  
-        // Optionally, you can perform additional actions after category deletion.
-        // For example, displaying a success message or redirecting the user.
-  
-        // Redirect the user back to the same page
-        global $shiacomputeroption;
-
-        if (isset($shiacomputeroption['adminBatch'])) {
-            $get_adminBatchRed_id = $shiacomputeroption['adminBatch']; // Get the selected page ID
-
-            if ($get_adminBatchRed_id) {
-                $get_adminBatchRed_link = get_permalink($get_adminBatchRed_id); // Get the permalink of the selected page
-            }
-        }
-      wp_redirect($get_adminBatchRed_link);
-      exit;;
-      }
-    }
-  }
-  add_action('admin_post_nopriv_delete_category', 'handle_category_deletion');
-  add_action('admin_post_delete_category', 'handle_category_deletion');
-  
   
 
-//reduc framework connect
+
+	function handle_category_deletion() {
+		if (isset($_POST['action']) && $_POST['action'] === 'delete_category') {
+			$category_id = isset($_POST['category_id']) ? intval($_POST['category_id']) : 0;
+
+			if ($category_id > 0) {
+				// Check if the category is part of the custom taxonomy called "batch"
+				$taxonomy = 'batch';
+				$term = get_term($category_id, $taxonomy);
+
+				if ($term && !is_wp_error($term)) {
+					// Delete the term
+					wp_delete_term($term->term_id, $taxonomy);
+
+					// Optionally, you can perform additional actions after category deletion.
+					// For example, displaying a success message or redirecting the user.
+
+					// Redirect the user back to the same page
+					$get_adminBatchRed_link = ''; // Define the redirect URL
+
+					$shiacomputeroption = get_option('shiacomputeroption'); // Get the option value from the database
+
+					if (isset($shiacomputeroption['adminBatch'])) {
+						$get_adminBatchRed_id = $shiacomputeroption['adminBatch']; // Get the selected page ID
+
+						if ($get_adminBatchRed_id) {
+							$get_adminBatchRed_link = get_permalink($get_adminBatchRed_id); // Get the permalink of the selected page
+						}
+					}
+					wp_redirect($get_adminBatchRed_link);
+					exit;
+				}
+			}
+		}
+	}
+	add_action('admin_post_nopriv_delete_category', 'handle_category_deletion');
+	add_action('admin_post_delete_category', 'handle_category_deletion');
+
+
+
+  //reduc framework connect
 
 //Admission entry Database start
+
+	function add_thumbnail_support() {
+		add_theme_support('post-thumbnails', array('admissions'));
+	}
+	add_action('after_setup_theme', 'add_thumbnail_support');
 
 
     // Add custom post type for Institute Admissions
@@ -1154,7 +1198,82 @@ add_action('after_setup_theme', 'Chide_admin_bar');
 				}
 				add_action("save_post", "save_Student_Last_Exam_Passing_year_register");
 			//Last_Exam Passing Year field end
+			
+			//Last_Exam Passing Year field start
+				function register_admissions_post_type() {
+					$args = array(
+						'public' => true,
+						'label'  => 'Admissions',
+						// Add more arguments as needed
+					);
+					register_post_type( 'admissions', $args );
+				}
+				add_action( 'init', 'register_admissions_post_type' );
+
+				function admissions_serial_number_meta_box() {
+					add_meta_box(
+						'admissions_serial_number',
+						'Serial Number',
+						'admissions_serial_number_meta_box_callback',
+						'admissions',
+						'side',
+						'default'
+					);
+				}
+				add_action( 'add_meta_boxes', 'admissions_serial_number_meta_box' );
+				
+				function admissions_serial_number_meta_box_callback( $post ) {
+					$serial_number = get_post_meta( $post->ID, 'admissions_serial_number', true );
+				
+					if ( empty( $serial_number ) ) {
+						$serial_number = uniqid();
+						update_post_meta( $post->ID, 'admissions_serial_number', $serial_number );
+					}
+				
+					echo '<p><strong>' . $serial_number . '</strong></p>';
+				}
+				
+			
+			//Last_Exam Passing Year field end
 
     //custom field type for instite
 
 //Admission entry Database End
+
+//server information start
+
+	function display_server_quota_html() {
+		$total_space = disk_total_space('/');	
+		$free_space = disk_free_space('/');
+		$used_space = $total_space - $free_space;
+
+		// Format the sizes in a human-readable format
+		$total_space_formatted = format_size($total_space);
+		$used_space_formatted = format_size($used_space);
+		$free_space_formatted = format_size($free_space);
+
+		// Prepare the HTML output
+		$output = "<p>Total Space: $total_space_formatted</p>";
+		$output .= "<p>Used Space: $used_space_formatted</p>";
+		$output .= "<p>Free Space: $free_space_formatted</p>";
+
+		return $output;
+	}
+
+	// Function to format the size in a human-readable format
+	function format_size($size) {
+		$units = array('B', 'KB', 'MB', 'GB', 'TB');
+		$index = 0;
+
+		while ($size >= 1024 && $index < count($units) - 1) {
+			$size /= 1024;
+			$index++;
+		}
+
+		return round($size, 2) . ' ' . $units[$index];
+	}
+
+	// Call the function to display the server quota
+	$server_quota_html = display_server_quota_html();
+
+//server information End

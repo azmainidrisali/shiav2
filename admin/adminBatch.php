@@ -50,7 +50,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                 <h2>Category List</h2>
                     <?php
                         $args = array(
-                        'taxonomy' => 'category',
+                        'taxonomy' => 'batch',
                         'hide_empty' => false
                         );
                         $categories = get_categories($args);

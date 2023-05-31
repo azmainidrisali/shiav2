@@ -23,6 +23,10 @@ if (is_user_logged_in() && current_user_can('administrator')) {
             <!-- Content Row -->
             
             <?php
+             require_once( ABSPATH . 'wp-admin/includes/image.php' );
+             require_once( ABSPATH . 'wp-admin/includes/file.php' );
+             require_once( ABSPATH . 'wp-admin/includes/media.php' );
+
                     if (isset($_POST['submit'])) {
                         
                     }
@@ -31,13 +35,40 @@ if (is_user_logged_in() && current_user_can('administrator')) {
 
                             // create post object with the form values
 
-                            $post_Student_course_register                       = $_POST['selectCourse'];
-                            $post_Student_course_register2                       = $_POST['Purpose'];
-                            
+                            $post_Student_purpose                               = $_POST['Purpose'];
+                            $post_Student_selectCourse                          = $_POST['selectCourse'];
+                            $post_Student_course_fee                            = $_POST['courseFee'];   
+                            $post_Student_admissionDate                         = $_POST['admissionDate'];   
+                            $post_Student_seassionStart                         = $_POST['seassionStart'];   
+                            $post_Student_seassionEnd                           = $_POST['seassionEnd'];   
+                            $post_Student_batch                                 = $_POST['batch'];   
+                            $post_Student_STudentName                           = $_POST['STudentName'];
+                            $post_Student_StudentEmail                          = $_POST['StudentEmail'];
+                            $post_Student_StudentFathername                     = $_POST['StudentFathername'];
+                            $post_Student_stuentsMotherName                     = $_POST['stuentsMotherName'];
+                            $post_Student_StuentGurdainContact                  = $_POST['StuentGurdainContact'];
+                            $post_Student_StudentDOB                            = $_POST['StudentDOB'];
+                            $post_Student_PresentAddress                        = $_POST['PresentAddress'];
+                            $post_Student_PermanentAddress                      = $_POST['PermanentAddress'];
+                            $post_Student_ContactNumber                         = $_POST['ContactNumber'];
+                            $post_Student_password                              = $_POST['password'];
+
+                            $post_Student_PayAmount                             = $_POST['PayAmount'];
+                            $post_Student_paymentMethod                         = $_POST['paymentMethod'];
+
+                            $post_Student_SSC_board_register                    = $_POST['SSC_board'];
+                            $post_Student_SSC_Roll_register                     = $_POST['SSC_Roll'];
+                            $post_Student_SSC_Registration_register             = $_POST['SSC_Registration'];
+                            $post_Student_SSC_Passing_year_register             = $_POST['SSC_Passing_year'];
+
+                            $post_Student_Last_Exam_board_register              = $_POST['Last_Exam_board'];
+                            $post_Student_Last_Exam_Roll_register               = $_POST['Last_Exam_Roll'];
+                            $post_Student_Last_Exam_Registration_register       = $_POST['Last_Exam_Registration'];
+                            $post_Student_Last_Exam_Passing_year_register       = $_POST['Last_Exam_Passing_year'];
 
                             $my_cptpost_args = array(
 
-                            'post_title'    => $_POST['selectCourse'],
+                            'post_title'    => $_POST['STudentName'],
                             'post_author'  => get_current_user_id(),
 
                             'post_status'   => $_POST['submitType'],
@@ -48,11 +79,49 @@ if (is_user_logged_in() && current_user_can('administrator')) {
 
                             $cpt_id = wp_insert_post( $my_cptpost_args, $wp_error);
 
-                            add_post_meta( $cpt_id, 'student_purpose_register', $post_Student_course_register, false );
-                            add_post_meta( $cpt_id, 'student_select_course_register', $post_Student_course_register2, false );
+                            add_post_meta( $cpt_id, 'student_purpose_register', $post_Student_purpose, false );
+                            add_post_meta( $cpt_id, 'student_select_course_register', $post_Student_selectCourse, false );
+                            add_post_meta( $cpt_id, 'student_Admission_date_fee_register', $post_Student_course_fee, false );
+                            add_post_meta( $cpt_id, 'student_Admission_date_register', $post_Student_admissionDate, false );
+                            add_post_meta( $cpt_id, 'student_seassion_start_register', $post_Student_seassionStart, false );
+                            add_post_meta( $cpt_id, 'student_seassion_End_register', $post_Student_seassionEnd, false );
+                            add_post_meta( $cpt_id, 'student_batch_register', $post_Student_batch, false );
+                            add_post_meta( $cpt_id, 'student_Name_register', $post_Student_STudentName, false );
+                            add_post_meta( $cpt_id, 'student_Email_register', $post_Student_StudentEmail, false );
+                            add_post_meta( $cpt_id, 'student_Fathers_name_register', $post_Student_StudentFathername, false );
+                            add_post_meta( $cpt_id, 'student_mothers_name_register', $post_Student_stuentsMotherName, false );
+                            add_post_meta( $cpt_id, 'student_gurdain_contact_register', $post_Student_StuentGurdainContact, false );
+                            add_post_meta( $cpt_id, 'student_Date_of_Birth_register', $post_Student_StudentDOB, false );
+                            add_post_meta( $cpt_id, 'student_present_address_register', $post_Student_PresentAddress, false );
+                            add_post_meta( $cpt_id, 'student_permanent_address_register', $post_Student_PermanentAddress, false );
+                            add_post_meta( $cpt_id, 'student_contact_number_register', $post_Student_ContactNumber, false );
+                            add_post_meta( $cpt_id, 'student_password_register', $post_Student_password, false );
 
-                            // $location = home_url().'/'.$bangladeshbdooption['donar_Profile_dashboard']; 
-                            $location = home_url(); 
+                            // add_post_meta( $cpt_id, 'student_purpose_register', $post_Student_PayAmount, false );
+                            // add_post_meta( $cpt_id, 'student_purpose_register', $post_Student_paymentMethod, false );
+
+                            add_post_meta( $cpt_id, 'Student_SSC_board_register', $post_Student_SSC_board_register, false );
+                            add_post_meta( $cpt_id, 'Student_SSC_Roll_register', $post_Student_SSC_Roll_register, false );
+                            add_post_meta( $cpt_id, 'Student_SSC_Registration_register', $post_Student_SSC_Registration_register, false );
+                            add_post_meta( $cpt_id, 'Student_SSC_Passing_year_register', $post_Student_SSC_Passing_year_register, false );
+                            
+                            add_post_meta( $cpt_id, 'Student_Last_Exam_board_register', $post_Student_Last_Exam_board_register, false );
+                            add_post_meta( $cpt_id, 'Student_Last_Exam_Roll_register', $post_Student_Last_Exam_Roll_register, false );
+                            add_post_meta( $cpt_id, 'Student_Last_Exam_Registration_register', $post_Student_Last_Exam_Registration_register, false );
+                            add_post_meta( $cpt_id, 'Student_Last_Exam_Passing_year_register', $post_Student_Last_Exam_Passing_year_register, false );
+
+                            $attachment_id = media_handle_upload( 'user-image-featured', $cpt_id);
+                            set_post_thumbnail( $cpt_id, $attachment_id );
+                            // $location = home_url().'/'.$bangladeshbdooption['donar_Profile_dashboard'];
+
+                            if (isset($shiacomputeroption['adminStudentList'])) {
+                                $get_admsinStudentLink_id = $shiacomputeroption['adminStudentList']; // Get the selected page ID
+
+                                if ($get_admsinStudentLink_id) {
+                                    $get_admsinStudentLink_link = get_permalink($get_admsinStudentLink_id); // Get the permalink of the selected page
+                                }
+                            }
+                            $location = $get_admsinStudentLink_link; 
 
                             echo "<meta http-equiv='refresh' content='0;url=$location' />";
                             exit;
@@ -60,21 +129,21 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                         }
 
 
+
                     ?>
 
-            
             <div class="row align-items-center justify-content-center">
                 <div class="col-md-10 py-5">
                     <h3>Student Admission</h3>
                     <p class="mb-4">Student Admission Information</p>
-                    <form method="post">
+                    <form method="post" enctype="multipart/form-data">
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group first">
-                                    <label for="fname">Purpose</label>
+                                    <label for="fname">Applaction Status</label>
                                         <select name="submitType" id="SSC_board" class="form-control" required>
-                                            <option value="draft">draft</option>
-                                            <option value="publish">publish</option>
+                                            <option value="draft">Draft Admission</option>
+                                            <option value="publish">Publishe Registration</option>
                                         </select>
                                 </div>    
                             </div>
@@ -84,7 +153,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                 <div class="form-group first">
                                     <label for="fname">Purpose</label>
                                         <select name="Purpose" id="SSC_board" class="form-control" required>
-                                            <option value="--Select Purpose--">--Select Purpose--</option><option value="1">3 M Regi</option>
+                                            <option value="">--Select Purpose--</option>
                                             <option value="6 M Regi">6 M Regi</option>
                                             <option value="1 Year Regi">1 Year Regi</option>
                                             <option value="2 Year Regi">2 Year Regi</option>
@@ -133,13 +202,13 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             <div class="col-md-6">
                                 <div class="form-group first">
                                     <label for="fname">Course Fee</label>
-                                    <input type="text" class="form-control" placeholder="Fee" id="lname">
+                                    <input type="text" name="courseFee" class="form-control" placeholder="Fee" id="lname">
                                 </div>    
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group first">
                                     <label for="lname">Admission Date</label>
-                                    <input type="date" class="form-control" placeholder="e.g. Smith" id="lname">
+                                    <input type="date" name="admissionDate" class="form-control" placeholder="e.g. Smith" id="lname">
                                 </div>    
                             </div>
                         </div>
@@ -148,19 +217,52 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="fname">Seassion Start</label>
-                                    <input type="date" class="form-control" placeholder="Fee" id="lname">
+                                    <input type="date" name="seassionStart" class="form-control" placeholder="Fee" id="lname">
                                 </div>    
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="lname">Seassion End</label>
-                                    <input type="date" class="form-control" placeholder="e.g. Smith" id="lname">
+                                    <input type="date" name="seassionEnd" class="form-control" placeholder="e.g. Smith" id="lname">
                                 </div>    
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="lname">Batch</label>
-                                    <input type="date" class="form-control" placeholder="e.g. Smith" id="lname">
+
+                                    <?php
+                                        // Get all the batch terms
+                                        $batch_terms = get_terms(array(
+                                            'taxonomy' => 'batch',
+                                            'hide_empty' => false,
+                                        ));
+
+                                        // Check if there are any terms
+                                        if (!empty($batch_terms)) {
+                                            // Prepare an array to store batch names
+                                            $batch_names = array();
+
+                                            // Loop through each batch term and extract the name
+                                            foreach ($batch_terms as $batch_term) {
+                                                $batch_names[] = $batch_term->name;
+                                            }
+
+                                            // Generate the HTML select element
+                                            $select_html = '<select name="batch" id="batch-select">';
+                                            $select_html .= '<option value="">Select Batch</option>';
+
+                                            foreach ($batch_names as $batch_name) {
+                                                $select_html .= '<option value="' . esc_attr($batch_name) . '">' . esc_html($batch_name) . '</option>';
+                                            }
+
+                                            $select_html .= '</select>';
+
+                                            // Output the HTML select element
+                                            echo $select_html;
+                                        } else {
+                                            echo 'No batch terms found.';
+                                        }
+                                        ?>
                                 </div>    
                             </div>
                         </div>
@@ -171,13 +273,13 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             <div class="col-md-6">
                                 <div class="form-group first">
                                     <label for="fname">Student Name</label>
-                                    <input type="text" class="form-control" placeholder="Fee" id="lname">
+                                    <input type="test" name="STudentName" class="form-control" placeholder="Fee" id="lname">
                                 </div>    
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group first">
                                     <label for="lname">Email</label>
-                                    <input type="email" class="form-control" placeholder="e.g. Smith" id="lname">
+                                    <input type="email" name="StudentEmail" class="form-control" placeholder="e.g. Smith" id="lname">
                                 </div>    
                             </div>
                         </div>
@@ -186,19 +288,19 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="fname">Fathers Name</label>
-                                    <input type="text" class="form-control" placeholder="Fee" id="lname">
+                                    <input type="text" name="StudentFathername" class="form-control" placeholder="Fee" id="lname">
                                 </div>    
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="lname">Mothers Name</label>
-                                    <input type="email" class="form-control" placeholder="e.g. Smith" id="lname">
+                                    <input type="text" name="stuentsMotherName" class="form-control" placeholder="e.g. Smith" id="lname">
                                 </div>    
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="lname">Guardian Contact</label>
-                                    <input type="email" class="form-control" placeholder="e.g. Smith" id="lname">
+                                    <input type="number" name="StuentGurdainContact" class="form-control" placeholder="e.g. Smith" id="lname">
                                 </div>    
                             </div>
                         </div>
@@ -207,19 +309,19 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="fname">Date Of Birth</label>
-                                    <input type="date" class="form-control" placeholder="Fee" id="lname">
+                                    <input type="date" name="StudentDOB" class="form-control" placeholder="Fee" id="lname">
                                 </div>    
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="lname">Present Address</label>
-                                    <input type="text" class="form-control" placeholder="e.g. Smith" id="lname">
+                                    <input type="text" name=PresentAddress class="form-control" placeholder="e.g. Smith" id="lname">
                                 </div>    
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="lname">Permanent Address</label>
-                                    <input type="text" class="form-control" placeholder="e.g. Smith" id="lname">
+                                    <input type="text" name="PermanentAddress" class="form-control" placeholder="e.g. Smith" id="lname">
                                 </div>    
                             </div>
                         </div>
@@ -228,13 +330,13 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="fname">Contact Number</label>
-                                    <input type="number" class="form-control" placeholder="Fee" id="lname">
+                                    <input type="number" name="ContactNumber" class="form-control" placeholder="Fee" id="lname">
                                 </div>    
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="lname">Password</label>
-                                    <input type="password" class="form-control" placeholder="e.g. Smith" id="lname">
+                                    <input type="password" name="password" class="form-control" placeholder="e.g. Smith" id="lname">
                                 </div>    
                             </div>
                             <div class="col-md-4">
@@ -335,25 +437,30 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="fname">Pay Amount</label>
-                                    <input type="number" class="form-control" placeholder="Fee" id="lname">
+                                    <input type="number" name="PayAmount" class="form-control" placeholder="Fee" id="lname">
                                 </div>    
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="lname">Due Amount</label>
                                     <input type="number" class="form-control" placeholder="e.g. Smith" id="lname">
-                                </div>    
+                                </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="lname">Payment Method</label>
-                                    <select name="SSC_board" id="SSC_board" class="form-control" required>
+                                    <select name="paymentMethod" id="SSC_board" class="form-control" required>
                                         <option value="">Select</option>
-                                        <option value="Barisal">Barisal</option>
-                                        <option value="Chittagong">Chittagong</option>
-                                        <option value="Cumilla">Cumilla</option>
+                                        <option value="Bkash">Bkash</option>
+                                        <option value="Nagad">Nagad</option>
+                                        <option value="Cash">Cash</option>
                                     </select>
                                 </div>    
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <input type="file" name="user-image-featured" id="user-image-featured" class="form-control-file" >
+                                </div>
                             </div>
                         </div>
                         
@@ -407,6 +514,22 @@ if (is_user_logged_in() && current_user_can('administrator')) {
 };
 
 ?>
+
+<script>
+
+
+function previewThumbnail(event) {
+    var reader = new FileReader();
+    reader.onload = function() {
+        var preview = document.getElementById('thumbnail-preview');
+        preview.src = reader.result;
+        preview.style.display = 'block';
+    }
+    reader.readAsDataURL(event.target.files[0]);
+}
+var thumbnailInput = document.getElementById('thumbnail');
+thumbnailInput.addEventListener('change', previewThumbnail);
+</script>
 
 <?php
 require_once(get_template_directory(). '/admin/footer.php');
