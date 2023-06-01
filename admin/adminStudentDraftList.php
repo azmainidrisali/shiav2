@@ -100,16 +100,43 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                                             wp_update_post($post_data);
                                                             echo "<meta http-equiv='refresh' content='0;url=$location' />";
                                                             exit;
+                                                        };
+                                                        if (isset($_POST['delete_post_id'])) {
+                                                            $post_id = $_POST['delete_post_id'];
+                                                        
+                                                            // Verify the nonce for security
+                                                            if (wp_verify_nonce($_POST['delete_post_nonce'], 'delete_post_' . $post_id) && current_user_can('delete_post', $post_id)) {
+                                                                // Delete the post
+                                                                wp_delete_post($post_id, true);
+                                                        
+                                                                // Redirect to a desired page after deleting the post
+                                                                if (isset($shiacomputeroption['adminStudentDraft'])) {
+                                                                    $get_admsinStudentDraftLink_id = $shiacomputeroption['adminStudentDraft']; // Get the selected page ID
+                                    
+                                                                    if ($get_admsinStudentDraftLink_id) {
+                                                                        $get_admsinStudentLink_link = get_permalink($get_admsinStudentDraftLink_id); // Get the permalink of the selected page
+                                                                    }
+                                                                }
+                                                                $location = $get_admsinStudentLink_link; 
+
+                                                                echo "<meta http-equiv='refresh' content='0;url=$location' />";
+                                                                exit;
+                                                            } else {
+                                                                // Display an error message or handle invalid request
+                                                                echo 'Invalid delete request.';
+                                                            }
                                                         }
                                                     ?>
-                                                        <form method="POST" action="">
+                                                        <form method="post" action="">
+                                                            <input type="hidden" name="delete_post_id" value="<?php echo esc_attr(get_the_ID()); ?>">
+                                                            <?php wp_nonce_field('delete_post_' . get_the_ID(), 'delete_post_nonce'); ?>
+                                                            <button type="submit" class="delete-post-button">Delete Post</button>
+                                                        
                                                             <input class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" type="hidden" name="post_id" value="<?php echo get_the_ID() ?>"> <!-- Replace 123 with the actual post ID -->
-                                                            <input type="submit" name="publish_button" value="Publish">
+                                                            <input type="submit" name="publish_button" value="Approve Admission">
                                                         </form>
                                                         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                                         class="fas fa-download fa-sm text-white-50"></i> View Admission</a>
-                                                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                                        class="fas fa-download fa-sm text-white-50"></i> Admit Card</a>
                                                         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                                         class="fas fa-download fa-sm text-white-50"></i> Registration Card</a>
                                                     </button>
