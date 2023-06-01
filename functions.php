@@ -303,8 +303,8 @@ add_action('after_setup_theme', 'Chide_admin_bar');
 //Admission entry Database start
 
 	function add_thumbnail_support() {
-		add_theme_support('post-thumbnails', array('admissions'));
-	}
+			add_theme_support('post-thumbnails', array('admissions'));
+		}
 	add_action('after_setup_theme', 'add_thumbnail_support');
 
 
@@ -504,7 +504,7 @@ add_action('after_setup_theme', 'Chide_admin_bar');
 
         //STudent student course fee field start
 			function student_Admission_date_fee(){
-				add_meta_box("custom_student_Admission_date_fee", "Select Your Course", "student_Admission_date_fee_field", "admissions", "normal", "low");
+				add_meta_box("custom_student_Admission_date_fee", "Course Fee", "student_Admission_date_fee_field", "admissions", "normal", "low");
 			}
 			add_action("admin_init", "student_Admission_date_fee");
 
@@ -515,7 +515,7 @@ add_action('after_setup_theme', 'Chide_admin_bar');
 				$data = get_post_custom($post->ID);
 				$val = isset($data['student_Admission_date_fee_register']) ? esc_attr($data['student_Admission_date_fee_register'][0]) : '';
 
-				echo '<input type="text" name="student_Admission_date_fee_register" id="student_Admission_date_fee_register" value="'.$val.'" placeholder="Select Your Course"/>';
+				echo '<input type="text" name="student_Admission_date_fee_register" id="student_Admission_date_fee_register" value="'.$val.'" placeholder="Course Fee"/>';
 			}
 
 			function save_student_Admission_date_fee_register(){
@@ -704,6 +704,64 @@ add_action('after_setup_theme', 'Chide_admin_bar');
 			}
 			add_action("save_post", "save_student_Email_register");
 		//STudent Email field end
+
+        //STudent Goverment ID type start
+			function gov_id_type(){
+				add_meta_box("custom_gov_id_type", "Gov id Type", "gov_id_type_Field", "admissions", "normal", "low");
+			}
+			add_action("admin_init", "gov_id_type");
+
+			function gov_id_type_Field(){
+
+				global $post;
+
+				$data = get_post_custom($post->ID);
+				$val = isset($data['gov_id_type_register']) ? esc_attr($data['gov_id_type_register'][0]) : '';
+
+				echo '<input type="text" name="gov_id_type_register" id="gov_id_type_register" value="'.$val.'" placeholder="Gov id Type"/>';
+			}
+
+			function save_gov_id_type_register(){
+				global $post;
+
+				if(isset($_POST["gov_id_type_register"])):
+			
+					update_post_meta($post->ID, "gov_id_type_register", $_POST["gov_id_type_register"]);
+				
+				endif;
+
+			}
+			add_action("save_post", "save_gov_id_type_register");
+		//STudent Goverment ID type end
+
+        //STudent ID Number selected gov paper type start
+			function Gov_id_num(){
+				add_meta_box("custom_Gov_id_num", "Gov ID num", "Gov_id_num_Field", "admissions", "normal", "low");
+			}
+			add_action("admin_init", "Gov_id_num");
+
+			function Gov_id_num_Field(){
+
+				global $post;
+
+				$data = get_post_custom($post->ID);
+				$val = isset($data['Gov_id_num_register']) ? esc_attr($data['Gov_id_num_register'][0]) : '';
+
+				echo '<input type="text" name="Gov_id_num_register" id="Gov_id_num_register" value="'.$val.'" placeholder="Gov ID num"/>';
+			}
+
+			function save_Gov_id_num_register(){
+				global $post;
+
+				if(isset($_POST["Gov_id_num_register"])):
+			
+					update_post_meta($post->ID, "Gov_id_num_register", $_POST["Gov_id_num_register"]);
+				
+				endif;
+
+			}
+			add_action("save_post", "save_Gov_id_num_register");
+		//STudent ID Number selected gov paper type end
 
         //STudent Fathers NAme field start
 			function student_Fathers_name(){
@@ -1237,6 +1295,142 @@ add_action('after_setup_theme', 'Chide_admin_bar');
 			//Last_Exam Passing Year field end
 
     //custom field type for instite
+		
+		//STudent Pay Amount start
+			function student_pay_amount(){
+				add_meta_box("custom_student_pay_amount", "Student Payed Amount", "student_pay_amount_Field", "admissions", "normal", "low");
+			}
+			add_action("admin_init", "student_pay_amount");
+
+			function student_pay_amount_Field(){
+
+				global $post;
+
+				$data = get_post_custom($post->ID);
+				$val = isset($data['student_pay_amount_register']) ? esc_attr($data['student_pay_amount_register'][0]) : '';
+
+				echo '<input type="text" name="student_pay_amount_register" id="student_pay_amount_register" value="'.$val.'" placeholder="Student Payed Amount"/>';
+			}
+
+			function save_student_pay_amount_register(){
+				global $post;
+
+				if(isset($_POST["student_pay_amount_register"])):
+			
+					update_post_meta($post->ID, "student_pay_amount_register", $_POST["student_pay_amount_register"]);
+				
+				endif;
+
+			}
+			add_action("save_post", "save_student_pay_amount_register");
+		//STudent Pay Amount field end
+		
+		//STudent Due Amount start
+			function student_due_amount(){
+				add_meta_box("custom_student_due_amount", "Student Due Amount", "student_due_amount_Field", "admissions", "normal", "low");
+			}
+			add_action("admin_init", "student_due_amount");
+
+			function student_due_amount_Field(){
+
+				global $post;
+
+				$data = get_post_custom($post->ID);
+				$val = isset($data['student_due_amount_register']) ? esc_attr($data['student_due_amount_register'][0]) : '';
+
+				echo '<input type="text" name="student_due_amount_register" id="student_due_amount_register" value="'.$val.'" placeholder="Student Due Amount"/>';
+			}
+
+			function save_student_due_amount_register(){
+				global $post;
+
+				if(isset($_POST["student_due_amount_register"])):
+			
+					update_post_meta($post->ID, "student_due_amount_register", $_POST["student_due_amount_register"]);
+				
+				endif;
+
+			}
+			add_action("save_post", "save_student_due_amount_register");
+		//STudent Due Amount field end
+
+		//STudent Pay method start
+			function student_pay_method(){
+				add_meta_box("custom_student_pay_method", "Student Payment Method", "student_pay_method_Field", "admissions", "normal", "low");
+			}
+			add_action("admin_init", "student_pay_method");
+
+			function student_pay_method_Field(){
+
+				global $post;
+
+				$data = get_post_custom($post->ID);
+				$val = isset($data['student_pay_method_register']) ? esc_attr($data['student_pay_method_register'][0]) : '';
+
+				echo '<input type="text" name="student_pay_method_register" id="student_pay_method_register" value="'.$val.'" placeholder="Student Payment Method"/>';
+			}
+
+			function save_student_pay_method_register(){
+				global $post;
+
+				if(isset($_POST["student_pay_method_register"])):
+			
+					update_post_meta($post->ID, "student_pay_method_register", $_POST["student_pay_method_register"]);
+				
+				endif;
+
+			}
+			add_action("save_post", "save_student_pay_method_register");
+		//STudent Pay method end
+
+		//Student Roll number Generator start
+
+		// Add a custom meta box to your custom post type
+		function add_custom_serial_number_meta_box()
+			{
+				add_meta_box( 'custom_serial_number_meta_box', // Meta box ID
+					'Serial Number', // Meta box title
+					'generate_custom_serial_number_meta_box', // Callback function to render meta box content
+					'amissions', // Replace with your custom post type slug
+					'normal', // Meta box position (normal, side, advanced)
+					'default' // Meta box priority (high, core, default, low)
+				);
+			}
+		add_action('add_meta_boxes', 'add_custom_serial_number_meta_box');
+
+		// Callback function to render meta box content
+			function generate_custom_serial_number_meta_box($post)
+			{
+				$serial_number = get_post_meta($post->ID, 'custom_serial_number', true);
+				?>
+				<p><strong>ROLL NUMBER: </strong><?php echo $serial_number; ?></p>
+				<?php
+			}
+
+		// Generate and save serial number as sequential count when a new post is created
+		function save_custom_serial_number($post_id)
+		{
+			// Check if the post is of your custom post type
+			$post_type = get_post_type($post_id);
+			if ($post_type !== 'amissions') {
+				return;
+			}
+
+			// Check if the post already has a serial number
+			$serial_number = get_post_meta($post_id, 'custom_serial_number', true);
+			if (!$serial_number) {
+				// Get the total number of posts for your custom post type
+				$post_count = wp_count_posts('amissions')->publish; // Replace with your custom post type slug
+
+				// Generate and save the serial number as sequential count
+				$serial_number = str_pad(($post_count + 1), 4, '0', STR_PAD_LEFT); // Modify the prefix as needed
+				update_post_meta($post_id, 'custom_serial_number', $serial_number);
+			}
+		}
+		add_action('save_post', 'save_custom_serial_number');
+
+
+//Student Roll number Generator End
 
 //Admission entry Database End
 

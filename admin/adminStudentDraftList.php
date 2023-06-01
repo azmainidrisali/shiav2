@@ -64,21 +64,30 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                                 // Display the content or any other desired information of each post
                                                 ?>
                                                 <tr class="alert" role="alert">
-                                                    <td><?php the_title(); ?></td>
-                                                    <td>8032743</td>
-                                                    <td><?php $custom_meta_value1 = get_post_meta(get_the_ID(), 'student_purpose_register', true); echo $custom_meta_value1; ?></td>
+                                                <td><?php
+
+                                                    $serial_number = get_post_meta(get_the_ID(), 'custom_serial_number', true);
+
+                                                    if ($serial_number) {
+                                                    echo 'Serial Number: ' . $serial_number;
+                                                    }
+                                                    ?>
+                                                    </td>
+                                                    <td><?php $custom_meta_serial_number_meta_box = get_post_meta(get_the_ID(), 'custom_serial_number', true); echo $custom_meta_serial_number_meta_box; ?></td>
+                                                    <td><?php $custom_student_purpose_register = get_post_meta(get_the_ID(), 'student_batch_register', true); echo $custom_student_purpose_register; ?></td>
                                                     <td class="d-flex align-items-center">
                                                         <div class="img">
-                                                            <img width="50" src="https://worlditfoundation.org/images/admission/64363c756c125.JPG">
+                                                            <?php $thumbnail_url = get_the_post_thumbnail_url();?>
+                                                            <img width="50" src="<?php echo $thumbnail_url ?>">
                                                         </div>
                                                     </td>
-                                                    <td><?php $custom_meta_value2 = get_post_meta(get_the_ID(), 'custom_student_select_course', true);?></td>
-                                                    <td>MD. AIZUL HAQUE</td>
-                                                    <td>Diploma in Computer Science</td>
-                                                    <td>01775176748</td>
-                                                    <td>16 Apr 23</td>
+                                                    <td><?php $custom_student_select_course = get_post_meta(get_the_ID(), 'student_Name_register', true); echo $custom_student_select_course; ?></td>
+                                                    <td><?php $custom_student_Name = get_post_meta(get_the_ID(), 'student_Fathers_name_register', true); echo $custom_student_Name; ?></td>
+                                                    <td><?php $custom_student_select_course = get_post_meta(get_the_ID(), 'student_select_course_register', true); echo $custom_student_select_course; ?></td>
+                                                    <td><?php $custom_student_contact_number = get_post_meta(get_the_ID(), 'student_contact_number_register', true); echo $custom_student_contact_number; ?></td>
+                                                    <td><?php $custom_student_Admission_date = get_post_meta(get_the_ID(), 'student_Admission_date_register', true); echo $custom_student_Admission_date; ?></td>
                                                     <td class="status"><a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                                        class="fa-solid fa-check text-white-50"></i> Compleate</a></td>
+                                                        class="fa-solid fa-check text-white-50"></i> Draft</a></td>
                                                     <td>
                                                     <?php
                                                         if (isset($_POST['publish_button'])) {

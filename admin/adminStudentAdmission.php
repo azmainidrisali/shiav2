@@ -37,12 +37,15 @@ if (is_user_logged_in() && current_user_can('administrator')) {
 
                             $post_Student_purpose                               = $_POST['Purpose'];
                             $post_Student_selectCourse                          = $_POST['selectCourse'];
+                            $post_Student_StudentDurationCourse                 = $_POST['StudentDurationCourse'];
                             $post_Student_course_fee                            = $_POST['courseFee'];   
                             $post_Student_admissionDate                         = $_POST['admissionDate'];   
                             $post_Student_seassionStart                         = $_POST['seassionStart'];   
                             $post_Student_seassionEnd                           = $_POST['seassionEnd'];   
                             $post_Student_batch                                 = $_POST['batch'];   
                             $post_Student_STudentName                           = $_POST['STudentName'];
+                            $post_Student_submitType                            = $_POST['govsubmitType'];
+                            $post_Student_StudentGovID                          = $_POST['StudentGovID'];
                             $post_Student_StudentEmail                          = $_POST['StudentEmail'];
                             $post_Student_StudentFathername                     = $_POST['StudentFathername'];
                             $post_Student_stuentsMotherName                     = $_POST['stuentsMotherName'];
@@ -66,6 +69,10 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             $post_Student_Last_Exam_Registration_register       = $_POST['Last_Exam_Registration'];
                             $post_Student_Last_Exam_Passing_year_register       = $_POST['Last_Exam_Passing_year'];
 
+                            $post_Student_PayAmount                             = $_POST['PayAmount'];
+                            $post_Student_DueAmount                             = $_POST['DueAmount'];
+                            $post_Student_paymentMethod                         = $_POST['paymentMethod'];
+
                             $my_cptpost_args = array(
 
                             'post_title'    => $_POST['STudentName'],
@@ -81,12 +88,15 @@ if (is_user_logged_in() && current_user_can('administrator')) {
 
                             add_post_meta( $cpt_id, 'student_purpose_register', $post_Student_purpose, false );
                             add_post_meta( $cpt_id, 'student_select_course_register', $post_Student_selectCourse, false );
+                            add_post_meta( $cpt_id, 'student_duration_of_course_register', $post_Student_StudentDurationCourse, false );
                             add_post_meta( $cpt_id, 'student_Admission_date_fee_register', $post_Student_course_fee, false );
                             add_post_meta( $cpt_id, 'student_Admission_date_register', $post_Student_admissionDate, false );
                             add_post_meta( $cpt_id, 'student_seassion_start_register', $post_Student_seassionStart, false );
                             add_post_meta( $cpt_id, 'student_seassion_End_register', $post_Student_seassionEnd, false );
                             add_post_meta( $cpt_id, 'student_batch_register', $post_Student_batch, false );
                             add_post_meta( $cpt_id, 'student_Name_register', $post_Student_STudentName, false );
+                            add_post_meta( $cpt_id, 'gov_id_type_register', $post_Student_submitType, false );
+                            add_post_meta( $cpt_id, 'Gov_id_num_register', $post_Student_StudentGovID, false );
                             add_post_meta( $cpt_id, 'student_Email_register', $post_Student_StudentEmail, false );
                             add_post_meta( $cpt_id, 'student_Fathers_name_register', $post_Student_StudentFathername, false );
                             add_post_meta( $cpt_id, 'student_mothers_name_register', $post_Student_stuentsMotherName, false );
@@ -109,6 +119,10 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             add_post_meta( $cpt_id, 'Student_Last_Exam_Roll_register', $post_Student_Last_Exam_Roll_register, false );
                             add_post_meta( $cpt_id, 'Student_Last_Exam_Registration_register', $post_Student_Last_Exam_Registration_register, false );
                             add_post_meta( $cpt_id, 'Student_Last_Exam_Passing_year_register', $post_Student_Last_Exam_Passing_year_register, false );
+
+                            add_post_meta( $cpt_id, 'student_pay_amount_register', $post_Student_PayAmount, false );
+                            add_post_meta( $cpt_id, 'student_due_amount_register', $post_Student_DueAmount, false );
+                            add_post_meta( $cpt_id, 'student_pay_method_register', $post_Student_paymentMethod, false );
 
                             $attachment_id = media_handle_upload( 'user-image-featured', $cpt_id);
                             set_post_thumbnail( $cpt_id, $attachment_id );
@@ -141,7 +155,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="fname">Applaction Status</label>
-                                        <select name="submitType" id="SSC_board" class="form-control" required>
+                                        <select name="submitType" class="form-control" required>
                                             <option value="draft">Draft Admission</option>
                                             <option value="publish">Publishe Registration</option>
                                         </select>
@@ -188,11 +202,11 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="lname">Duration Of Course</label>
-                                    <select name="SSC_board" id="SSC_board" class="form-control" required>
+                                    <select name="StudentDurationCourse" id="SSC_board" class="form-control" required>
                                         <option value="">Select</option>
-                                        <option value="Barisal">Barisal</option>
-                                        <option value="Chittagong">Chittagong</option>
-                                        <option value="Cumilla">Cumilla</option>
+                                        <option value="1 hour">1 hour</option>
+                                        <option value="2 Hour">2 Hour</option>
+                                        <option value="3 Hour">3 Hour</option>
                                     </select>
                                 </div>    
                             </div>
@@ -280,6 +294,25 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                 <div class="form-group first">
                                     <label for="lname">Email</label>
                                     <input type="email" name="StudentEmail" class="form-control" placeholder="e.g. Smith" id="lname">
+                                </div>    
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group first">
+                                    <label for="fname">Verification ID Type</label>
+                                        <select name="govsubmitType" id="SSC_board" class="form-control" required>
+                                            <option value="NID">GOV NID</option>
+                                            <option value="BIRTH CERTIFICATE">BIRTH CERTIFICATE</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                </div>    
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group first">
+                                    <label for="lname">ID Number</label>
+                                    <input type="email" name="StudentGovID" class="form-control" placeholder="e.g. Smith" id="lname">
                                 </div>    
                             </div>
                         </div>
@@ -443,7 +476,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="lname">Due Amount</label>
-                                    <input type="number" class="form-control" placeholder="e.g. Smith" id="lname">
+                                    <input type="number" name="DueAmount" class="form-control" placeholder="e.g. Smith" id="lname">
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -460,6 +493,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <input type="file" name="user-image-featured" id="user-image-featured" class="form-control-file" >
+                                    <div id="image-preview"></div>
                                 </div>
                             </div>
                         </div>
@@ -518,17 +552,43 @@ if (is_user_logged_in() && current_user_can('administrator')) {
 <script>
 
 
-function previewThumbnail(event) {
+    // Get the file input element
+    var fileInput = document.getElementById('user-image-featured');
+
+    // Add an event listener for when a file is selected
+    fileInput.addEventListener('change', function(event) {
+    // Get the selected file
+    var file = event.target.files[0];
+
+    // Create a FileReader object
     var reader = new FileReader();
-    reader.onload = function() {
-        var preview = document.getElementById('thumbnail-preview');
-        preview.src = reader.result;
-        preview.style.display = 'block';
-    }
-    reader.readAsDataURL(event.target.files[0]);
-}
-var thumbnailInput = document.getElementById('thumbnail');
-thumbnailInput.addEventListener('change', previewThumbnail);
+
+    // Set up the FileReader onload function
+    reader.onload = function(e) {
+        // Get the image preview element
+        var imagePreview = document.getElementById('image-preview');
+
+        // Create a new image element
+        var image = document.createElement('img');
+
+        // Set the image source to the uploaded file data
+        image.src = e.target.result;
+
+        // Set any desired styling for the image preview
+        image.style.maxWidth = '100%';
+        image.style.maxHeight = '200px';
+
+        // Clear the existing image preview
+        imagePreview.innerHTML = '';
+
+        // Append the new image to the preview element
+        imagePreview.appendChild(image);
+    };
+
+    // Read the uploaded file as a data URL
+    reader.readAsDataURL(file);
+    });
+
 </script>
 
 <?php
