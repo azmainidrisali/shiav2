@@ -366,6 +366,13 @@
                 'data'    => 'pages',
                 'default' => '',
             ),
+            array(
+                'id'      => 'adminResultSubmission',
+                'type'    => 'select',
+                'title'   => 'Result Submission',
+                'data'    => 'pages',
+                'default' => '',
+            ),
         ),
     ) );
     Redux::setSection($opt_name,array(

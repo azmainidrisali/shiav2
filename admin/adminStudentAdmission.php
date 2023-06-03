@@ -22,10 +22,10 @@ if (is_user_logged_in() && current_user_can('administrator')) {
 
             <!-- Content Row -->
             
-            <?php
-             require_once( ABSPATH . 'wp-admin/includes/image.php' );
-             require_once( ABSPATH . 'wp-admin/includes/file.php' );
-             require_once( ABSPATH . 'wp-admin/includes/media.php' );
+                <?php
+                    require_once( ABSPATH . 'wp-admin/includes/image.php' );
+                    require_once( ABSPATH . 'wp-admin/includes/file.php' );
+                    require_once( ABSPATH . 'wp-admin/includes/media.php' );
 
                     if (isset($_POST['submit'])) {
                         
@@ -141,10 +141,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             exit;
 
                         }
-
-
-
-                    ?>
+                ?>
 
             <div class="row align-items-center justify-content-center">
                 <div class="col-md-10 py-5">
@@ -155,10 +152,10 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="fname">Applaction Status</label>
-                                        <select name="submitType" class="form-control" required>
-                                            <option value="draft">Draft Admission</option>
-                                            <option value="publish">Publishe Registration</option>
-                                        </select>
+                                    <select name="submitType" class="form-control" required>
+                                        <option value="draft">Draft Admission</option>
+                                        <option value="publish">Publishe Registration</option>
+                                    </select>
                                 </div>    
                             </div>
                         </div>
@@ -216,13 +213,13 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             <div class="col-md-6">
                                 <div class="form-group first">
                                     <label for="fname">Course Fee</label>
-                                    <input type="text" name="courseFee" class="form-control" placeholder="Fee" id="lname">
+                                    <input type="text" name="courseFee" class="form-control" placeholder="Course Fee" id="courseFee">
                                 </div>    
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group first">
                                     <label for="lname">Admission Date</label>
-                                    <input type="date" name="admissionDate" class="form-control" placeholder="e.g. Smith" id="lname">
+                                    <input type="date" name="admissionDate" class="form-control" placeholder="Admission Date" id="lname">
                                 </div>    
                             </div>
                         </div>
@@ -231,13 +228,13 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="fname">Seassion Start</label>
-                                    <input type="date" name="seassionStart" class="form-control" placeholder="Fee" id="lname">
+                                    <input type="date" name="seassionStart" class="form-control" placeholder="Seassion Start" id="lname">
                                 </div>    
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="lname">Seassion End</label>
-                                    <input type="date" name="seassionEnd" class="form-control" placeholder="e.g. Smith" id="lname">
+                                    <input type="date" name="seassionEnd" class="form-control" placeholder="Seassion End" id="lname">
                                 </div>    
                             </div>
                             <div class="col-md-4">
@@ -262,7 +259,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                             }
 
                                             // Generate the HTML select element
-                                            $select_html = '<select name="batch" id="batch-select">';
+                                            $select_html = '<select name="batch" class="form-control" id="batch-select">';
                                             $select_html .= '<option value="">Select Batch</option>';
 
                                             foreach ($batch_names as $batch_name) {
@@ -287,13 +284,13 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             <div class="col-md-6">
                                 <div class="form-group first">
                                     <label for="fname">Student Name</label>
-                                    <input type="test" name="STudentName" class="form-control" placeholder="Fee" id="lname">
+                                    <input type="test" name="STudentName" class="form-control" placeholder="Student Name" id="lname">
                                 </div>    
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group first">
                                     <label for="lname">Email</label>
-                                    <input type="email" name="StudentEmail" class="form-control" placeholder="e.g. Smith" id="lname">
+                                    <input type="email" name="StudentEmail" class="form-control" placeholder="example@example.com" id="lname">
                                 </div>    
                             </div>
                         </div>
@@ -312,7 +309,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             <div class="col-md-6">
                                 <div class="form-group first">
                                     <label for="lname">ID Number</label>
-                                    <input type="email" name="StudentGovID" class="form-control" placeholder="e.g. Smith" id="lname">
+                                    <input type="email" name="StudentGovID" class="form-control" placeholder="ID Number" id="lname">
                                 </div>    
                             </div>
                         </div>
@@ -321,19 +318,19 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="fname">Fathers Name</label>
-                                    <input type="text" name="StudentFathername" class="form-control" placeholder="Fee" id="lname">
+                                    <input type="text" name="StudentFathername" class="form-control" placeholder="Fathers Name" id="lname">
                                 </div>    
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="lname">Mothers Name</label>
-                                    <input type="text" name="stuentsMotherName" class="form-control" placeholder="e.g. Smith" id="lname">
+                                    <input type="text" name="stuentsMotherName" class="form-control" placeholder="Mothers Name" id="lname">
                                 </div>    
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="lname">Guardian Contact</label>
-                                    <input type="number" name="StuentGurdainContact" class="form-control" placeholder="e.g. Smith" id="lname">
+                                    <input type="number" name="StuentGurdainContact" class="form-control" placeholder="01723456789" id="lname">
                                 </div>    
                             </div>
                         </div>
@@ -342,19 +339,19 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="fname">Date Of Birth</label>
-                                    <input type="date" name="StudentDOB" class="form-control" placeholder="Fee" id="lname">
+                                    <input type="date" name="StudentDOB" class="form-control" placeholder="Date Of Birth" id="lname">
                                 </div>    
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="lname">Present Address</label>
-                                    <input type="text" name=PresentAddress class="form-control" placeholder="e.g. Smith" id="lname">
+                                    <input type="text" name=PresentAddress class="form-control" placeholder="Present Address" id="lname">
                                 </div>    
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="lname">Permanent Address</label>
-                                    <input type="text" name="PermanentAddress" class="form-control" placeholder="e.g. Smith" id="lname">
+                                    <input type="text" name="PermanentAddress" class="form-control" placeholder="Permanent Address" id="lname">
                                 </div>    
                             </div>
                         </div>
@@ -363,19 +360,19 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="fname">Contact Number</label>
-                                    <input type="number" name="ContactNumber" class="form-control" placeholder="Fee" id="lname">
+                                    <input type="number" name="ContactNumber" class="form-control" placeholder="017123456789" id="lname">
                                 </div>    
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="lname">Password</label>
-                                    <input type="password" name="password" class="form-control" placeholder="e.g. Smith" id="lname">
+                                    <input type="password" name="password" class="form-control" placeholder="*********" id="lname">
                                 </div>    
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="lname">Confirm Pasword</label>
-                                    <input type="password" class="form-control" placeholder="e.g. Smith" id="lname">
+                                    <input type="password" class="form-control" placeholder="**********" id="lname">
                                 </div>    
                             </div>
                         </div>
@@ -470,13 +467,13 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="fname">Pay Amount</label>
-                                    <input type="number" name="PayAmount" class="form-control" placeholder="Fee" id="lname">
+                                    <input type="number" name="PayAmount" class="form-control" placeholder="Pay Amount" id="PayAmount">
                                 </div>    
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="lname">Due Amount</label>
-                                    <input type="number" name="DueAmount" class="form-control" placeholder="e.g. Smith" id="lname">
+                                    <input type="number" name="DueAmount" class="form-control" placeholder="Due Amount" id="DueAmount" readonly>
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -492,6 +489,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
+                                    <label for="lname">Passport Size Image</label>
                                     <input type="file" name="user-image-featured" id="user-image-featured" class="form-control-file" >
                                     <div id="image-preview"></div>
                                 </div>
@@ -550,7 +548,15 @@ if (is_user_logged_in() && current_user_can('administrator')) {
 ?>
 
 <script>
+    $(document).ready(function(){
+            $('#courseFee, #PayAmount').keyup(function(){
+                var num1 = parseFloat($('#courseFee').val()) || 0;
+                var num2 = parseFloat($('#PayAmount').val()) || 0;
+                var sum = num1 - num2;
 
+                $('#DueAmount').val(sum.toFixed(2));
+            });
+        });
 
     // Get the file input element
     var fileInput = document.getElementById('user-image-featured');

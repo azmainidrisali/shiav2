@@ -220,7 +220,6 @@ add_action('after_setup_theme', 'Chide_admin_bar');
 
 
 
-
 // Handle category submission form
     function handle_category_submission() {
     if (isset($_POST['action']) && $_POST['action'] === 'submit_category') {
@@ -1430,9 +1429,40 @@ add_action('after_setup_theme', 'Chide_admin_bar');
 		add_action('save_post', 'save_custom_serial_number');
 
 
-//Student Roll number Generator End
 
-//Admission entry Database End
+		//Student Roll number Generator End
+
+
+		//STudent Result Selection field start
+		function Stuent_result(){
+			add_meta_box("custom_Stuent_result", "Select Course", "Stuent_result_Field", "admissions", "normal", "low");
+		}
+		add_action("admin_init", "Stuent_result");
+
+		function Stuent_result_Field(){
+
+			global $post;
+
+			$data = get_post_custom($post->ID);
+			$val = isset($data['Stuent_result_register']) ? esc_attr($data['Stuent_result_register'][0]) : '';
+
+			echo '<input type="text" name="Stuent_result_register" id="Stuent_result_register" value="'.$val.'" placeholder="Slect Course"/>';
+		}
+
+		function save_Stuent_result_register(){
+			global $post;
+
+			if(isset($_POST["Stuent_result_register"])):
+		
+				update_post_meta($post->ID, "Stuent_result_register", $_POST["Stuent_result_register"]);
+			
+			endif;
+
+		}
+		add_action("save_post", "save_Stuent_result_register");
+	//STudent Result Selection field end
+
+		//Admission entry Database End
 
 //server information start
 

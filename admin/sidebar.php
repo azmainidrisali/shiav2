@@ -99,13 +99,22 @@
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
             aria-expanded="true" aria-controls="collapseUtilities">
             <i class="fas fa-fw fa-wrench"></i>
-            <span>Utilities</span>
+            <span>Result and submissions</span>
         </a>
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
             data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Custom Utilities:</h6>
-                <a class="collapse-item" href="utilities-color.html">Colors</a>
+                <?php
+                    if (isset($shiacomputeroption['adminResultSubmission'])) {
+                        $get_adminResultSubmission_id = $shiacomputeroption['adminResultSubmission']; // Get the selected page ID
+
+                        if ($get_adminResultSubmission_id) {
+                            $get_adminResultSubmission_link = get_permalink($get_adminResultSubmission_id); // Get the permalink of the selected page
+                        }
+                    }
+                ?>
+                <a class="collapse-item" href="<?php echo($get_adminResultSubmission_link) ?>">Result Submissions</a>
                 <a class="collapse-item" href="utilities-border.html">Borders</a>
                 <a class="collapse-item" href="utilities-animation.html">Animations</a>
                 <a class="collapse-item" href="utilities-other.html">Other</a>
