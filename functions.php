@@ -1464,6 +1464,15 @@ add_action('after_setup_theme', 'Chide_admin_bar');
 
 		//Admission entry Database End
 
+		// function generate_pdf_on_init() {
+		// 	if (isset($_POST['generate_pdf'])) {
+		// 		// Include the generate_pdf.php file
+		// 		include_once(get_template_directory(). '/admin/certificatePrint.php');
+		// 		exit(); // Stop further execution after generating the PDF
+		// 	}
+		// }
+		// add_action('init', 'generate_pdf_on_init');
+
 //server information start
 
 	function display_server_quota_html() {
@@ -1501,3 +1510,36 @@ add_action('after_setup_theme', 'Chide_admin_bar');
 	$server_quota_html = display_server_quota_html();
 
 //server information End
+
+
+//sms function
+function SendSMS($number,$text){
+	$url = "https://login.esms.com.bd/api/v3/sms/send";
+    $api_token ="153|yjMC3EfXZGxu0kSiDtFZo2c4mdDg4zrFJKZf0Vkw"; //Your Api Token
+    $sender_id ="8809601003609";//Sender ID/Non masking Number
+    $type ="plain";
+
+    $curl = curl_init($url);
+	curl_setopt($curl, CURLOPT_URL, $url);
+	curl_setopt($curl, CURLOPT_POST, true);
+	curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+	$headers = array(
+	"Authorization: Bearer $api_token",
+	"Content-Type: application/json",
+	);
+	curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+
+	$data = array('recipient' => $number, 'message'=>$text,'sender_id'=>$sender_id,'type'=>'plain' );
+
+	curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
+
+	//for debug only!
+	curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+	curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+
+	$resp = curl_exec($curl);
+	curl_close($curl);
+	var_dump($resp);
+    
+}

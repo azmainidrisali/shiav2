@@ -1,6 +1,7 @@
 <?php 
 /* Template Name: Admin Student List */
 require_once(get_template_directory(). '/admin/header.php');
+
 ?>
 
 <?php
@@ -20,6 +21,19 @@ if (is_user_logged_in() && current_user_can('administrator')) {
             </div>
 
             <!-- Content Row -->
+            
+            <?php
+            
+            if (isset($shiacomputeroption['certificate_image'])) {
+                $get_adminCertificate_certificate_id = $shiacomputeroption['certificate_image']; // Get the selected page ID
+        
+                if ($get_adminCertificate_certificate_id) {
+                    $get_adminCertificate_link = get_permalink($get_adminCertificate_certificate_id); // Get the permalink of the selected page
+                }
+            }
+            echo '<img src="' . $get_adminCertificate_link . '" alt="Uploaded Image">';
+            
+            ?>
             
 
             <section class="ftco-section">
@@ -63,6 +77,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                     </thead>
                                     <tbody>
                                     <?php
+                                    
                                         $args = array(
                                             'post_type' => 'admissions', // Replace 'your_custom_post_type' with the name of your custom post type
                                             'posts_per_page' => -1, // Retrieves all posts of the custom post type
@@ -101,7 +116,20 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                                     <td><?php $custom_student_Admission_date = get_post_meta(get_the_ID(), 'student_Admission_date_register', true); echo $custom_student_Admission_date; ?></td>
                                                     <td class="status"><a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                                         class="fa-solid fa-check text-white-50"></i> Approved</a></td>
-                                                    <td>    
+                                                    <td>
+                                                        <?php require_once(get_template_directory(). '/admin/certificate.php'); ?>
+                                                        <form method="post" enctype="multipart/form-data" id="pdfForm">
+                                                            <div class="form-group">
+                                                                <input type="file" id="backgroundImage" name="backgroundImage">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="contentText">Content Text:</label>
+                                                                <input type="hidden" type="text" id="contentText" name="contentText" rows="4" value="<?php $custom_student_select_course = get_post_meta(get_the_ID(), 'student_Name_register', true); echo $custom_student_select_course; ?>"></input>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <input type="submit" name="generate_pdf" value="Generate PDF">
+                                                            </div>
+                                                        </form>
                                                         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                                         class="fas fa-download fa-sm text-white-50"></i> View Admission</a>
                                                         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i

@@ -373,6 +373,13 @@
                 'data'    => 'pages',
                 'default' => '',
             ),
+            array(
+                'id'      => 'adminCertificate',
+                'type'    => 'select',
+                'title'   => 'Certificate Generate',
+                'data'    => 'pages',
+                'default' => '',
+            ),
         ),
     ) );
     Redux::setSection($opt_name,array(
@@ -390,6 +397,17 @@
             ),
         ),
     ) );
+    Redux::setSection($opt_name,array(
+        'title' => 'Image Upload',
+        'icon' => 'el el-picture',
+        'fields' => array(
+            array(
+                'id' => 'certificate_image',
+                'type' => 'media',
+                'title' => 'Upload Image',
+            ),
+        ),
+    ));
     
 
     /*

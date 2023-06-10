@@ -115,7 +115,16 @@
                     }
                 ?>
                 <a class="collapse-item" href="<?php echo($get_adminResultSubmission_link) ?>">Result Submissions</a>
-                <a class="collapse-item" href="utilities-border.html">Borders</a>
+                <?php
+                    if (isset($shiacomputeroption['adminCertificate'])) {
+                        $get_adminCertificate_id = $shiacomputeroption['adminCertificate']; // Get the selected page ID
+
+                        if ($get_adminCertificate_id) {
+                            $get_adminCertificate_link = get_permalink($get_adminCertificate_id); // Get the permalink of the selected page
+                        }
+                    }
+                ?>
+                <a class="collapse-item" href="<?php echo($get_adminCertificate_link) ?>">Certificate Generate</a>
                 <a class="collapse-item" href="utilities-animation.html">Animations</a>
                 <a class="collapse-item" href="utilities-other.html">Other</a>
             </div>
