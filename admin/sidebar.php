@@ -90,6 +90,17 @@
                     }
                 ?>
                 <a class="collapse-item" href="<?php echo($get_adminBatch_link) ?>">BATCH</a>
+
+                <?php
+                    if (isset($shiacomputeroption['adminCourseList'])) {
+                        $get_Course_list_id = $shiacomputeroption['adminCourseList']; // Get the selected page ID
+
+                        if ($get_Course_list_id) {
+                            $get_course_list_link = get_permalink($get_Course_list_id); // Get the permalink of the selected page
+                        }
+                    }
+                ?>
+                <a class="collapse-item" href="<?php echo($get_course_list_link) ?>">Course List</a>
             </div>
         </div>
     </li>

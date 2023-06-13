@@ -165,17 +165,10 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                     <label for="fname">Purpose</label>
                                         <select name="Purpose" id="SSC_board" class="form-control" required>
                                             <option value="">--Select Purpose--</option>
-                                            <option value="6 M Regi">6 M Regi</option>
-                                            <option value="1 Year Regi">1 Year Regi</option>
+                                            <option value="1 M Regi">1 M Regi</option>
                                             <option value="2 Year Regi">2 Year Regi</option>
-                                            <option value="6 M Regi (600tk)">6 M Regi (600tk)</option>
-                                            <option value="3 M Regi (600tk)">3 M Regi (600tk)</option>
-                                            <option value="6 M Regi (500tk)">6 M Regi (500tk)</option>
-                                            <option value="3 M Regi (500tk)">3 M Regi (500tk)</option>
-                                            <option value="6 M Regi (1000 tk)">6 M Regi (1000 tk)</option>
-                                            <option value="6 M Regi Freelancing">6 M Regi Freelancing</option>
-                                            <option value="6 M Regi  2000 Taka (Freelancing & Outsourcing)">6 M Regi  2000 Taka (Freelancing &amp; Outsourcing)</option>
-                                            <option value="combo:  6 M Regi (3000 taka)">combo:  6 M Regi (3000 taka)</option>
+                                            <option value="3 Year Regi">3 Year Regi</option>
+                                            <option value="6 M Regi">6 M Regi </option>
                                         </select>
                                 </div>    
                             </div>
@@ -186,13 +179,9 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                         <option value="">--Select Course--</option>
                                         <option value="Basic Graphic Design">Basic Graphic Design</option>
                                         <option value="Advanced Excel">Advanced Excel</option>
-                                        <option value="Basic Hardware Maintenance">Basic Hardware Maintenance</option>
-                                        <option value="Certificate in Computer Science & Application">Certificate in Computer Science &amp; Application</option>
+                                        <option value="Certificate in Computer Science">Certificate in Computer Science</option>
                                         <option value="Basic Application (MS Office)">Basic Application (MS Office)</option>
                                         <option value="Advanced Excel">Advanced Excel</option>
-                                        <option value="Rapid Skill Development ( Typing + E-fielding)">Rapid Skill Development ( Typing + E-fielding)</option>
-                                        <option value="STAAD Pro">STAAD Pro</option>
-                                        <option value="C Programming for Beginners">C Programming for Beginners</option>
                                     </select>
                                 </div>    
                             </div>
@@ -201,9 +190,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                     <label for="lname">Duration Of Course</label>
                                     <select name="StudentDurationCourse" id="SSC_board" class="form-control" required>
                                         <option value="">Select</option>
-                                        <option value="1 hour">1 hour</option>
-                                        <option value="2 Hour">2 Hour</option>
-                                        <option value="3 Hour">3 Hour</option>
+                                        <option value="60 hour">60 hour</option>
                                     </select>
                                 </div>    
                             </div>

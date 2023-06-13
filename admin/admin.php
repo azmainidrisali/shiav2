@@ -51,8 +51,10 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                                Earnings (Annual)</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
+                                                Total Students</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php display_admissions_count(); ?> <br>
+                                            <?php display_admissions_count_with_result(); ?>
+                                        </div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -98,8 +100,13 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                Pending Requests</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                                                SMS Blance</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                <?php    
+                                                    $apiToken = '153|yjMC3EfXZGxu0kSiDtFZo2c4mdDg4zrFJKZf0Vkw';
+                                                    displaySMSBalance($apiToken);
+                                                ?>
+                                            </div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-comments fa-2x text-gray-300"></i>

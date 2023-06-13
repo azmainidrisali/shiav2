@@ -43,11 +43,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                     <th>Batch</th>
                                     <th>Photo</th>
                                     <th>Student Name</th>
-                                    <th>Fathers Name</th>
-                                    <th>Course Name</th>
-                                    <th>Contact</th>
                                     <th>Admission Date</th>
-                                    <th>Status</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -66,7 +62,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                         $custom_query->the_post();
                                         // Display the content or any other desired information of each post
 
-                                        $serial_number = get_post_meta(get_the_ID(), 'student_batch_register', true);
+                                        $serial_number = get_post_meta(get_the_ID(), 'Stuent_result_register', true);
 
                                         if (!empty($serial_number)) {
                                             ?>
@@ -83,25 +79,17 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                                     </div>
                                                 </td>
                                                 <td><?php $custom_student_select_course = get_post_meta(get_the_ID(), 'student_Name_register', true); echo $custom_student_select_course; ?></td>
-                                                <td><?php $custom_student_Name = get_post_meta(get_the_ID(), 'student_Fathers_name_register', true); echo $custom_student_Name; ?></td>
-                                                <td><?php $custom_student_select_course = get_post_meta(get_the_ID(), 'student_select_course_register', true); echo $custom_student_select_course; ?></td>
-                                                <td><?php $custom_student_contact_number = get_post_meta(get_the_ID(), 'student_contact_number_register', true); echo $custom_student_contact_number; ?></td>
                                                 <td><?php $custom_student_Admission_date = get_post_meta(get_the_ID(), 'student_Admission_date_register', true); echo $custom_student_Admission_date; ?></td>
-                                                <td class="status">
-                                                    <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-                                                        <i class="fa-solid fa-check text-white-50"></i> Approved
-                                                    </a>
-                                                </td>
                                                 <td>
-                                                    <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-                                                        <i class="fas fa-download fa-sm text-white-50"></i> View Admission
-                                                    </a>
-                                                    <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-                                                        <i class="fas fa-download fa-sm text-white-50"></i> Admit Card
-                                                    </a>
-                                                    <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-                                                        <i class="fas fa-download fa-sm text-white-50"></i> Registration Card
-                                                    </a>
+                                                    <?php require_once(get_template_directory(). '/admin/certificate.php'); ?>
+                                                    <form method="post" enctype="multipart/form-data" id="pdfForm">
+                                                        <div class="form-group">
+                                                            <input type="hidden" type="text" id="contentText" name="contentText" rows="4" value="<?php $custom_student_select_course = get_post_meta(get_the_ID(), 'student_Name_register', true); echo $custom_student_select_course; ?>"></input>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <input type="submit" class="btn-primary btn-sm" name="generate_pdf" value="Download Certificate">
+                                                        </div>
+                                                    </form>
                                                 </td>
                                             </tr>
                                             <?php

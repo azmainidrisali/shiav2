@@ -94,14 +94,21 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                                 <tr class="alert" role="alert">
                                                     <td><?php
 
-                                                    $serial_number = get_post_meta(get_the_ID(), 'custom_serial_number', true);
+                                                        $custom_serial_number = get_post_meta(get_the_ID(), 'custom_serial_number', true);
 
-                                                    if ($serial_number) {
-                                                       echo 'Serial Number: ' . $serial_number;
-                                                    }
+                                                        // Display the custom serial number if it exists
+                                                        if ($custom_serial_number) {
+                                                            echo $custom_serial_number;
+                                                        }
                                                     ?>
                                                     </td>
-                                                    <td><?php $custom_meta_serial_number_meta_box = get_post_meta(get_the_ID(), 'custom_serial_number', true); echo $custom_meta_serial_number_meta_box; ?></td>
+                                                    <td><?php
+                                                        $roll_number = get_post_meta(get_the_ID(), 'custom_roll_number', true);
+                                                        if (!empty($roll_number)) {
+                                                            echo $roll_number;
+                                                        }
+                                                        ?>
+                                                    </td>
                                                     <td><?php $custom_student_purpose_register = get_post_meta(get_the_ID(), 'student_batch_register', true); echo $custom_student_purpose_register; ?></td>
                                                     <td class="d-flex align-items-center">
                                                         <div class="img">
@@ -117,25 +124,8 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                                     <td class="status"><a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                                         class="fa-solid fa-check text-white-50"></i> Approved</a></td>
                                                     <td>
-                                                        <?php require_once(get_template_directory(). '/admin/certificate.php'); ?>
-                                                        <form method="post" enctype="multipart/form-data" id="pdfForm">
-                                                            <div class="form-group">
-                                                                <input type="file" id="backgroundImage" name="backgroundImage">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="contentText">Content Text:</label>
-                                                                <input type="hidden" type="text" id="contentText" name="contentText" rows="4" value="<?php $custom_student_select_course = get_post_meta(get_the_ID(), 'student_Name_register', true); echo $custom_student_select_course; ?>"></input>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <input type="submit" name="generate_pdf" value="Generate PDF">
-                                                            </div>
-                                                        </form>
-                                                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                                        class="fas fa-download fa-sm text-white-50"></i> View Admission</a>
                                                         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                                         class="fas fa-download fa-sm text-white-50"></i> Admit Card</a>
-                                                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                                        class="fas fa-download fa-sm text-white-50"></i> Registration Card</a>
                                                     </button>
                                                     </td>
                                                 </tr>

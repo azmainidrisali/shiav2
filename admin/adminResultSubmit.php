@@ -107,9 +107,9 @@ if (isset($_POST['update_posts'])) {
                     echo '<td>' . $post_content . '</td>';
                     echo '<td><select class="form-control" name="purpose_' . $post_id . '">';
                     echo '<option value="">Select Result</option>';
-                    echo '<option value="Purpose 1" ' . selected($purpose_value, 'Purpose 1', false) . '>A+</option>';
-                    echo '<option value="Purpose 2" ' . selected($purpose_value, 'Purpose 2', false) . '>A</option>';
-                    echo '<option value="Purpose 3" ' . selected($purpose_value, 'Purpose 3', false) . '>A-</option>';
+                    echo '<option value="A+" ' . selected($purpose_value, 'A+', false) . '>A+</option>';
+                    echo '<option value="A" ' . selected($purpose_value, 'A', false) . '>A</option>';
+                    echo '<option value="A-" ' . selected($purpose_value, 'A-', false) . '>A-</option>';
                     echo '</select></td>';
                     echo '</tr>';
                 }

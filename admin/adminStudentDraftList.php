@@ -63,23 +63,29 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                                 $custom_query->the_post();
                                                 // Display the content or any other desired information of each post
                                                 ?>
-                                                <tr class="alert" role="alert">
                                                 <td><?php
 
-                                                    $serial_number = get_post_meta(get_the_ID(), 'custom_serial_number', true);
+                                                    $custom_serial_number = get_post_meta(get_the_ID(), 'custom_serial_number', true);
 
-                                                    if ($serial_number) {
-                                                    echo 'Serial Number: ' . $serial_number;
+                                                    // Display the custom serial number if it exists
+                                                    if ($custom_serial_number) {
+                                                        echo $custom_serial_number;
                                                     }
                                                     ?>
                                                     </td>
-                                                    <td><?php $custom_meta_serial_number_meta_box = get_post_meta(get_the_ID(), 'custom_serial_number', true); echo $custom_meta_serial_number_meta_box; ?></td>
+                                                    <td><?php
+                                                    $roll_number = get_post_meta(get_the_ID(), 'custom_roll_number', true);
+                                                    if (!empty($roll_number)) {
+                                                        echo $roll_number;
+                                                    }
+                                                    ?>
+                                                    </td>
                                                     <td><?php $custom_student_purpose_register = get_post_meta(get_the_ID(), 'student_batch_register', true); echo $custom_student_purpose_register; ?></td>
                                                     <td class="d-flex align-items-center">
-                                                        <div class="img">
-                                                            <?php $thumbnail_url = get_the_post_thumbnail_url();?>
-                                                            <img width="50" src="<?php echo $thumbnail_url ?>">
-                                                        </div>
+                                                    <div class="img">
+                                                        <?php $thumbnail_url = get_the_post_thumbnail_url();?>
+                                                        <img width="50" src="<?php echo $thumbnail_url ?>">
+                                                    </div>
                                                     </td>
                                                     <td><?php $custom_student_select_course = get_post_meta(get_the_ID(), 'student_Name_register', true); echo $custom_student_select_course; ?></td>
                                                     <td><?php $custom_student_Name = get_post_meta(get_the_ID(), 'student_Fathers_name_register', true); echo $custom_student_Name; ?></td>
@@ -135,10 +141,6 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                                             <input class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" type="hidden" name="post_id" value="<?php echo get_the_ID() ?>"> <!-- Replace 123 with the actual post ID -->
                                                             <input type="submit" name="publish_button" value="Approve Admission">
                                                         </form>
-                                                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                                        class="fas fa-download fa-sm text-white-50"></i> View Admission</a>
-                                                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                                        class="fas fa-download fa-sm text-white-50"></i> Registration Card</a>
                                                     </button>
                                                     </td>
                                                 </tr>
