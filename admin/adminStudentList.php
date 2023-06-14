@@ -62,6 +62,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                 <table id="myTable" class="table table-responsive-xl">
                                     <thead>
                                         <tr>
+                                            <th>Serial Number</th>
                                             <th>REG No.</th>
                                             <th>Roll No.</th>
                                             <th>Batch</th>
@@ -92,6 +93,16 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                                 // Display the content or any other desired information of each post
                                                 ?>
                                                 <tr class="alert" role="alert">
+                                                    <td><?php
+
+                                                        $certificateSerialNumber = get_post_meta(get_the_ID(), 'student_certificate_serial_number', true);
+
+                                                        // Display the custom serial number if it exists
+                                                        if ($certificateSerialNumber) {
+                                                            echo $certificateSerialNumber;
+                                                        }
+                                                    ?>
+                                                    </td>
                                                     <td><?php
 
                                                         $custom_serial_number = get_post_meta(get_the_ID(), 'custom_serial_number', true);

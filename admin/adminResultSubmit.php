@@ -44,6 +44,18 @@ if (isset($_POST['update_posts'])) {
                 'post_title' => $new_title,
             ));
 
+            // $custom_student_contact_number = $_POST['phonenumber'];
+            // echo $custom_student_contact_number;
+            
+
+            // $StudentPhoneNumber = '88'.$custom_student_contact_number;
+            // $studentName = 'test';
+            // $courseName = 'test';
+            // $grade = 'A';
+
+            // $message = "Dear $studentName,\nYour $courseName exam result has been published.\nGrade: $grade\nCongratulations on your achievement!";
+            // SendSMS($StudentPhoneNumber, $message);
+
             // Add the updated post title to the array
             $updated_post_titles[] = $new_title;
         }

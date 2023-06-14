@@ -3,7 +3,12 @@
 require_once(get_template_directory(). '/admin/header.php');
 global $wp_error, $current_user, $wp_roles, $post_id;
 ?>
-
+<style>
+  .required-label::after {
+    content: "*";
+    color: red;
+  }
+</style>
 <?php
 // Check if the current user is an administrator
 if (is_user_logged_in() && current_user_can('administrator')) {
@@ -128,6 +133,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             set_post_thumbnail( $cpt_id, $attachment_id );
                             // $location = home_url().'/'.$bangladeshbdooption['donar_Profile_dashboard'];
 
+
                             if (isset($shiacomputeroption['adminStudentList'])) {
                                 $get_admsinStudentLink_id = $shiacomputeroption['adminStudentList']; // Get the selected page ID
 
@@ -142,6 +148,8 @@ if (is_user_logged_in() && current_user_can('administrator')) {
 
                         }
                 ?>
+
+
 
             <div class="row align-items-center justify-content-center">
                 <div class="col-md-10 py-5">
@@ -162,7 +170,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group first">
-                                    <label for="fname">Purpose</label>
+                                    <label for="fname" class="required-label">Purpose </label>
                                         <select name="Purpose" id="SSC_board" class="form-control" required>
                                             <option value="">--Select Purpose--</option>
                                             <option value="1 M Regi">1 M Regi</option>
@@ -174,12 +182,12 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group first">
-                                    <label for="lname">Select Course</label>
+                                    <label for="lname" class="required-label">Select Course </label>
                                     <select name="selectCourse" id="SSC_board" class="form-control" required>
                                         <option value="">--Select Course--</option>
                                         <option value="Basic Graphic Design">Basic Graphic Design</option>
                                         <option value="Advanced Excel">Advanced Excel</option>
-                                        <option value="Certificate in Computer Science">Certificate in Computer Science</option>
+                                        <option value="Diploma in Computer Science">Diploma in Computer Science</option>
                                         <option value="Basic Application (MS Office)">Basic Application (MS Office)</option>
                                         <option value="Advanced Excel">Advanced Excel</option>
                                     </select>
@@ -187,7 +195,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group first">
-                                    <label for="lname">Duration Of Course</label>
+                                    <label for="lname" class="required-label">Duration Of Course </label>
                                     <select name="StudentDurationCourse" id="SSC_board" class="form-control" required>
                                         <option value="">Select</option>
                                         <option value="60 hour">60 hour</option>
@@ -199,13 +207,13 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group first">
-                                    <label for="fname">Course Fee</label>
+                                    <label for="fname" class="required-label">Course Fee </label>
                                     <input type="text" name="courseFee" class="form-control" placeholder="Course Fee" id="courseFee">
                                 </div>    
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group first">
-                                    <label for="lname">Admission Date</label>
+                                    <label for="lname" class="required-label">Admission Date </label>
                                     <input type="date" name="admissionDate" class="form-control" placeholder="Admission Date" id="lname">
                                 </div>    
                             </div>
@@ -214,19 +222,19 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group first">
-                                    <label for="fname">Seassion Start</label>
+                                    <label for="fname" class="required-label">Seassion Start </label>
                                     <input type="date" name="seassionStart" class="form-control" placeholder="Seassion Start" id="lname">
                                 </div>    
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group first">
-                                    <label for="lname">Seassion End</label>
+                                    <label for="lname" class="required-label">Seassion End </label>
                                     <input type="date" name="seassionEnd" class="form-control" placeholder="Seassion End" id="lname">
                                 </div>    
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group first">
-                                    <label for="lname">Batch</label>
+                                    <label for="lname" class="required-label">Batch </label>
 
                                     <?php
                                         // Get all the batch terms
@@ -270,7 +278,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group first">
-                                    <label for="fname">Student Name</label>
+                                    <label for="fname" class="required-label">Student Name </label>
                                     <input type="test" name="STudentName" class="form-control" placeholder="Student Name" id="lname">
                                 </div>    
                             </div>
@@ -286,7 +294,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             <div class="col-md-6">
                                 <div class="form-group first">
                                     <label for="fname">Verification ID Type</label>
-                                        <select name="govsubmitType" id="SSC_board" class="form-control" required>
+                                        <select name="govsubmitType" id="SSC_board" class="form-control">
                                             <option value="NID">GOV NID</option>
                                             <option value="BIRTH CERTIFICATE">BIRTH CERTIFICATE</option>
                                             <option value="Other">Other</option>
@@ -295,8 +303,8 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group first">
-                                    <label for="lname">ID Number</label>
-                                    <input type="email" name="StudentGovID" class="form-control" placeholder="ID Number" id="lname">
+                                    <label for="lname" class="required-label">ID Number </label>
+                                    <input type="text" name="StudentGovID" class="form-control" placeholder="ID Number" id="lname">
                                 </div>    
                             </div>
                         </div>
@@ -304,19 +312,19 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group first">
-                                    <label for="fname">Fathers Name</label>
+                                    <label for="fname" class="required-label">Fathers Name </label>
                                     <input type="text" name="StudentFathername" class="form-control" placeholder="Fathers Name" id="lname">
                                 </div>    
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group first">
-                                    <label for="lname">Mothers Name</label>
+                                    <label for="lname" class="required-label">Mothers Name </label>
                                     <input type="text" name="stuentsMotherName" class="form-control" placeholder="Mothers Name" id="lname">
                                 </div>    
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group first">
-                                    <label for="lname">Guardian Contact</label>
+                                    <label for="lname">Guardian Contact </label>
                                     <input type="number" name="StuentGurdainContact" class="form-control" placeholder="01723456789" id="lname">
                                 </div>    
                             </div>
@@ -325,19 +333,19 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group first">
-                                    <label for="fname">Date Of Birth</label>
+                                    <label for="fname" class="required-label">Date Of Birth </label>
                                     <input type="date" name="StudentDOB" class="form-control" placeholder="Date Of Birth" id="lname">
                                 </div>    
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group first">
-                                    <label for="lname">Present Address</label>
+                                    <label for="lname" class="required-label">Present Address </label>
                                     <input type="text" name=PresentAddress class="form-control" placeholder="Present Address" id="lname">
                                 </div>    
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group first">
-                                    <label for="lname">Permanent Address</label>
+                                    <label for="lname" class="required-label">Permanent Address </label>
                                     <input type="text" name="PermanentAddress" class="form-control" placeholder="Permanent Address" id="lname">
                                 </div>    
                             </div>
@@ -346,19 +354,19 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group first">
-                                    <label for="fname">Contact Number</label>
+                                    <label for="fname" class="required-label">Contact Number </label>
                                     <input type="number" name="ContactNumber" class="form-control" placeholder="017123456789" id="lname">
                                 </div>    
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group first">
-                                    <label for="lname">Password</label>
+                                    <label for="lname" class="required-label">Password </label>
                                     <input type="password" name="password" class="form-control" placeholder="*********" id="lname">
                                 </div>    
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group first">
-                                    <label for="lname">Confirm Pasword</label>
+                                    <label for="lname" class="required-label">Confirm Pasword </label>
                                     <input type="password" class="form-control" placeholder="**********" id="lname">
                                 </div>    
                             </div>
@@ -368,8 +376,8 @@ if (is_user_logged_in() && current_user_can('administrator')) {
 
                         <div class="row">
                             <div class="col-md-3">
-                                <label>SSC BOARD</label>
-                                <select name="SSC_board" class="form-control" id="SSC_board" required>
+                                <label>SSC BOARD </label>
+                                <select name="SSC_board" class="form-control" id="SSC_board">
                                     <option value="">Select</option>
                                     <option value="Barisal">Barisal</option>
                                     <option value="Chittagong">Chittagong</option>
@@ -386,15 +394,15 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             </div>
                             <div class="col-md-3">
                                 <label>SSC ROLL</label>
-                                <input type='number' name='SSC_Roll' class="form-control" id='SSC_Roll' value="" placeholder='SSC ROLL Number' required/>
+                                <input type='number' name='SSC_Roll' class="form-control" id='SSC_Roll' value="" placeholder='SSC ROLL Number'/>
                             </div>
                             <div class="col-md-3">
                             <label>SSC REGISTRATION</label>
-                                <input type='number' name='SSC_Registration' class="form-control" id='SSC_Registration' value="" placeholder='SSC Registration Number' required/>
+                                <input type='number' name='SSC_Registration' class="form-control" id='SSC_Registration' value="" placeholder='SSC Registration Number'/>
                             </div>
                             <div class="col-md-3">
                                 <label>SSC PASSING YEAR</label>
-                                <select name='SSC_Passing_year' id='SSC_Passing_year' class="form-control" required>
+                                <select name='SSC_Passing_year' id='SSC_Passing_year' class="form-control">
                                     <!-- Loop through years from 1971 to current year -->
                                     <?php
                                         $currentYear = date("Y"); // Get current year
@@ -411,7 +419,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                         <div class="row">
                             <div class="col-md-3">
                                 <label>LAST EXAM BOARD</label>
-                                <select name="Last_Exam_board" class="form-control" id="Last_Exam_board"  required>
+                                <select name="Last_Exam_board" class="form-control" id="Last_Exam_board">
                                     <option value="">Select</option>
                                     <option value="Barisal">Barisal</option>
                                     <option value="Chittagong">Chittagong</option>
@@ -428,15 +436,15 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             </div>
                             <div class="col-md-3">
                             <label>LAST EXAM ROLL</label>
-                                <input type='number' name='Last_Exam_Roll' class="form-control" id='Last_Exam_Roll' value="" placeholder='Last Exam ROLL Number' required/>
+                                <input type='number' name='Last_Exam_Roll' class="form-control" id='Last_Exam_Roll' value="" placeholder='Last Exam ROLL Number'/>
                             </div>
                             <div class="col-md-3">
                                 <label>LAST EXAM NAME</label>
-                                <input type='text' name='Last_Exam_Registration' class="form-control" id='Last_Exam_Registration' value="" placeholder='Last Exam Name' required/>
+                                <input type='text' name='Last_Exam_Registration' class="form-control" id='Last_Exam_Registration' value="" placeholder='Last Exam Name'/>
                             </div>
                             <div class="col-md-3">
                                 <label>LAST EXAM YEAR</label>
-                                <select name='Last_Exam_Passing_year' class="form-control" id='Last_Exam_Passing_year' required>
+                                <select name='Last_Exam_Passing_year' class="form-control" id='Last_Exam_Passing_year'>
                                     <!-- Loop through years from 1971 to current year -->
                                     <?php
                                         $currentYear = date("Y"); // Get current year
@@ -476,8 +484,8 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="lname">Passport Size Image</label>
-                                    <input type="file" name="user-image-featured" id="user-image-featured" class="form-control-file" >
+                                    <label for="lname"  class="required-label">Passport Size Image </label>
+                                    <input type="file" name="user-image-featured" id="user-image-featured" class="form-control-file" required>
                                     <div id="image-preview"></div>
                                 </div>
                             </div>

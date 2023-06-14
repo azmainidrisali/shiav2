@@ -35,6 +35,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                 <table class="table table-responsive-xl">
                                     <thead>
                                         <tr>
+                                            <th>Serial Number.</th>
                                             <th>REG No.</th>
                                             <th>Roll No.</th>
                                             <th>Batch</th>
@@ -65,6 +66,16 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                                 ?>
                                                 <td><?php
 
+                                                    $certificateSerialNumber = get_post_meta(get_the_ID(), 'student_certificate_serial_number', true);
+
+                                                    // Display the custom serial number if it exists
+                                                    if ($certificateSerialNumber) {
+                                                        echo $certificateSerialNumber;
+                                                    }
+                                                    ?>
+                                                    </td>
+                                                <td><?php
+
                                                     $custom_serial_number = get_post_meta(get_the_ID(), 'custom_serial_number', true);
 
                                                     // Display the custom serial number if it exists
@@ -87,8 +98,8 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                                         <img width="50" src="<?php echo $thumbnail_url ?>">
                                                     </div>
                                                     </td>
-                                                    <td><?php $custom_student_select_course = get_post_meta(get_the_ID(), 'student_Name_register', true); echo $custom_student_select_course; ?></td>
-                                                    <td><?php $custom_student_Name = get_post_meta(get_the_ID(), 'student_Fathers_name_register', true); echo $custom_student_Name; ?></td>
+                                                    <td><?php $custom_student_select_name = get_post_meta(get_the_ID(), 'student_Name_register', true); echo $custom_student_select_name; ?></td>
+                                                    <td><?php $custom_student_fathers_Name = get_post_meta(get_the_ID(), 'student_Fathers_name_register', true); echo $custom_student_fathers_Name; ?></td>
                                                     <td><?php $custom_student_select_course = get_post_meta(get_the_ID(), 'student_select_course_register', true); echo $custom_student_select_course; ?></td>
                                                     <td><?php $custom_student_contact_number = get_post_meta(get_the_ID(), 'student_contact_number_register', true); echo $custom_student_contact_number; ?></td>
                                                     <td><?php $custom_student_Admission_date = get_post_meta(get_the_ID(), 'student_Admission_date_register', true); echo $custom_student_Admission_date; ?></td>
@@ -102,6 +113,17 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                                                 'ID' => $post_id,
                                                                 'post_status' => 'publish',
                                                             );
+
+                                                                
+                                                                // Execute the SendSMS function when the form is submitted
+                                                                $StudentPhoneNumber = '88'.$custom_student_contact_number;
+                                                                $registrationNumber = $custom_serial_number;
+                                                                $rollNumber = $roll_number;
+                                                                $courseName = $custom_student_select_course;
+                                                                $studentName = $custom_student_select_name;
+                                                                $message = "Congratulations! $studentName Your admission to $courseName is successful.\nRegistration Number: $registrationNumber\nRoll Number: $rollNumber\nWe look forward to welcoming you to our institution.";
+                                                                SendSMS($StudentPhoneNumber, $message);
+                                                            
 
                                                             wp_update_post($post_data);
                                                             echo "<meta http-equiv='refresh' content='0;url=$location' />";

@@ -25,7 +25,7 @@
 
         <a class="nav-link" href="<?php echo($get_adminPanel_link) ?>">
             <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Dashbgoard</span></a>
+            <span>Dashboard</span></a>
     </li>
 
     <!-- Divider -->
@@ -48,6 +48,17 @@
                 <h6 class="collapse-header">List and Admission:</h6>
 
                 <?php
+                    if (isset($shiacomputeroption['adminStudentAdmission'])) {
+                        $get_adminStudentAdmission_id = $shiacomputeroption['adminStudentAdmission']; // Get the selected page ID
+
+                        if ($get_adminStudentAdmission_id) {
+                            $get_adminStudentAdmission_link = get_permalink($get_adminStudentAdmission_id); // Get the permalink of the selected page
+                        }
+                    }
+                ?>
+                <a class="collapse-item" href="<?php echo($get_adminStudentAdmission_link) ?>">Student Admission</a>
+                
+                <?php
                     if (isset($shiacomputeroption['adminStudentList'])) {
                         $get_StudentList_id = $shiacomputeroption['adminStudentList']; // Get the selected page ID
     
@@ -58,16 +69,7 @@
                 ?>
 
                 <a class="collapse-item" href="<?php echo($get_StudentList_link) ?>">Student List</a>
-                <?php
-                    if (isset($shiacomputeroption['adminStudentAdmission'])) {
-                        $get_adminStudentAdmission_id = $shiacomputeroption['adminStudentAdmission']; // Get the selected page ID
-
-                        if ($get_adminStudentAdmission_id) {
-                            $get_adminStudentAdmission_link = get_permalink($get_adminStudentAdmission_id); // Get the permalink of the selected page
-                        }
-                    }
-                ?>
-                <a class="collapse-item" href="<?php echo($get_adminStudentAdmission_link) ?>">Student Admission</a>
+                
                 
                 <?php
                     if (isset($shiacomputeroption['adminStudentDraft'])) {
@@ -90,17 +92,6 @@
                     }
                 ?>
                 <a class="collapse-item" href="<?php echo($get_adminBatch_link) ?>">BATCH</a>
-
-                <?php
-                    if (isset($shiacomputeroption['adminCourseList'])) {
-                        $get_Course_list_id = $shiacomputeroption['adminCourseList']; // Get the selected page ID
-
-                        if ($get_Course_list_id) {
-                            $get_course_list_link = get_permalink($get_Course_list_id); // Get the permalink of the selected page
-                        }
-                    }
-                ?>
-                <a class="collapse-item" href="<?php echo($get_course_list_link) ?>">Course List</a>
             </div>
         </div>
     </li>

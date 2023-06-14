@@ -1748,3 +1748,54 @@ add_action('save_post', 'save_custom_roll_number');
 	// 	add_action('admin_post_nopriv_delete_category', 'handle_course_deletion');
 	// 	add_action('admin_post_delete_category', 'handle_course_deletion');
 //not approve
+
+
+
+function add_student_certificate_serial_number_meta_box()
+{
+    add_meta_box(
+        'student_certificate_serial_number_meta_box', // Meta box ID
+        'Certificate Serial Number', // Meta box title
+        'generate_student_certificate_serial_number_meta_box', // Callback function to render meta box content
+        'admissions', // Replace with your custom post type slug
+        'normal', // Meta box position (normal, side, advanced)
+        'default' // Meta box priority (high, core, default, low)
+    );
+}
+add_action('add_meta_boxes', 'add_student_certificate_serial_number_meta_box');
+
+// Callback function to render meta box content
+function generate_student_certificate_serial_number_meta_box($post)
+{
+    $serial_number = get_post_meta($post->ID, 'student_certificate_serial_number', true);
+    ?>
+    <p><strong>Certificate Serial Number: </strong><?php echo $serial_number; ?></p>
+    <?php
+}
+
+// Generate and save unique student certificate serial number combined with random number when a new post is created
+function save_student_certificate_serial_number($post_id)
+{
+    // Check if the post is of your custom post type
+    $post_type = get_post_type($post_id);
+    if ($post_type !== 'admissions') {
+        return;
+    }
+
+    // Check if the post already has a certificate serial number
+    $serial_number = get_post_meta($post_id, 'student_certificate_serial_number', true);
+    if (!$serial_number) {
+        // Get the total number of posts for your custom post type
+        $post_count = wp_count_posts('admissions')->publish; // Replace with your custom post type slug
+
+        // Generate a random number
+        $random_number = mt_rand(1000, 9999); // Modify the range as per your requirement
+
+        // Combine the random number and post serial number
+        $combined_number = $random_number . $post_count;
+
+        // Save the combined number as the certificate serial number
+        update_post_meta($post_id, 'student_certificate_serial_number', $combined_number);
+    }
+}
+add_action('save_post', 'save_student_certificate_serial_number');
