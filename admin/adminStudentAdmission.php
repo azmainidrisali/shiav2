@@ -133,6 +133,22 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             set_post_thumbnail( $cpt_id, $attachment_id );
                             // $location = home_url().'/'.$bangladeshbdooption['donar_Profile_dashboard'];
 
+                            // Retrieve the form inputs
+                                    $username = $_POST['STudentName'];
+                                    $email = $_POST['StudentEmail'];
+                                    $password = $_POST['password'];
+
+                                    // Create the user using WordPress functions
+                                    $user_id = wp_create_user($username, $password, $email);
+
+                                    if (!is_wp_error($user_id)) {
+                                        // User created successfully
+                                        echo "User created successfully.";
+                                    } else {
+                                        // Error creating user
+                                        echo "Error creating user: " . $user_id->get_error_message();
+                                    }
+
 
                             if (isset($shiacomputeroption['adminStudentList'])) {
                                 $get_admsinStudentLink_id = $shiacomputeroption['adminStudentList']; // Get the selected page ID
@@ -303,7 +319,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group first">
-                                    <label for="lname" class="required-label">ID Number </label>
+                                    <label for="lname">ID Number </label>
                                     <input type="text" name="StudentGovID" class="form-control" placeholder="ID Number" id="lname">
                                 </div>    
                             </div>
@@ -340,13 +356,14 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="lname" class="required-label">Present Address </label>
-                                    <input type="text" name=PresentAddress class="form-control" placeholder="Present Address" id="lname">
+                                    <input type="text" id="input1" name=PresentAddress class="form-control" placeholder="Present Address" id="lname">
                                 </div>    
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group first">
-                                    <label for="lname" class="required-label">Permanent Address </label>
-                                    <input type="text" name="PermanentAddress" class="form-control" placeholder="Permanent Address" id="lname">
+                                    <label for="lname" class="required-label">Permanent Address <input id="checkbox" type="checkbox"> same as present address</label>
+                                    <input type="text" id="input2" name="PermanentAddress" class="form-control" placeholder="Permanent Address" id="lname">
+                                    
                                 </div>    
                             </div>
                         </div>
@@ -589,6 +606,18 @@ if (is_user_logged_in() && current_user_can('administrator')) {
     // Read the uploaded file as a data URL
     reader.readAsDataURL(file);
     });
+
+    const checkbox = document.getElementById('checkbox');
+  const input1 = document.getElementById('input1');
+  const input2 = document.getElementById('input2');
+
+  checkbox.addEventListener('change', function() {
+    if (checkbox.checked) {
+      input2.value = input1.value;
+    } else {
+      input2.value = '';
+    }
+  });   
 
 </script>
 

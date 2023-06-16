@@ -1352,33 +1352,33 @@ add_action('after_setup_theme', 'Chide_admin_bar');
 
 
 		//STudent Result Selection field start
-		function Stuent_result(){
-			add_meta_box("custom_Stuent_result", "Student Result", "Stuent_result_Field", "admissions", "normal", "low");
-		}
-		add_action("admin_init", "Stuent_result");
+			function Stuent_result(){
+				add_meta_box("custom_Stuent_result", "Student Result", "Stuent_result_Field", "admissions", "normal", "low");
+			}
+			add_action("admin_init", "Stuent_result");
 
-		function Stuent_result_Field(){
+			function Stuent_result_Field(){
 
-			global $post;
+				global $post;
 
-			$data = get_post_custom($post->ID);
-			$val = isset($data['Stuent_result_register']) ? esc_attr($data['Stuent_result_register'][0]) : '';
+				$data = get_post_custom($post->ID);
+				$val = isset($data['Stuent_result_register']) ? esc_attr($data['Stuent_result_register'][0]) : '';
 
-			echo '<input type="text" name="Stuent_result_register" id="Stuent_result_register" value="'.$val.'" placeholder="Result"/>';
-		}
+				echo '<input type="text" name="Stuent_result_register" id="Stuent_result_register" value="'.$val.'" placeholder="Result"/>';
+			}
 
-		function save_Stuent_result_register(){
-			global $post;
+			function save_Stuent_result_register(){
+				global $post;
 
-			if(isset($_POST["Stuent_result_register"])):
-		
-				update_post_meta($post->ID, "Stuent_result_register", $_POST["Stuent_result_register"]);
+				if(isset($_POST["Stuent_result_register"])):
 			
-			endif;
+					update_post_meta($post->ID, "Stuent_result_register", $_POST["Stuent_result_register"]);
+				
+				endif;
 
-		}
-		add_action("save_post", "save_Stuent_result_register");
-	//STudent Result Selection field end
+			}
+			add_action("save_post", "save_Stuent_result_register");
+		//STudent Result Selection field end
 
 		//Admission entry Database End
 
@@ -1390,6 +1390,7 @@ add_action('after_setup_theme', 'Chide_admin_bar');
 		// 	}
 		// }
 		// add_action('init', 'generate_pdf_on_init');
+
 
 //server information start
 
@@ -1508,294 +1509,243 @@ function display_admissions_count_with_result() {
 
 function displaySMSBalance($apiToken) {
 	$endpoint = 'https://login.esms.com.bd/api/v3/balance';
-  
+
 	$options = array(
-	  'http' => array(
+		'http' => array(
 		'header' => "Authorization: Bearer " . $apiToken . "\r\n" .
 					"Accept: application/json\r\n",
 		'method' => 'GET'
-	  )
+		)
 	);
-  
+
 	$context = stream_context_create($options);
 	$response = file_get_contents($endpoint, false, $context);
-  
+
 	$responseData = json_decode($response, true);
-  
+
 	if ($responseData['status'] === 'success') {
-	  $balanceData = $responseData['data'];
-  
-	  if (isset($balanceData['remaining_unit'])) {
+		$balanceData = $responseData['data'];
+
+		if (isset($balanceData['remaining_unit'])) {
 		$balance = $balanceData['remaining_unit'];
 		echo 'SMS Blance: ' . $balance . ' BDT';
-	  } else {
+		} else {
 		echo 'Unable to retrieve balance data.';
-	  }
-	} else {
-	  echo 'Failed to retrieve balance. Please check your API token or try again later.';
-	}
-  }
-  
-
-
-
-  //Student Roll number Generator start
-
-		
-
-
-		// admisiion stuent rol number
-		function add_custom_serial_number_meta_box()
-		{
-			add_meta_box(
-				'custom_serial_number_meta_box', // Meta box ID
-				'Registration Number', // Meta box title
-				'generate_custom_serial_number_meta_box', // Callback function to render meta box content
-				'admissions', // Replace with your custom post type slug
-				'normal', // Meta box position (normal, side, advanced)
-				'default' // Meta box priority (high, core, default, low)
-			);
 		}
+	} else {
+		echo 'Failed to retrieve balance. Please check your API token or try again later.';
+	}
+}
+
+//registration number start
+	// Admission student role number
+	function add_custom_serial_number_meta_box(){
+		add_meta_box(
+			'custom_serial_number_meta_box', // Meta box ID
+			'Registration Number', // Meta box title
+			'generate_custom_serial_number_meta_box', // Callback function to render meta box content
+			'admissions', // Replace with your custom post type slug
+			'normal', // Meta box position (normal, side, advanced)
+			'default' // Meta box priority (high, core, default, low)
+		);
+	}
 	add_action('add_meta_boxes', 'add_custom_serial_number_meta_box');
 
 	// Callback function to render meta box content
 	function generate_custom_serial_number_meta_box($post){
-			$serial_number = get_post_meta($post->ID, 'custom_serial_number', true);
-			?>
-			<p><strong>Registration NUMBER: </strong><?php echo $serial_number; ?></p>
-			<?php
+		$serial_number = get_post_meta($post->ID, 'custom_serial_number', true);
+		?>
+		<p><strong>Registration NUMBER: </strong><?php echo $serial_number; ?></p>
+		<?php
 	}
 
-	// Generate and save random serial number combined with post serial count when a new post is created
-	function save_custom_serial_number($post_id)
-		{
-			// Check if the post is of your custom post type
-			$post_type = get_post_type($post_id);
-			if ($post_type !== 'admissions') {
-				return;
-			}
-
-			// Check if the post already has a serial number
-			$serial_number = get_post_meta($post_id, 'custom_serial_number', true);
-			if (!$serial_number) {
-				// Get the total number of posts for your custom post type
-				$post_count = wp_count_posts('admissions')->publish; // Replace with your custom post type slug
-
-				// Generate a random number
-				$random_number = mt_rand(10000, 99999); // Modify the range as per your requirement
-
-				// Combine the random number and post serial number
-				$combined_number = $random_number . $post_count;
-
-				// Save the combined number as the serial number
-				update_post_meta($post_id, 'custom_serial_number', $combined_number);
-			}
+	// Generate and save random serial number combined with post serial count when a new post is created or updated
+	function save_custom_serial_number($post_id){
+		// Check if the post is of your custom post type
+		$post_type = get_post_type($post_id);
+		if ($post_type !== 'admissions') {
+			return;
 		}
+
+		// Check if the post already has a serial number
+		$serial_number = get_post_meta($post_id, 'custom_serial_number', true);
+		if (!$serial_number) {
+			// Get the total number of published and draft posts for your custom post type
+			$args = array(
+				'post_type' => 'admissions', // Replace with your custom post type slug
+				'post_status' => array('publish', 'draft'),
+				'posts_per_page' => -1,
+			);
+			$posts = get_posts($args);
+			$post_count = count($posts);
+
+			// Generate a random number
+			$random_number = mt_rand(10000, 99999); // Modify the range as per your requirement
+
+			// Combine the random number and post serial number
+			$combined_number = $random_number . $post_count;
+
+			// Save the combined number as the serial number
+			update_post_meta($post_id, 'custom_serial_number', $combined_number);
+		}
+	}
 	add_action('save_post', 'save_custom_serial_number');
+//registration number End
 
+// roll number start
+	function add_custom_roll_number_meta_box(){
+		add_meta_box(
+			'custom_roll_number_meta_box', // Meta box ID
+			'Roll Number', // Meta box title
+			'generate_custom_roll_number_meta_box', // Callback function to render meta box content
+			'admissions', // Replace with your custom post type slug
+			'normal', // Meta box position (normal, side, advanced)
+			'default' // Meta box priority (high, core, default, low)
+		);
+	}
+	add_action('add_meta_boxes', 'add_custom_roll_number_meta_box');
 
-	function add_custom_roll_number_meta_box()
-{
-    add_meta_box(
-        'custom_roll_number_meta_box', // Meta box ID
-        'Roll Number', // Meta box title
-        'generate_custom_roll_number_meta_box', // Callback function to render meta box content
-        'admissions', // Replace with your custom post type slug
-        'normal', // Meta box position (normal, side, advanced)
-        'default' // Meta box priority (high, core, default, low)
-    );
-}
-add_action('add_meta_boxes', 'add_custom_roll_number_meta_box');
+	// Callback function to render meta box content
+	function generate_custom_roll_number_meta_box($post){
+		$roll_number = get_post_meta($post->ID, 'custom_roll_number', true);
+		?>
+		<p><strong>Roll Number: </strong><?php echo $roll_number; ?></p>
+		<?php
+	}
 
-// Callback function to render meta box content
-function generate_custom_roll_number_meta_box($post)
-{
-    $roll_number = get_post_meta($post->ID, 'custom_roll_number', true);
-    ?>
-    <p><strong>Roll Number: </strong><?php echo $roll_number; ?></p>
-    <?php
-}
+	// Generate and save unique roll number combined with random number when a new post is created or updated
+	function save_custom_roll_number($post_id){
+		// Check if the post is of your custom post type
+		$post_type = get_post_type($post_id);
+		if ($post_type !== 'admissions') {
+			return;
+		}
 
-// Generate and save unique roll number combined with random number when a new post is created
-function save_custom_roll_number($post_id)
-	{
-    // Check if the post is of your custom post type
-    $post_type = get_post_type($post_id);
-    if ($post_type !== 'admissions') {
-        return;
-    }
+		// Check if the post already has a roll number
+		$roll_number = get_post_meta($post_id, 'custom_roll_number', true);
+		if (!$roll_number) {
+			// Get the total number of published posts for your custom post type
+			$args = array(
+				'post_type' => 'admissions', // Replace with your custom post type slug
+				'post_status' => 'publish',
+				'posts_per_page' => -1,
+			);
+			$posts = get_posts($args);
+			$post_count = count($posts);
 
-    // Check if the post already has a roll number
-    $roll_number = get_post_meta($post_id, 'custom_roll_number', true);
-    if (!$roll_number) {
-        // Get the total number of posts for your custom post type
-        $post_count = wp_count_posts('admissions')->publish; // Replace with your custom post type slug
+			// Generate a random number
+			$random_number = mt_rand(10000, 99999); // Modify the range as per your requirement
 
-        // Generate a random number
-        $random_number = mt_rand(10000, 99999); // Modify the range as per your requirement
+			// Combine the random number and post serial number
+			$combined_number = $random_number . $post_count;
 
-        // Combine the random number and post serial number
-        $combined_number = $random_number . $post_count;
+			// Save the combined number as the roll number
+			update_post_meta($post_id, 'custom_roll_number', $combined_number);
+		}
+	}
+	add_action('save_post', 'save_custom_roll_number');
+// roll number end
 
-        // Save the combined number as the roll number
-        update_post_meta($post_id, 'custom_roll_number', $combined_number);
-    }
-}
-add_action('save_post', 'save_custom_roll_number');
+// certificate Serial Number start
+	function add_student_certificate_serial_number_meta_box(){
+		add_meta_box(
+			'student_certificate_serial_number_meta_box', // Meta box ID
+			'Certificate Serial Number', // Meta box title
+			'generate_student_certificate_serial_number_meta_box', // Callback function to render meta box content
+			'admissions', // Replace with your custom post type slug
+			'normal', // Meta box position (normal, side, advanced)
+			'default' // Meta box priority (high, core, default, low)
+		);
+	}
+	add_action('add_meta_boxes', 'add_student_certificate_serial_number_meta_box');
 
-//not approve
-	// function create_batch_taxonomy_course_list() {
-	// 	$labels = array(
-	// 		'name'              => 'CourseList',
-	// 		'singular_name'     => 'CourseList',
-	// 		'search_items'      => 'Search CourseList',
-	// 		'all_items'         => 'All CourseList',
-	// 		'parent_item'       => 'Parent course',
-	// 		'parent_item_colon' => 'Parent course:',
-	// 		'edit_item'         => 'Edit course',
-	// 		'update_item'       => 'Update course',
-	// 		'add_new_item'      => 'Add New course',
-	// 		'new_item_name'     => 'New course Name',
-	// 		'menu_name'         => 'Course',
-	// 	);
+	// Callback function to render meta box content
+	function generate_student_certificate_serial_number_meta_box($post){
+		$serial_number = get_post_meta($post->ID, 'student_certificate_serial_number', true);
+		?>
+		<p><strong>Certificate Serial Number: </strong><?php echo $serial_number; ?></p>
+		<?php
+	}
 
-	// 	$args = array(
-	// 		'labels'            => $labels,
-	// 		'hierarchical'      => true,
-	// 		'public'            => true,
-	// 		'show_ui'           => true,
-	// 		'show_admin_column' => true,
-	// 		'show_in_nav_menus' => true,
-	// 		'rewrite'           => array( 'slug' => 'course' ),
-	// 	);
+	// Generate and save unique student certificate serial number combined with random number when a new post is created or updated
+	function save_student_certificate_serial_number($post_id){
+		// Check if the post is of your custom post type
+		$post_type = get_post_type($post_id);
+		if ($post_type !== 'admissions') {
+			return;
+		}
 
-	// 	register_taxonomy( 'course', 'admissions', $args );
-	// }
-	// add_action( 'init', 'create_batch_taxonomy_course_list' );
+		// Check if the post already has a certificate serial number
+		$serial_number = get_post_meta($post_id, 'student_certificate_serial_number', true);
+		if (!$serial_number) {
+			// Get the total number of published and draft posts for your custom post type
+			$args = array(
+				'post_type' => 'admissions', // Replace with your custom post type slug
+				'post_status' => array('publish', 'draft'),
+				'posts_per_page' => -1,
+			);
+			$posts = get_posts($args);
+			$post_count = count($posts);
 
-	// // Handle category submission form
-	// function handle_course_submission() {
-	//     if (isset($_POST['action']) && $_POST['action'] === 'submit_Course') {
-	//       $Course_name = sanitize_text_field($_POST['Course_name']);
-	//       $Course_description = sanitize_text_field($_POST['Course_description']);
-	
-	//       // Create a new category
-	//       $category_args = array(
-	//         'cat_name' => $Course_name,
-	// 		'taxonomy' => 'CourseList',
-	//         'Course_description' => $Course_description,
-	//         // Add any other desired parameters for the category
-	//       );
-	//       $category_id = wp_insert_category($category_args);
-	
-	//       // Optionally, you can perform additional actions after category submission
-	//       // For example, displaying a success message or redirecting the user
-	//       // to another page.
-	
-	//       // Redirect the user to a success page
-	//       global $shiacomputeroption;
+			// Generate a random number
+			$random_number = mt_rand(1000, 9999); // Modify the range as per your requirement
 
-	//         if (isset($shiacomputeroption['adminCourseList'])) {
-	//             $get_adminBatchRed_id = $shiacomputeroption['adminCourseList']; // Get the selected page ID
+			// Combine the random number and post serial number
+			$combined_number = $random_number . $post_count;
 
-	//             if ($get_adminBatchRed_id) {
-	//                 $get_adminBatchRed_link = get_permalink($get_adminBatchRed_id); // Get the permalink of the selected page
-	//             }
-	//         }
-	//       wp_redirect($get_adminBatchRed_link);
-	//       exit;
-	//     }
-	//   }
-	//   add_action('admin_post_nopriv_submit_category', 'handle_course_submission');
-	//   add_action('admin_post_submit_category', 'handle_course_submission');
-	
+			// Save the combined number as the certificate serial number
+			update_post_meta($post_id, 'student_certificate_serial_number', $combined_number);
+		}
+	}
+	add_action('save_post', 'save_student_certificate_serial_number');
+// certificate Serial Number start
 
+function display_users_table() {
+    // Get all users
+    $users = get_users();
 
-	// 	function handle_course_deletion() {
-	// 		if (isset($_POST['action']) && $_POST['action'] === 'delete_course') {
-	// 			$category_id = isset($_POST['category_id']) ? intval($_POST['category_id']) : 0;
+    if (!empty($users)) {
+        // Start the table
+        echo '<table class="table table-bordered">';
+        echo '<thead><tr><th>ID</th><th>Username</th><th>Email</th><th>Action</th></tr></thead>';
+        echo '<tbody>';
 
-	// 			if ($category_id > 0) {
-	// 				// Check if the category is part of the custom taxonomy called "batch"
-	// 				$taxonomy = 'CourseList';
-	// 				$term = get_term($category_id, $taxonomy);
+        // Loop through each user
+        foreach ($users as $user) {
+            $user_id = $user->ID;
+            $username = $user->user_login;
+            $email = $user->user_email;
 
-	// 				if ($term && !is_wp_error($term)) {
-	// 					// Delete the term
-	// 					wp_delete_term($term->term_id, $taxonomy);
+            // Display user data in table rows
+            echo '<tr>';
+            echo '<td>' . $user_id . '</td>';
+            echo '<td>' . $username . '</td>';
+            echo '<td>' . $email . '</td>';
+            echo '<td><button class="btn btn-danger btn-sm delete-user" data-user-id="' . $user_id . '">Delete</button></td>';
+            echo '</tr>';
+        }
 
-	// 					// Optionally, you can perform additional actions after category deletion.
-	// 					// For example, displaying a success message or redirecting the user.
-
-	// 					// Redirect the user back to the same page
-	// 					$get_adminBatchRed_link = ''; // Define the redirect URL
-
-	// 					$shiacomputeroption = get_option('shiacomputeroption'); // Get the option value from the database
-
-	// 					if (isset($shiacomputeroption['adminCourseList'])) {
-	// 						$get_adminBatchRed_id = $shiacomputeroption['adminCourseList']; // Get the selected page ID
-
-	// 						if ($get_adminBatchRed_id) {
-	// 							$get_adminBatchRed_link = get_permalink($get_adminBatchRed_id); // Get the permalink of the selected page
-	// 						}
-	// 					}
-	// 					wp_redirect($get_adminBatchRed_link);
-	// 					exit;
-	// 				}
-	// 			}
-	// 		}
-	// 	}
-	// 	add_action('admin_post_nopriv_delete_category', 'handle_course_deletion');
-	// 	add_action('admin_post_delete_category', 'handle_course_deletion');
-//not approve
-
-
-
-function add_student_certificate_serial_number_meta_box()
-{
-    add_meta_box(
-        'student_certificate_serial_number_meta_box', // Meta box ID
-        'Certificate Serial Number', // Meta box title
-        'generate_student_certificate_serial_number_meta_box', // Callback function to render meta box content
-        'admissions', // Replace with your custom post type slug
-        'normal', // Meta box position (normal, side, advanced)
-        'default' // Meta box priority (high, core, default, low)
-    );
-}
-add_action('add_meta_boxes', 'add_student_certificate_serial_number_meta_box');
-
-// Callback function to render meta box content
-function generate_student_certificate_serial_number_meta_box($post)
-{
-    $serial_number = get_post_meta($post->ID, 'student_certificate_serial_number', true);
-    ?>
-    <p><strong>Certificate Serial Number: </strong><?php echo $serial_number; ?></p>
-    <?php
-}
-
-// Generate and save unique student certificate serial number combined with random number when a new post is created
-function save_student_certificate_serial_number($post_id)
-{
-    // Check if the post is of your custom post type
-    $post_type = get_post_type($post_id);
-    if ($post_type !== 'admissions') {
-        return;
-    }
-
-    // Check if the post already has a certificate serial number
-    $serial_number = get_post_meta($post_id, 'student_certificate_serial_number', true);
-    if (!$serial_number) {
-        // Get the total number of posts for your custom post type
-        $post_count = wp_count_posts('admissions')->publish; // Replace with your custom post type slug
-
-        // Generate a random number
-        $random_number = mt_rand(1000, 9999); // Modify the range as per your requirement
-
-        // Combine the random number and post serial number
-        $combined_number = $random_number . $post_count;
-
-        // Save the combined number as the certificate serial number
-        update_post_meta($post_id, 'student_certificate_serial_number', $combined_number);
+        // End the table
+        echo '</tbody></table>';
+    } else {
+        echo 'No users found.';
     }
 }
-add_action('save_post', 'save_student_certificate_serial_number');
+function delete_user_ajax() {
+    if (isset($_POST['nonce']) && wp_verify_nonce($_POST['nonce'], 'your_ajax_nonce_action')) {
+        if (isset($_POST['user_id'])) {
+            $user_id = $_POST['user_id'];
+            $result = wp_delete_user($user_id);
+
+            if ($result) {
+                echo 'User deleted successfully.';
+            } else {
+                echo 'Error deleting user.';
+            }
+        }
+    }
+
+    wp_die();
+}
+add_action('wp_ajax_delete_user', 'delete_user_ajax');
+add_action('wp_ajax_nopriv_delete_user', 'delete_user_ajax');

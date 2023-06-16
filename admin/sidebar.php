@@ -151,7 +151,16 @@
         <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Login Screens:</h6>
-                <a class="collapse-item" href="login.html">Login</a>
+                <?php
+                    if (isset($shiacomputeroption['adminUserList'])) {
+                        $get_adminUserPage_id = $shiacomputeroption['adminUserList']; // Get the selected page ID
+
+                        if ($get_adminUserPage_id) {
+                            $get_adminCertificate_link = get_permalink($get_adminUserPage_id); // Get the permalink of the selected page
+                        }
+                    }
+                ?>
+                <a class="collapse-item" href="<?php echo($get_adminCertificate_link) ?>">User Account</a>
                 <a class="collapse-item" href="register.html">Register</a>
                 <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
                 <div class="collapse-divider"></div>

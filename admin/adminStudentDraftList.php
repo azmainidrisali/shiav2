@@ -213,6 +213,16 @@ if (is_user_logged_in() && current_user_can('administrator')) {
 };
 
 ?>
+<script>
+  // JavaScript
+  const button = document.getElementById('button');
+  const input1 = document.getElementById('input1');
+  const input2 = document.getElementById('input2');
 
+  button.addEventListener('click', function() {
+    input2.value = input1.value;
+  });
+</script>
 <?php
 require_once(get_template_directory(). '/admin/footer.php');
+
