@@ -26,36 +26,6 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                 <?php display_users_table(); ?>
             </div>
 
-
-            <script>
-                jQuery(document).ready(function($) {
-                    $('.delete-user').click(function() {
-                        var userId = $(this).data('user-id');
-
-                        if (confirm('Are you sure you want to delete this user?')) {
-                            // Send an AJAX request to delete the user
-                            $.ajax({
-                                url: ajaxurl,
-                                type: 'POST',
-                                data: {
-                                    action: 'delete_user',
-                                    user_id: userId,
-                                    nonce: your_ajax_nonce_variable
-                                },
-                                success: function(response) {
-                                    // Handle the response (e.g., display a success message or refresh the user table)
-                                    console.log(response);
-                                },
-                                error: function(error) {
-                                    console.log(error);
-                                }
-                            });
-                        }
-                    });
-                });
-
-            </script>
-
                     
             <!-- Content Row End -->
 

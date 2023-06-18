@@ -387,6 +387,13 @@
                 'data'    => 'pages',
                 'default' => '',
             ),
+            array(
+                'id'      => 'PublicResultSearch',
+                'type'    => 'select',
+                'title'   => 'Result Search Public',
+                'data'    => 'pages',
+                'default' => '',
+            ),
         ),
     ) );
     Redux::setSection($opt_name,array(

@@ -329,7 +329,7 @@ add_action('after_setup_theme', 'Chide_admin_bar');
                 'labels'              => $labels,
                 'hierarchical'        => false,
                 'description'         => 'Custom post type for Institute Admissions',
-                'supports'            => array( 'title','thumbnail'),
+                'supports'            => array( 'title','thumbnail', 'author'),
                 'public'              => true,
                 'menu_position'       => 5,
                 'menu_icon'           => 'dashicons-clipboard',
@@ -1380,16 +1380,34 @@ add_action('after_setup_theme', 'Chide_admin_bar');
 			add_action("save_post", "save_Stuent_result_register");
 		//STudent Result Selection field end
 
-		//Admission entry Database End
+		//STudent Result Selection field start
+			function certificate_issue(){
+				add_meta_box("custom_certificate_issue", "Certificate Issue Date", "certificate_issue_Field", "admissions", "normal", "low");
+			}
+			add_action("admin_init", "certificate_issue");
 
-		// function generate_pdf_on_init() {
-		// 	if (isset($_POST['generate_pdf'])) {
-		// 		// Include the generate_pdf.php file
-		// 		include_once(get_template_directory(). '/admin/certificatePrint.php');
-		// 		exit(); // Stop further execution after generating the PDF
-		// 	}
-		// }
-		// add_action('init', 'generate_pdf_on_init');
+			function certificate_issue_Field(){
+
+				global $post;
+
+				$data = get_post_custom($post->ID);
+				$val = isset($data['certificate_issue_register']) ? esc_attr($data['certificate_issue_register'][0]) : '';
+
+				echo '<input type="text" name="certificate_issue_register" id="certificate_issue_register" value="'.$val.'" placeholder="Certificate Issue Date"/>';
+			}
+
+			function save_certificate_issue_register(){
+				global $post;
+
+				if(isset($_POST["certificate_issue_register"])):
+			
+					update_post_meta($post->ID, "certificate_issue_register", $_POST["certificate_issue_register"]);
+				
+				endif;
+
+			}
+			add_action("save_post", "save_certificate_issue_register");
+		//STudent Result Selection field end
 
 
 //server information start
@@ -1432,272 +1450,287 @@ add_action('after_setup_theme', 'Chide_admin_bar');
 
 
 //sms function
-function SendSMS($number,$text){
-	$url = "https://login.esms.com.bd/api/v3/sms/send";
-    $api_token ="153|yjMC3EfXZGxu0kSiDtFZo2c4mdDg4zrFJKZf0Vkw"; //Your Api Token
-    $sender_id ="8809601003609";//Sender ID/Non masking Number
-    $type ="plain";
+	function SendSMS($number,$text){
+		$url = "https://login.esms.com.bd/api/v3/sms/send";
+		$api_token ="153|yjMC3EfXZGxu0kSiDtFZo2c4mdDg4zrFJKZf0Vkw"; //Your Api Token
+		$sender_id ="8809601003609";//Sender ID/Non masking Number
+		$type ="plain";
 
-    $curl = curl_init($url);
-	curl_setopt($curl, CURLOPT_URL, $url);
-	curl_setopt($curl, CURLOPT_POST, true);
-	curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		$curl = curl_init($url);
+		curl_setopt($curl, CURLOPT_URL, $url);
+		curl_setopt($curl, CURLOPT_POST, true);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
-	$headers = array(
-	"Authorization: Bearer $api_token",
-	"Content-Type: application/json",
-	);
-	curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+		$headers = array(
+		"Authorization: Bearer $api_token",
+		"Content-Type: application/json",
+		);
+		curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
 
-	$data = array('recipient' => $number, 'message'=>$text,'sender_id'=>$sender_id,'type'=>'plain' );
+		$data = array('recipient' => $number, 'message'=>$text,'sender_id'=>$sender_id,'type'=>'plain' );
 
-	curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
+		curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
 
-	//for debug only!
-	curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
-	curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+		//for debug only!
+		curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
 
-	$resp = curl_exec($curl);
-	curl_close($curl);
-	var_dump($resp);
-    
-}
-
-function get_admissions_count() {
-    $args = array(
-        'post_type'      => 'admissions',
-        'post_status'    => 'publish',
-        'posts_per_page' => -1,
-    );
-
-    $query = new WP_Query($args);
-    $count = $query->found_posts;
-
-    return $count;
-}
-
-function display_admissions_count() {
-    $count = get_admissions_count();
-    echo 'Total Admissions: ' . $count;
-}
-
-function get_admissions_count_with_result() {
-    $args = array(
-        'post_type'      => 'admissions',
-        'post_status'    => 'publish',
-        'posts_per_page' => -1,
-        'meta_query'     => array(
-            'relation' => 'AND',
-            array(
-                'key'     => 'Stuent_result_register',
-                'value'   => '',  // Empty value to check if the meta field has any value assigned
-                'compare' => '!='  // Use '!=' to compare if the meta field is not empty
-            )
-        )
-    );
-
-    $query = new WP_Query($args);
-    $count = $query->found_posts;
-
-    return $count;
-}
-
-function display_admissions_count_with_result() {
-    $count = get_admissions_count_with_result();
-    echo 'Total Admissions with Result: ' . $count;
-}
-
-function displaySMSBalance($apiToken) {
-	$endpoint = 'https://login.esms.com.bd/api/v3/balance';
-
-	$options = array(
-		'http' => array(
-		'header' => "Authorization: Bearer " . $apiToken . "\r\n" .
-					"Accept: application/json\r\n",
-		'method' => 'GET'
-		)
-	);
-
-	$context = stream_context_create($options);
-	$response = file_get_contents($endpoint, false, $context);
-
-	$responseData = json_decode($response, true);
-
-	if ($responseData['status'] === 'success') {
-		$balanceData = $responseData['data'];
-
-		if (isset($balanceData['remaining_unit'])) {
-		$balance = $balanceData['remaining_unit'];
-		echo 'SMS Blance: ' . $balance . ' BDT';
-		} else {
-		echo 'Unable to retrieve balance data.';
-		}
-	} else {
-		echo 'Failed to retrieve balance. Please check your API token or try again later.';
+		$resp = curl_exec($curl);
+		curl_close($curl);
+		var_dump($resp);
+		
 	}
-}
+
+	function get_admissions_count() {
+		$args = array(
+			'post_type'      => 'admissions',
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+		);
+
+		$query = new WP_Query($args);
+		$count = $query->found_posts;
+
+		return $count;
+	}
+
+	function display_admissions_count() {
+		$count = get_admissions_count();
+		echo 'Total Admissions: ' . $count;
+	}
+
+	function get_admissions_count_with_result() {
+		$args = array(
+			'post_type'      => 'admissions',
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+			'meta_query'     => array(
+				'relation' => 'AND',
+				array(
+					'key'     => 'Stuent_result_register',
+					'value'   => '',  // Empty value to check if the meta field has any value assigned
+					'compare' => '!='  // Use '!=' to compare if the meta field is not empty
+				)
+			)
+		);
+
+		$query = new WP_Query($args);
+		$count = $query->found_posts;
+
+		return $count;
+	}
+
+	function display_admissions_count_with_result() {
+		$count = get_admissions_count_with_result();
+		echo 'Total Admissions with Result: ' . $count;
+	}
+
+	function displaySMSBalance($apiToken) {
+		$endpoint = 'https://login.esms.com.bd/api/v3/balance';
+
+		$options = array(
+			'http' => array(
+			'header' => "Authorization: Bearer " . $apiToken . "\r\n" .
+						"Accept: application/json\r\n",
+			'method' => 'GET'
+			)
+		);
+
+		$context = stream_context_create($options);
+		$response = file_get_contents($endpoint, false, $context);
+
+		$responseData = json_decode($response, true);
+
+		if ($responseData['status'] === 'success') {
+			$balanceData = $responseData['data'];
+
+			if (isset($balanceData['remaining_unit'])) {
+			$balance = $balanceData['remaining_unit'];
+			echo 'SMS Blance: ' . $balance . ' BDT';
+			} else {
+			echo 'Unable to retrieve balance data.';
+			}
+		} else {
+			echo 'Failed to retrieve balance. Please check your API token or try again later.';
+		}
+	}
+//sms function
+
+
+
+
+
+
+
 
 //registration number start
-	// Admission student role number
-	function add_custom_serial_number_meta_box(){
-		add_meta_box(
-			'custom_serial_number_meta_box', // Meta box ID
-			'Registration Number', // Meta box title
-			'generate_custom_serial_number_meta_box', // Callback function to render meta box content
-			'admissions', // Replace with your custom post type slug
-			'normal', // Meta box position (normal, side, advanced)
-			'default' // Meta box priority (high, core, default, low)
-		);
-	}
-	add_action('add_meta_boxes', 'add_custom_serial_number_meta_box');
+// Admission student role number
+function add_custom_serial_number_meta_box() {
+    add_meta_box(
+        'custom_serial_number_meta_box', // Meta box ID
+        'Registration Number', // Meta box title
+        'generate_custom_serial_number_meta_box', // Callback function to render meta box content
+        'admissions', // Replace with your custom post type slug
+        'normal', // Meta box position (normal, side, advanced)
+        'default' // Meta box priority (high, core, default, low)
+    );
+}
+add_action('add_meta_boxes', 'add_custom_serial_number_meta_box');
 
-	// Callback function to render meta box content
-	function generate_custom_serial_number_meta_box($post){
-		$serial_number = get_post_meta($post->ID, 'custom_serial_number', true);
-		?>
-		<p><strong>Registration NUMBER: </strong><?php echo $serial_number; ?></p>
-		<?php
-	}
+// Callback function to render meta box content
+function generate_custom_serial_number_meta_box($post) {
+    $serial_number = get_post_meta($post->ID, 'custom_serial_number', true);
+    ?>
+    <p><strong>Registration NUMBER: </strong><?php echo $serial_number; ?></p>
+    <?php
+}
 
-	// Generate and save random serial number combined with post serial count when a new post is created or updated
-	function save_custom_serial_number($post_id){
-		// Check if the post is of your custom post type
-		$post_type = get_post_type($post_id);
-		if ($post_type !== 'admissions') {
-			return;
-		}
+// Generate and save custom serial number when a new post is created or updated
+function save_custom_serial_number($post_id) {
+    // Check if the post is of your custom post type
+    $post_type = get_post_type($post_id);
+    if ($post_type !== 'admissions') {
+        return;
+    }
 
-		// Check if the post already has a serial number
-		$serial_number = get_post_meta($post_id, 'custom_serial_number', true);
-		if (!$serial_number) {
-			// Get the total number of published and draft posts for your custom post type
-			$args = array(
-				'post_type' => 'admissions', // Replace with your custom post type slug
-				'post_status' => array('publish', 'draft'),
-				'posts_per_page' => -1,
-			);
-			$posts = get_posts($args);
-			$post_count = count($posts);
+    // Get the total number of published and draft posts for your custom post type
+    $args = array(
+        'post_type'      => 'admissions', // Replace with your custom post type slug
+        'post_status'    => array('publish', 'draft', 'trash'), // Include only publish and draft statuses
+        'posts_per_page' => -1,
+    );
+    $posts = get_posts($args);
+    $post_count = count($posts); // Add 1 to count the current post after submitting
 
-			// Generate a random number
-			$random_number = mt_rand(10000, 99999); // Modify the range as per your requirement
+    // Determine the starting serial number with leading zeros
+    $starting_serial = str_pad($post_count + 110, 4, '0', STR_PAD_LEFT);
 
-			// Combine the random number and post serial number
-			$combined_number = $random_number . $post_count;
+    // Generate the serial number
+    $serial_number = '2022' . $starting_serial;
 
-			// Save the combined number as the serial number
-			update_post_meta($post_id, 'custom_serial_number', $combined_number);
-		}
-	}
-	add_action('save_post', 'save_custom_serial_number');
+    // Save the serial number
+    update_post_meta($post_id, 'custom_serial_number', $serial_number);
+}
+add_action('publish_post', 'save_custom_serial_number');
+add_action('save_post', 'save_custom_serial_number');
+
+
+
+
+
 //registration number End
 
-// roll number start
-	function add_custom_roll_number_meta_box(){
-		add_meta_box(
-			'custom_roll_number_meta_box', // Meta box ID
-			'Roll Number', // Meta box title
-			'generate_custom_roll_number_meta_box', // Callback function to render meta box content
-			'admissions', // Replace with your custom post type slug
-			'normal', // Meta box position (normal, side, advanced)
-			'default' // Meta box priority (high, core, default, low)
-		);
-	}
-	add_action('add_meta_boxes', 'add_custom_roll_number_meta_box');
+function add_custom_roll_number_meta_box() {
+    add_meta_box(
+        'custom_roll_number_meta_box', // Meta box ID
+        'Roll Number', // Meta box title
+        'generate_custom_roll_number_meta_box', // Callback function to render meta box content
+        'admissions', // Replace with your custom post type slug
+        'normal', // Meta box position (normal, side, advanced)
+        'default' // Meta box priority (high, core, default, low)
+    );
+}
+add_action('add_meta_boxes', 'add_custom_roll_number_meta_box');
 
-	// Callback function to render meta box content
-	function generate_custom_roll_number_meta_box($post){
-		$roll_number = get_post_meta($post->ID, 'custom_roll_number', true);
-		?>
-		<p><strong>Roll Number: </strong><?php echo $roll_number; ?></p>
-		<?php
-	}
+// Callback function to render meta box content
+function generate_custom_roll_number_meta_box($post) {
+    $roll_number = get_post_meta($post->ID, 'custom_roll_number', true);
+    ?>
+    <p><strong>Roll Number: </strong><?php echo $roll_number; ?></p>
+    <?php
+}
 
-	// Generate and save unique roll number combined with random number when a new post is created or updated
-	function save_custom_roll_number($post_id){
-		// Check if the post is of your custom post type
-		$post_type = get_post_type($post_id);
-		if ($post_type !== 'admissions') {
-			return;
-		}
+// Generate and save unique roll number combined with sequential number when a new post is created or updated
+function save_custom_roll_number($post_id) {
+    // Check if the post is of your custom post type
+    $post_type = get_post_type($post_id);
+    if ($post_type !== 'admissions') {
+        return;
+    }
 
-		// Check if the post already has a roll number
-		$roll_number = get_post_meta($post_id, 'custom_roll_number', true);
-		if (!$roll_number) {
-			// Get the total number of published posts for your custom post type
-			$args = array(
-				'post_type' => 'admissions', // Replace with your custom post type slug
-				'post_status' => 'publish',
-				'posts_per_page' => -1,
-			);
-			$posts = get_posts($args);
-			$post_count = count($posts);
+    // Get the total number of published and draft posts for your custom post type
+    $args = array(
+        'post_type'      => 'admissions', // Replace with your custom post type slug
+        'post_status'    => array('publish', 'draft', 'trash'), // Include only publish and draft statuses
+        'posts_per_page' => -1,
+    );
+    $posts = get_posts($args);
+    $post_count = count($posts) - 1; // Subtract 1 to exclude the current post from count
 
-			// Generate a random number
-			$random_number = mt_rand(10000, 99999); // Modify the range as per your requirement
+    // Determine the sequential number with leading zeros
+    $sequential_number = $post_count + 1;
+    if ($sequential_number < 10) {
+        $sequential_number = sprintf('%04d', $sequential_number);
+    }
 
-			// Combine the random number and post serial number
-			$combined_number = $random_number . $post_count;
+    // Generate the roll number with the '2022' prefix
+    $roll_number = '2022';
 
-			// Save the combined number as the roll number
-			update_post_meta($post_id, 'custom_roll_number', $combined_number);
-		}
-	}
-	add_action('save_post', 'save_custom_roll_number');
+    // Append the sequential number
+    $roll_number .= $sequential_number;
+
+    // Save the roll number
+    update_post_meta($post_id, 'custom_roll_number', $roll_number);
+}
+add_action('save_post', 'save_custom_roll_number');
+
+
+
 // roll number end
 
-// certificate Serial Number start
-	function add_student_certificate_serial_number_meta_box(){
-		add_meta_box(
-			'student_certificate_serial_number_meta_box', // Meta box ID
-			'Certificate Serial Number', // Meta box title
-			'generate_student_certificate_serial_number_meta_box', // Callback function to render meta box content
-			'admissions', // Replace with your custom post type slug
-			'normal', // Meta box position (normal, side, advanced)
-			'default' // Meta box priority (high, core, default, low)
-		);
-	}
-	add_action('add_meta_boxes', 'add_student_certificate_serial_number_meta_box');
+function add_student_certificate_serial_number_meta_box() {
+    add_meta_box(
+        'student_certificate_serial_number_meta_box', // Meta box ID
+        'Certificate Serial Number', // Meta box title
+        'generate_student_certificate_serial_number_meta_box', // Callback function to render meta box content
+        'admissions', // Replace with your custom post type slug
+        'normal', // Meta box position (normal, side, advanced)
+        'default' // Meta box priority (high, core, default, low)
+    );
+}
+add_action('add_meta_boxes', 'add_student_certificate_serial_number_meta_box');
 
-	// Callback function to render meta box content
-	function generate_student_certificate_serial_number_meta_box($post){
-		$serial_number = get_post_meta($post->ID, 'student_certificate_serial_number', true);
-		?>
-		<p><strong>Certificate Serial Number: </strong><?php echo $serial_number; ?></p>
-		<?php
-	}
+// Callback function to render meta box content
+function generate_student_certificate_serial_number_meta_box($post) {
+    $serial_number = get_post_meta($post->ID, 'student_certificate_serial_number', true);
+    ?>
+    <p><strong>Certificate Serial Number: </strong><?php echo $serial_number; ?></p>
+    <?php
+}
 
-	// Generate and save unique student certificate serial number combined with random number when a new post is created or updated
-	function save_student_certificate_serial_number($post_id){
-		// Check if the post is of your custom post type
-		$post_type = get_post_type($post_id);
-		if ($post_type !== 'admissions') {
-			return;
-		}
+// Generate and save unique student certificate serial number starting from 8977 when a new post is created or updated
+function save_student_certificate_serial_number($post_id) {
+    // Check if the post is of your custom post type
+    $post_type = get_post_type($post_id);
+    if ($post_type !== 'admissions') {
+        return;
+    }
 
-		// Check if the post already has a certificate serial number
-		$serial_number = get_post_meta($post_id, 'student_certificate_serial_number', true);
-		if (!$serial_number) {
-			// Get the total number of published and draft posts for your custom post type
-			$args = array(
-				'post_type' => 'admissions', // Replace with your custom post type slug
-				'post_status' => array('publish', 'draft'),
-				'posts_per_page' => -1,
-			);
-			$posts = get_posts($args);
-			$post_count = count($posts);
+    // Check if the post already has a certificate serial number
+    $serial_number = get_post_meta($post_id, 'student_certificate_serial_number', true);
+    if (!$serial_number) {
+        // Get the total number of published and draft posts for your custom post type
+        $args = array(
+            'post_type'      => 'admissions', // Replace with your custom post type slug
+            'post_status'    => array('publish', 'draft', 'trash'),
+            'posts_per_page' => -1,
+        );
+        $posts = get_posts($args);
+        $post_count = count($posts);
 
-			// Generate a random number
-			$random_number = mt_rand(1000, 9999); // Modify the range as per your requirement
+        // Determine the starting serial number
+        $starting_serial = str_pad(8977 + $post_count, 4, '0', STR_PAD_LEFT);
 
-			// Combine the random number and post serial number
-			$combined_number = $random_number . $post_count;
+        // Generate the certificate serial number with the '202' prefix
+        $serial_number = '202' . $starting_serial;
 
-			// Save the combined number as the certificate serial number
-			update_post_meta($post_id, 'student_certificate_serial_number', $combined_number);
-		}
-	}
-	add_action('save_post', 'save_student_certificate_serial_number');
+        // Save the certificate serial number
+        update_post_meta($post_id, 'student_certificate_serial_number', $serial_number);
+    }
+}
+add_action('save_post', 'save_student_certificate_serial_number');
+
+
 // certificate Serial Number start
 
 function display_users_table() {
@@ -1707,7 +1740,7 @@ function display_users_table() {
     if (!empty($users)) {
         // Start the table
         echo '<table class="table table-bordered">';
-        echo '<thead><tr><th>ID</th><th>Username</th><th>Email</th><th>Action</th></tr></thead>';
+        echo '<thead><tr><th>Profile Picture</th><th>Registration Number</th><th>Syesteam ID</th><th>Username</th><th>Email</th><th>Roll number</th></tr></thead>';
         echo '<tbody>';
 
         // Loop through each user
@@ -1716,12 +1749,35 @@ function display_users_table() {
             $username = $user->user_login;
             $email = $user->user_email;
 
+            // Get user's first post
+            $args = array(
+                'author' => $user_id,
+                'posts_per_page' => 1,
+                'orderby' => 'date',
+                'order' => 'ASC',
+                'post_type' => 'admissions', // Adjust the post type if necessary
+            );
+            $user_posts = get_posts($args);
+
+            $first_post_meta = '';
+            $first_post_meta2 = '';
+            $thumbnail_url = '';
+            if (!empty($user_posts)) {
+                // Get the custom meta value from the first post
+                $first_post_id = $user_posts[0]->ID;
+                $first_post_meta = get_post_meta($first_post_id, 'custom_roll_number', true);
+                $first_post_meta2 = get_post_meta($first_post_id, 'custom_serial_number', true);
+                $thumbnail_url = get_the_post_thumbnail_url($first_post_id, 'thumbnail');
+            }
+
             // Display user data in table rows
             echo '<tr>';
+            echo '<td><img width="100" src="' . $thumbnail_url . '"></td>';
+            echo '<td>' . $first_post_meta2 . '</td>';
             echo '<td>' . $user_id . '</td>';
             echo '<td>' . $username . '</td>';
             echo '<td>' . $email . '</td>';
-            echo '<td><button class="btn btn-danger btn-sm delete-user" data-user-id="' . $user_id . '">Delete</button></td>';
+            echo '<td>' . $first_post_meta . '</td>';
             echo '</tr>';
         }
 
@@ -1731,21 +1787,22 @@ function display_users_table() {
         echo 'No users found.';
     }
 }
-function delete_user_ajax() {
-    if (isset($_POST['nonce']) && wp_verify_nonce($_POST['nonce'], 'your_ajax_nonce_action')) {
-        if (isset($_POST['user_id'])) {
-            $user_id = $_POST['user_id'];
-            $result = wp_delete_user($user_id);
 
-            if ($result) {
-                echo 'User deleted successfully.';
-            } else {
-                echo 'Error deleting user.';
-            }
-        }
-    }
 
-    wp_die();
-}
-add_action('wp_ajax_delete_user', 'delete_user_ajax');
-add_action('wp_ajax_nopriv_delete_user', 'delete_user_ajax');
+// Modify search query for custom post type "admissions"
+function custom_admissions_search_query($query) {
+	if (is_search() && $query->is_main_query() && isset($_GET['rollNumber'])) {
+	  $rollNumber = sanitize_text_field($_GET['rollNumber']);
+  
+	  $metaQuery = array(
+		'key' => 'custom_roll_number',
+		'value' => $rollNumber,
+		'compare' => '='
+	  );
+  
+	  $query->set('post_type', 'admissions');
+	  $query->set('meta_query', array($metaQuery));
+	}
+  }
+  add_action('pre_get_posts', 'custom_admissions_search_query');
+  

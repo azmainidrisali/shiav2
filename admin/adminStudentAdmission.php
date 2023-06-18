@@ -78,12 +78,28 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             $post_Student_DueAmount                             = $_POST['DueAmount'];
                             $post_Student_paymentMethod                         = $_POST['paymentMethod'];
 
+                            // Retrieve the form inputs
+                            $username = $_POST['STudentName'];
+                            $email = $_POST['StudentEmail'];
+                            $password = $_POST['password'];
+
+                            // Get user ID by username
+                            $user = get_user_by('login', $username);
+
+                            if ($user) {
+                                // User already exists, use the existing user ID
+                                $user_id = $user->ID;
+                            } else {
+                                // User doesn't exist, create a new user
+                                $user_id = wp_create_user($username, $password, $email);
+                            }
+
                             $my_cptpost_args = array(
 
                             'post_title'    => $_POST['STudentName'],
                             'post_author'  => get_current_user_id(),
-
                             'post_status'   => $_POST['submitType'],
+                            'post_author' => $user_id,
 
                             'post_type' => 'admissions',
 
@@ -133,21 +149,17 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             set_post_thumbnail( $cpt_id, $attachment_id );
                             // $location = home_url().'/'.$bangladeshbdooption['donar_Profile_dashboard'];
 
-                            // Retrieve the form inputs
-                                    $username = $_POST['STudentName'];
-                                    $email = $_POST['StudentEmail'];
-                                    $password = $_POST['password'];
+                            $selectedOption = $_POST['submitType'];
 
-                                    // Create the user using WordPress functions
-                                    $user_id = wp_create_user($username, $password, $email);
-
-                                    if (!is_wp_error($user_id)) {
-                                        // User created successfully
-                                        echo "User created successfully.";
-                                    } else {
-                                        // Error creating user
-                                        echo "Error creating user: " . $user_id->get_error_message();
-                                    }
+                            if ($selectedOption === 'publish') {
+                                $StudentPhoneNumber = '88'.$post_Student_ContactNumber ;
+                                $rollNumber = $post_Student_password ;
+                                $registrationNumber = $post_Student_StudentEmail;
+                                $courseName = $post_Student_selectCourse;
+                                $studentName = $post_Student_STudentName;
+                                $message = "Congratulations! $studentName Your admission to $courseName is successful.\nUser Name: $registrationNumber\nPassWord: $rollNumber\n login Link: https://app.shiacomputer.com.";
+                                SendSMS($StudentPhoneNumber, $message);
+                            }
 
 
                             if (isset($shiacomputeroption['adminStudentList'])) {
@@ -163,6 +175,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             exit;
 
                         }
+                    
                 ?>
 
 

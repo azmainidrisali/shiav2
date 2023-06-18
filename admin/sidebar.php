@@ -160,8 +160,18 @@
                         }
                     }
                 ?>
+                
                 <a class="collapse-item" href="<?php echo($get_adminCertificate_link) ?>">User Account</a>
-                <a class="collapse-item" href="register.html">Register</a>
+                <?php
+                    if (isset($shiacomputeroption['PublicResultSearch'])) {
+                        $get_PublicResultSearch_id = $shiacomputeroption['PublicResultSearch']; // Get the selected page ID
+
+                        if ($get_PublicResultSearch_id) {
+                            $get_PublicResultSearch_link = get_permalink($get_PublicResultSearch_id); // Get the permalink of the selected page
+                        }
+                    }
+                ?>
+                <a class="collapse-item" href="<?php echo($get_PublicResultSearch_link) ?>">Result Search</a>
                 <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
                 <div class="collapse-divider"></div>
                 <h6 class="collapse-header">Other Pages:</h6>
