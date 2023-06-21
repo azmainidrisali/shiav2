@@ -214,12 +214,6 @@ add_action('after_setup_theme', 'Chide_admin_bar');
 //admin login syesteam End
 
 
-
-
-
-
-
-
 // Handle category submission form
     function handle_category_submission() {
     if (isset($_POST['action']) && $_POST['action'] === 'submit_category') {
@@ -1557,12 +1551,6 @@ add_action('after_setup_theme', 'Chide_admin_bar');
 //sms function
 
 
-
-
-
-
-
-
 //registration number start
 // Admission student role number
 function add_custom_serial_number_meta_box() {
@@ -1585,22 +1573,22 @@ function generate_custom_serial_number_meta_box($post) {
     <?php
 }
 
-// Generate and save custom serial number when a new post is created or updated
-function save_custom_serial_number($post_id) {
-    // Check if the post is of your custom post type
-    $post_type = get_post_type($post_id);
-    if ($post_type !== 'admissions') {
+// Generate and save custom serial number when a new post is published
+function save_custom_serial_number($new_status, $old_status, $post) {
+    // Check if the post is of your custom post type and if it transitioned to "publish" status
+    $post_type = $post->post_type;
+    if ($post_type !== 'admissions' || $new_status !== 'publish' || $old_status === 'publish') {
         return;
     }
 
-    // Get the total number of published and draft posts for your custom post type
+    // Get the total number of published posts for your custom post type
     $args = array(
         'post_type'      => 'admissions', // Replace with your custom post type slug
-        'post_status'    => array('publish', 'draft', 'trash'), // Include only publish and draft statuses
+        'post_status'    => 'publish',
         'posts_per_page' => -1,
     );
     $posts = get_posts($args);
-    $post_count = count($posts); // Add 1 to count the current post after submitting
+    $post_count = count($posts);
 
     // Determine the starting serial number with leading zeros
     $starting_serial = str_pad($post_count + 110, 4, '0', STR_PAD_LEFT);
@@ -1609,17 +1597,16 @@ function save_custom_serial_number($post_id) {
     $serial_number = '2022' . $starting_serial;
 
     // Save the serial number
-    update_post_meta($post_id, 'custom_serial_number', $serial_number);
+    update_post_meta($post->ID, 'custom_serial_number', $serial_number);
 }
-add_action('publish_post', 'save_custom_serial_number');
-add_action('save_post', 'save_custom_serial_number');
+add_action('transition_post_status', 'save_custom_serial_number', 10, 3);
+
 
 
 
 
 
 //registration number End
-
 function add_custom_roll_number_meta_box() {
     add_meta_box(
         'custom_roll_number_meta_box', // Meta box ID
@@ -1639,26 +1626,26 @@ function generate_custom_roll_number_meta_box($post) {
     <p><strong>Roll Number: </strong><?php echo $roll_number; ?></p>
     <?php
 }
-
-// Generate and save unique roll number combined with sequential number when a new post is created or updated
+// Generate and save unique roll number combined with sequential number when a new post is published
 function save_custom_roll_number($post_id) {
-    // Check if the post is of your custom post type
+    // Check if the post is of your custom post type and if it is published
     $post_type = get_post_type($post_id);
-    if ($post_type !== 'admissions') {
+    $post_status = get_post_status($post_id);
+    if ($post_type !== 'admissions' || $post_status !== 'publish') {
         return;
     }
 
-    // Get the total number of published and draft posts for your custom post type
+    // Get the total number of published posts for your custom post type
     $args = array(
         'post_type'      => 'admissions', // Replace with your custom post type slug
-        'post_status'    => array('publish', 'draft', 'trash'), // Include only publish and draft statuses
+        'post_status'    => 'publish',
         'posts_per_page' => -1,
     );
     $posts = get_posts($args);
-    $post_count = count($posts) - 1; // Subtract 1 to exclude the current post from count
+    $post_count = count($posts);
 
     // Determine the sequential number with leading zeros
-    $sequential_number = $post_count + 1;
+    $sequential_number = $post_count;
     if ($sequential_number < 10) {
         $sequential_number = sprintf('%04d', $sequential_number);
     }
@@ -1676,60 +1663,63 @@ add_action('save_post', 'save_custom_roll_number');
 
 
 
+
 // roll number end
 
-function add_student_certificate_serial_number_meta_box() {
-    add_meta_box(
-        'student_certificate_serial_number_meta_box', // Meta box ID
-        'Certificate Serial Number', // Meta box title
-        'generate_student_certificate_serial_number_meta_box', // Callback function to render meta box content
-        'admissions', // Replace with your custom post type slug
-        'normal', // Meta box position (normal, side, advanced)
-        'default' // Meta box priority (high, core, default, low)
-    );
-}
-add_action('add_meta_boxes', 'add_student_certificate_serial_number_meta_box');
 
-// Callback function to render meta box content
-function generate_student_certificate_serial_number_meta_box($post) {
-    $serial_number = get_post_meta($post->ID, 'student_certificate_serial_number', true);
-    ?>
-    <p><strong>Certificate Serial Number: </strong><?php echo $serial_number; ?></p>
-    <?php
-}
+//serial number
+	function add_student_certificate_serial_number_meta_box() {
+		add_meta_box(
+			'student_certificate_serial_number_meta_box', // Meta box ID
+			'Certificate Serial Number', // Meta box title
+			'generate_student_certificate_serial_number_meta_box', // Callback function to render meta box content
+			'admissions', // Replace with your custom post type slug
+			'normal', // Meta box position (normal, side, advanced)
+			'default' // Meta box priority (high, core, default, low)
+		);
+	}
+	add_action('add_meta_boxes', 'add_student_certificate_serial_number_meta_box');
 
-// Generate and save unique student certificate serial number starting from 8977 when a new post is created or updated
-function save_student_certificate_serial_number($post_id) {
-    // Check if the post is of your custom post type
-    $post_type = get_post_type($post_id);
-    if ($post_type !== 'admissions') {
-        return;
-    }
+	// Callback function to render meta box content
+	function generate_student_certificate_serial_number_meta_box($post) {
+		$serial_number = get_post_meta($post->ID, 'student_certificate_serial_number', true);
+		?>
+		<p><strong>Certificate Serial Number: </strong><?php echo $serial_number; ?></p>
+		<?php
+	}
 
-    // Check if the post already has a certificate serial number
-    $serial_number = get_post_meta($post_id, 'student_certificate_serial_number', true);
-    if (!$serial_number) {
-        // Get the total number of published and draft posts for your custom post type
-        $args = array(
-            'post_type'      => 'admissions', // Replace with your custom post type slug
-            'post_status'    => array('publish', 'draft', 'trash'),
-            'posts_per_page' => -1,
-        );
-        $posts = get_posts($args);
-        $post_count = count($posts);
+	// Generate and save unique student certificate serial number starting from 8977 when a new post is created or updated
+	function save_student_certificate_serial_number($post_id) {
+		// Check if the post is of your custom post type
+		$post_type = get_post_type($post_id);
+		if ($post_type !== 'admissions') {
+			return;
+		}
 
-        // Determine the starting serial number
-        $starting_serial = str_pad(8977 + $post_count, 4, '0', STR_PAD_LEFT);
+		// Check if the post already has a certificate serial number
+		$serial_number = get_post_meta($post_id, 'student_certificate_serial_number', true);
+		if (!$serial_number) {
+			// Get the total number of published and draft posts for your custom post type
+			$args = array(
+				'post_type'      => 'admissions', // Replace with your custom post type slug
+				'post_status'    => array('publish', 'draft', 'trash'),
+				'posts_per_page' => -1,
+			);
+			$posts = get_posts($args);
+			$post_count = count($posts);
 
-        // Generate the certificate serial number with the '202' prefix
-        $serial_number = '202' . $starting_serial;
+			// Determine the starting serial number
+			$starting_serial = str_pad(1331 + $post_count, 4, '0', STR_PAD_LEFT);
 
-        // Save the certificate serial number
-        update_post_meta($post_id, 'student_certificate_serial_number', $serial_number);
-    }
-}
-add_action('save_post', 'save_student_certificate_serial_number');
+			// Generate the certificate serial number with the '202' prefix
+			$serial_number = '22' . $starting_serial;
 
+			// Save the certificate serial number
+			update_post_meta($post_id, 'student_certificate_serial_number', $serial_number);
+		}
+	}
+	add_action('save_post', 'save_student_certificate_serial_number');
+//serial number
 
 // certificate Serial Number start
 
@@ -1787,7 +1777,6 @@ function display_users_table() {
         echo 'No users found.';
     }
 }
-
 
 // Modify search query for custom post type "admissions"
 function custom_admissions_search_query($query) {
