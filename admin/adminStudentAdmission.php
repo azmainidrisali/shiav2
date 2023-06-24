@@ -13,7 +13,8 @@ global $wp_error, $current_user, $wp_roles, $post_id;
 // Check if the current user is an administrator
 if (is_user_logged_in() && current_user_can('administrator')) {
     
-    require_once(get_template_directory(). '/admin/dashboardheader.php');?>
+    require_once(get_template_directory(). '/admin/dashboardheader.php');
+    require_once(get_template_directory(). '/admin/check_user.php');?>
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
@@ -79,8 +80,8 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             $post_Student_paymentMethod                         = $_POST['paymentMethod'];
 
                             // Retrieve the form inputs
-                            $username = $_POST['STudentName'];
-                            $email = $_POST['StudentEmail'];
+                            $username = $_POST['ContactNumber'];
+                            $email = $_POST['ContactNumber'].'@shia.com';
                             $password = $_POST['password'];
 
                             // Get user ID by username
@@ -153,11 +154,11 @@ if (is_user_logged_in() && current_user_can('administrator')) {
 
                             if ($selectedOption === 'publish') {
                                 $StudentPhoneNumber = '88'.$post_Student_ContactNumber ;
-                                $rollNumber = $post_Student_password ;
-                                $registrationNumber = $post_Student_StudentEmail;
+                                $studentPass = $post_Student_password ;
+                                $userNameEmail = $post_Student_ContactNumber;
                                 $courseName = $post_Student_selectCourse;
                                 $studentName = $post_Student_STudentName;
-                                $message = "Congratulations! $studentName Your admission to $courseName is successful.\nUser Name: $registrationNumber\nPassWord: $rollNumber\n login Link: https://app.shiacomputer.com.";
+                                $message = "Congratulations! $studentName Your admission to $courseName is successful.\nUser Name: $userNameEmail\nPassWord: $studentPass\n login Link: https://app.shiacomputer.com";
                                 SendSMS($StudentPhoneNumber, $message);
                             }
 
@@ -183,15 +184,15 @@ if (is_user_logged_in() && current_user_can('administrator')) {
             <div class="row align-items-center justify-content-center">
                 <div class="col-md-10 py-5">
                     <h3>Student Admission</h3>
-                    <p class="mb-4">Student Admission Information</p>
-                    <form method="post" enctype="multipart/form-data">
+                    <p class="mb-4">Student Admission form</p>
+                    <form method="post" enctype="multipart/form-data" id="myForm">
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="fname">Applaction Status</label>
                                     <select name="submitType" class="form-control" required>
                                         <option value="draft">Draft Admission</option>
-                                        <option value="publish">Publishe Registration</option>
+                                        <option value="publish">Publish Registration</option>
                                     </select>
                                 </div>    
                             </div>
@@ -202,10 +203,10 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                     <label for="fname" class="required-label">Purpose </label>
                                         <select name="Purpose" id="SSC_board" class="form-control" required>
                                             <option value="">--Select Purpose--</option>
+                                            <option value="6 M Regi">6 M Regi </option>
                                             <option value="1 M Regi">1 M Regi</option>
                                             <option value="2 Year Regi">2 Year Regi</option>
                                             <option value="3 Year Regi">3 Year Regi</option>
-                                            <option value="6 M Regi">6 M Regi </option>
                                         </select>
                                 </div>    
                             </div>
@@ -237,13 +238,13 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             <div class="col-md-6">
                                 <div class="form-group first">
                                     <label for="fname" class="required-label">Course Fee </label>
-                                    <input type="text" name="courseFee" class="form-control" placeholder="Course Fee" id="courseFee">
+                                    <input type="text" name="courseFee" class="form-control" placeholder="Course Fee" id="courseFee" required>
                                 </div>    
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group first">
                                     <label for="lname" class="required-label">Admission Date </label>
-                                    <input type="date" name="admissionDate" class="form-control" placeholder="Admission Date" id="lname">
+                                    <input type="date" name="admissionDate" class="form-control" placeholder="Admission Date" required>
                                 </div>    
                             </div>
                         </div>
@@ -252,13 +253,13 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="fname" class="required-label">Seassion Start </label>
-                                    <input type="date" name="seassionStart" class="form-control" placeholder="Seassion Start" id="lname">
+                                    <input type="date" name="seassionStart" class="form-control" placeholder="Seassion Start" required>
                                 </div>    
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="lname" class="required-label">Seassion End </label>
-                                    <input type="date" name="seassionEnd" class="form-control" placeholder="Seassion End" id="lname">
+                                    <input type="date" name="seassionEnd" class="form-control" placeholder="Seassion End" required>
                                 </div>    
                             </div>
                             <div class="col-md-4">
@@ -308,13 +309,13 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             <div class="col-md-6">
                                 <div class="form-group first">
                                     <label for="fname" class="required-label">Student Name </label>
-                                    <input type="test" name="STudentName" class="form-control" placeholder="Student Name" id="lname">
+                                    <input type="test" name="STudentName" class="form-control" placeholder="Student Name" id="lname" oninput="formatName(this)" required>
                                 </div>    
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group first">
                                     <label for="lname">Email</label>
-                                    <input type="email" name="StudentEmail" class="form-control" placeholder="example@example.com" id="lname">
+                                    <input type="email" name="StudentEmail" class="form-control" placeholder="contact@shiacomputer.com" id="lname">
                                 </div>    
                             </div>
                         </div>
@@ -324,6 +325,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                 <div class="form-group first">
                                     <label for="fname">Verification ID Type</label>
                                         <select name="govsubmitType" id="SSC_board" class="form-control">
+                                            <option value="">Select</option>
                                             <option value="NID">GOV NID</option>
                                             <option value="BIRTH CERTIFICATE">BIRTH CERTIFICATE</option>
                                             <option value="Other">Other</option>
@@ -342,13 +344,13 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="fname" class="required-label">Fathers Name </label>
-                                    <input type="text" name="StudentFathername" class="form-control" placeholder="Fathers Name" id="lname">
+                                    <input type="text" name="StudentFathername" class="form-control" placeholder="Fathers Name" id="lname" required>
                                 </div>    
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="lname" class="required-label">Mothers Name </label>
-                                    <input type="text" name="stuentsMotherName" class="form-control" placeholder="Mothers Name" id="lname">
+                                    <input type="text" name="stuentsMotherName" class="form-control" placeholder="Mothers Name" id="lname" required>
                                 </div>    
                             </div>
                             <div class="col-md-4">
@@ -363,19 +365,19 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="fname" class="required-label">Date Of Birth </label>
-                                    <input type="date" name="StudentDOB" class="form-control" placeholder="Date Of Birth" id="lname">
+                                    <input type="date" name="StudentDOB" class="form-control" placeholder="Date Of Birth" required>
                                 </div>    
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="lname" class="required-label">Present Address </label>
-                                    <input type="text" id="input1" name=PresentAddress class="form-control" placeholder="Present Address" id="lname">
+                                    <input type="text" id="input1" name=PresentAddress class="form-control" placeholder="Present Address" id="lname" required>
                                 </div>    
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="lname" class="required-label">Permanent Address <input id="checkbox" type="checkbox"> same as present address</label>
-                                    <input type="text" id="input2" name="PermanentAddress" class="form-control" placeholder="Permanent Address" id="lname">
+                                    <input type="text" id="input2" name="PermanentAddress" class="form-control" placeholder="Permanent Address" id="lname" required>
                                     
                                 </div>    
                             </div>
@@ -385,19 +387,23 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="fname" class="required-label">Contact Number </label>
-                                    <input type="number" name="ContactNumber" class="form-control" placeholder="017123456789" id="lname">
+                                    <input type="text" name="ContactNumber" minlength="11" maxlength="11" class="form-control" placeholder="mobile number" id="user_name" required>
+                                    <div id="result"></div>
                                 </div>    
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="lname" class="required-label">Password </label>
-                                    <input type="password" name="password" class="form-control" placeholder="*********" id="lname">
+                                    <input type="checkbox" id="showPassword">
+                                    <label for="showPassword">Show Password</label>
+                                    <input type="password" id="password" name="password" class="form-control" placeholder="*********" id="lname" required>
                                 </div>    
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="lname" class="required-label">Confirm Pasword </label>
-                                    <input type="password" class="form-control" placeholder="**********" id="lname">
+                                    <span id="passwordMatchMessage"></span>
+                                    <input type="password" id="confirmPassword" class="form-control" placeholder="**********" id="lname">
                                 </div>    
                             </div>
                         </div>
@@ -434,6 +440,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                 <label>SSC PASSING YEAR</label>
                                 <select name='SSC_Passing_year' id='SSC_Passing_year' class="form-control">
                                     <!-- Loop through years from 1971 to current year -->
+                                    <option value="">Select</option>
                                     <?php
                                         $currentYear = date("Y"); // Get current year
                                             for ($year = $currentYear; $year >= 1971; $year--) {
@@ -476,6 +483,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                 <label>LAST EXAM YEAR</label>
                                 <select name='Last_Exam_Passing_year' class="form-control" id='Last_Exam_Passing_year'>
                                     <!-- Loop through years from 1971 to current year -->
+                                    <option value="">Select</option>
                                     <?php
                                         $currentYear = date("Y"); // Get current year
                                             for ($year = $currentYear; $year >= 1971; $year--) {
@@ -492,7 +500,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="fname">Pay Amount</label>
-                                    <input type="number" name="PayAmount" class="form-control" placeholder="Pay Amount" id="PayAmount">
+                                    <input type="number" name="PayAmount" class="form-control" placeholder="Pay Amount" id="PayAmount" required>
                                 </div>    
                             </div>
                             <div class="col-md-4">
@@ -532,7 +540,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
 
                         <?php wp_nonce_field( 'cpt_nonce_action', 'cpt_nonce_field' ); ?>
 
-                        <input type="submit" value="Register" class="btn px-5 btn-primary">
+                        <input type="submit" value="Register" id='submit' class="btn px-5 btn-primary">
 
                     </form>
                 </div>
@@ -573,6 +581,74 @@ if (is_user_logged_in() && current_user_can('administrator')) {
 ?>
 
 <script>
+
+var passwordField = document.getElementById("password");
+  var confirmPasswordField = document.getElementById("confirmPassword");
+  var showPasswordCheckbox = document.getElementById("showPassword");
+  var passwordMatchMessage = document.getElementById("passwordMatchMessage");
+
+  passwordField.addEventListener("input", validatePasswords);
+  confirmPasswordField.addEventListener("input", validatePasswords);
+  showPasswordCheckbox.addEventListener("change", togglePasswordVisibility);
+
+  function validatePasswords() {
+    var passwordsMatch = passwordField.value === confirmPasswordField.value;
+
+    if (passwordsMatch) {
+      passwordField.style.borderColor = "green";
+      confirmPasswordField.style.borderColor = "green";
+      passwordMatchMessage.textContent = "Password matched";
+      passwordMatchMessage.style.color = "green";
+    } else {
+      passwordField.style.borderColor = "red";
+      confirmPasswordField.style.borderColor = "red";
+      passwordMatchMessage.textContent = "Password doesn't match";
+      passwordMatchMessage.style.color = "red";
+    }
+  }
+
+  function togglePasswordVisibility() {
+    var passwordFieldType = showPasswordCheckbox.checked ? "text" : "password";
+    passwordField.type = passwordFieldType;
+    confirmPasswordField.type = passwordFieldType;
+  }
+
+
+var form = document.getElementById("myForm");
+  var submitButton = document.getElementById("submit");
+
+  form.addEventListener("input", function() {
+    validateFields();
+  });
+
+  form.addEventListener("blur", function() {
+    validateFields();
+  });
+
+  function validateFields() {
+    var requiredFields = form.querySelectorAll("[required]");
+    var emptyFields = [];
+
+    requiredFields.forEach(function(field) {
+      if (!field.value) {
+        emptyFields.push(field);
+      }
+    });
+
+    requiredFields.forEach(function(field) {
+      field.style.borderColor = "";
+    });
+
+    if (emptyFields.length === 0) {
+      submitButton.style.display = "block";
+    } else {
+      submitButton.style.display = "none";
+      emptyFields.forEach(function(field) {
+        field.style.borderColor = "red";
+      });
+    }
+  }
+
     $(document).ready(function(){
             $('#courseFee, #PayAmount').keyup(function(){
                 var num1 = parseFloat($('#courseFee').val()) || 0;
@@ -580,6 +656,28 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                 var sum = num1 - num2;
 
                 $('#DueAmount').val(sum.toFixed(2));
+            });
+            $('#user_name').on('input', function() {
+                var user_name = $(this).val();
+                
+                // Send an Ajax request to check user existence
+                $.ajax({
+                    url: '<?php echo admin_url('admin-ajax.php'); ?>',
+                    method: 'POST',
+                    data: {
+                        action: 'check_user',
+                        user_name: user_name
+                    },
+                    success: function(response) {
+                        if (response === 'exists') {
+                            $('#result').html('<span style="color: red;">Warning: SAME MOBILE NUMBER FOUND!</span>');
+                            $('input[type="submit"]').prop('disabled', true);
+                        } else {
+                            $('#result').html('<span style="color: green;">No match found!</span>');
+                            $('input[type="submit"]').prop('disabled', false);
+                        }
+                    }
+                });
             });
         });
 
