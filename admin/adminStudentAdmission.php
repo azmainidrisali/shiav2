@@ -244,7 +244,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             <div class="col-md-6">
                                 <div class="form-group first">
                                     <label for="lname" class="required-label">Admission Date </label>
-                                    <input type="date" name="admissionDate" class="form-control" placeholder="Admission Date" required>
+                                    <input type="text" id="datepick" name="admissionDate" class="form-control" placeholder="dd/mm/yyyy" required>
                                 </div>    
                             </div>
                         </div>
@@ -253,13 +253,13 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="fname" class="required-label">Seassion Start </label>
-                                    <input type="date" name="seassionStart" class="form-control" placeholder="Seassion Start" required>
+                                    <input type="text" id="datepick2" name="seassionStart" class="form-control" placeholder="Seassion Start" required>
                                 </div>    
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="lname" class="required-label">Seassion End </label>
-                                    <input type="date" name="seassionEnd" class="form-control" placeholder="Seassion End" required>
+                                    <input type="text" id="datepick3" name="seassionEnd" class="form-control" placeholder="Seassion End" required>
                                 </div>    
                             </div>
                             <div class="col-md-4">
@@ -309,7 +309,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             <div class="col-md-6">
                                 <div class="form-group first">
                                     <label for="fname" class="required-label">Student Name </label>
-                                    <input type="test" name="STudentName" class="form-control" placeholder="Student Name" id="lname" oninput="formatName(this)" required>
+                                    <input type="text" name="STudentName" class="form-control" placeholder="Student Name" id="lname" oninput="formatText(this)" required>
                                 </div>    
                             </div>
                             <div class="col-md-6">
@@ -344,13 +344,13 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="fname" class="required-label">Fathers Name </label>
-                                    <input type="text" name="StudentFathername" class="form-control" placeholder="Fathers Name" id="lname" required>
+                                    <input type="text" name="StudentFathername" class="form-control" placeholder="Fathers Name" id="lname" oninput="formatText(this)" required>
                                 </div>    
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="lname" class="required-label">Mothers Name </label>
-                                    <input type="text" name="stuentsMotherName" class="form-control" placeholder="Mothers Name" id="lname" required>
+                                    <input type="text" name="stuentsMotherName" class="form-control" placeholder="Mothers Name" id="lname" oninput="formatText(this)" required>
                                 </div>    
                             </div>
                             <div class="col-md-4">
@@ -365,7 +365,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="fname" class="required-label">Date Of Birth </label>
-                                    <input type="date" name="StudentDOB" class="form-control" placeholder="Date Of Birth" required>
+                                    <input type="text" id="datepick4" name="StudentDOB" class="form-control" placeholder="Date Of Birth" required>
                                 </div>    
                             </div>
                             <div class="col-md-4">
@@ -580,7 +580,29 @@ if (is_user_logged_in() && current_user_can('administrator')) {
 
 ?>
 
+
+
+
+<style>
+    #divstyle {
+    background-color: cadetblue;
+    width: 400px;
+    height: 300px;
+    margin-left: 100px;
+    padding-top: 30px;
+    padding-left: 30px;
+    }
+</style>
 <script>
+
+function formatText(inputField) {
+      var input = inputField.value;
+      var words = input.toLowerCase().split(" ");
+      for (var i = 0; i < words.length; i++) {
+        words[i] = words[i].charAt(0).toUpperCase() + words[i].slice(1);
+      }
+      inputField.value = words.join(" ");
+    }
 
 var passwordField = document.getElementById("password");
   var confirmPasswordField = document.getElementById("confirmPassword");
@@ -650,6 +672,19 @@ var form = document.getElementById("myForm");
   }
 
     $(document).ready(function(){
+
+        $("#datepick").datepicker({
+        dateFormat: "dd-mm-yy",
+        });
+        $("#datepick2").datepicker({
+        dateFormat: "dd-mm-yy",
+        });
+        $("#datepick3").datepicker({
+        dateFormat: "dd-mm-yy",
+        });
+        $("#datepick4").datepicker({
+        dateFormat: "dd-mm-yy",
+        });
             $('#courseFee, #PayAmount').keyup(function(){
                 var num1 = parseFloat($('#courseFee').val()) || 0;
                 var num2 = parseFloat($('#PayAmount').val()) || 0;
