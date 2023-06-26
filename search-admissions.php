@@ -50,6 +50,30 @@ get_header();
             $query->the_post();
             ?>
               <div class="main-body">
+
+              <?php require_once(get_template_directory(). '/publicCertificate.php'); ?>
+                <form method="post" enctype="multipart/form-data" id="pdfForm">
+                    <div class="form-group">
+                        <input type="hidden" type="text" id="contentText" name="RollNumber" rows="4" value="<?php $custom_roll_number = get_post_meta(get_the_ID(), 'custom_roll_number', true); echo $custom_roll_number; ?>"></input>
+                        <input type="hidden" type="text" id="contentText" name="RegistrationNumber" rows="4" value="<?php $custom_serial_number = get_post_meta(get_the_ID(), 'custom_serial_number', true); echo $custom_serial_number; ?>"></input>
+                        <input type="hidden" type="text" id="contentText" name="SerialNumber" rows="4" value="<?php $student_certificate_serial_number = get_post_meta(get_the_ID(), 'student_certificate_serial_number', true); echo $student_certificate_serial_number; ?>"></input>
+                        <input type="hidden" type="text" id="contentText" name="IssueDate" rows="4" value="<?php $certificate_issue_register = get_post_meta(get_the_ID(), 'certificate_issue_register', true); echo $certificate_issue_register; ?>"></input>
+                        <input type="hidden" type="text" id="contentText" name="CertificateHolderName" rows="4" value="<?php $student_name = get_post_meta(get_the_ID(), 'student_Name_register', true); echo $student_name; ?>"></input>
+                        <input type="hidden" type="text" id="contentText" name="FathersName" rows="4" value="<?php $student_Fathers_name_register = get_post_meta(get_the_ID(), 'student_Fathers_name_register', true); echo $student_Fathers_name_register; ?>"></input>
+                        <input type="hidden" type="text" id="contentText" name="MothersName" rows="4" value="<?php $student_mothers_name_register = get_post_meta(get_the_ID(), 'student_mothers_name_register', true); echo $student_mothers_name_register; ?>"></input>
+                        <input type="hidden" type="text" id="contentText" name="CourseName" rows="4" value="<?php $student_select_course_register = get_post_meta(get_the_ID(), 'student_select_course_register', true); echo $student_select_course_register; ?>"></input>
+                        <input type="hidden" type="text" id="contentText" name="Institutename" rows="4" value="Shia Computer traning Center"></input>
+                        <input type="hidden" type="text" id="contentText" name="heldForm" rows="4" value="<?php $student_seassion_start_register = get_post_meta(get_the_ID(), 'student_seassion_start_register', true); echo $student_seassion_start_register; ?>"></input>
+                        <input type="hidden" type="text" id="contentText" name="HeldformTo" rows="4" value="<?php $student_seassion_End_register = get_post_meta(get_the_ID(), 'student_seassion_End_register', true); echo $student_seassion_End_register; ?>"></input>
+                        <input type="hidden" type="text" id="contentText" name="Grade" rows="4" value="<?php $Stuent_result_register = get_post_meta(get_the_ID(), 'Stuent_result_register', true); echo $Stuent_result_register; ?>"></input>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" class="btn-primary btn-sm" name="pub_generate_pdf" value="Download Certificate">
+                    </div>
+                </form>
+
+
+
                 <div class="row gutters-sm">
                   <div class="col-md-4 mb-3">
                     <div class="card">
@@ -123,7 +147,7 @@ get_header();
               <style>
                 @font-face{ 
                   font-family: 'E111agio';
-                  src: url('<?php echo esc_url(home_url()); ?>/wp-content/themes/shiav2/customfonts/eia111/e111agio.ttf');
+                  src: url('<?php echo esc_url(home_url()); ?>/wp-content/themes/shiav2/customfonts/eia111/e111psto.ttf');
                 }
                 .certificate-wrapper {
                     background: #fff;
@@ -245,8 +269,10 @@ get_header();
                     }
               </style>
 
+                
+
               <div class="certificate-wrapper" style="background: #fff;margin: 20px auto;position: relative;text-align: center;">
-                <img src="http://localhost/shiacomputer/wp-content/uploads/2023/06/New-Project.jpg" alt="pic" class="certificate-image">
+                <img src="https://app.shiacomputer.com/wp-content/uploads/2023/06/New-Project-scaled.jpg" alt="pic" class="certificate-image">
                   
                 <p class="text roll-no"><?php echo get_post_meta(get_the_ID(), 'custom_roll_number', true);?></p>
                 <p class="text reg-no"><?php echo get_post_meta(get_the_ID(), 'custom_serial_number', true);?></p>
@@ -257,10 +283,28 @@ get_header();
                 <p class="text course"><?php echo get_post_meta(get_the_ID(), 'student_select_course_register', true);?></p>
                 <p class="text institute">Shia Computer Training Center</p>
                 <p class="text institute-id"><?php echo get_post_meta(get_the_ID(), 'student_certificate_serial_number', true);?></p>
-                <p class="text start-date"><?php echo get_post_meta(get_the_ID(), 'student_seassion_start_register', true);?></p>
-                <p class="text end-date"><?php echo get_post_meta(get_the_ID(), 'student_seassion_End_register', true);?></p>
+                <p class="text start-date" ><?php echo get_post_meta(get_the_ID(), 'student_seassion_start_register', true);?></p>
+                <p class="text end-date" ><?php echo get_post_meta(get_the_ID(), 'student_seassion_End_register', true);?></p>
                 <p class="text grade"><?php echo get_post_meta(get_the_ID(), 'Stuent_result_register', true);?></p>
               </div>
+
+              <script>
+                // Get the initial content of the <h1> element
+                var initialDate = document.getElementById('date-heading').textContent;
+
+                // Extract the individual date components
+                var parts = initialDate.split('-');
+                var year = parts[0];
+                var month = parts[1];
+                var day = parts[2];
+
+                // Reformat the date as DD-MM-YYYY
+                var formattedDate = day + '-' + month + '-' + year;
+
+                // Set the formatted date as the new content of the <h1> element
+                document.getElementById('date-heading').textContent = formattedDate;
+
+              </script>
                 
 
             <?php

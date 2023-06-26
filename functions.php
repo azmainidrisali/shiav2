@@ -1827,3 +1827,37 @@ function check_user_existence() {
 }
 add_action('wp_ajax_check_user', 'check_user_existence');
 add_action('wp_ajax_nopriv_check_user', 'check_user_existence');
+
+
+//custom wp-admin area post table
+// Step 1: Add custom columns to the admissions post type table
+function admissions_custom_columns($columns) {
+	$columns['custom_roll_number'] = 'Roll Number';
+	$columns['custom_serial_number'] = 'Registration Number';
+	return $columns;
+  }
+  add_filter('manage_admissions_posts_columns', 'admissions_custom_columns');
+  
+  // Step 2: Display custom field values in the custom columns
+  function admissions_custom_column($column, $post_id) {
+	if ($column === 'custom_roll_number') {
+	  $custom_roll_number = get_post_meta($post_id, 'custom_roll_number', true);
+	  echo $custom_roll_number;
+	}
+  
+	if ($column === 'custom_serial_number') {
+	  $custom_serial_number = get_post_meta($post_id, 'custom_serial_number', true);
+	  echo $custom_serial_number;
+	}
+  }
+  add_action('manage_admissions_posts_custom_column', 'admissions_custom_column', 10, 2);
+  
+  // Step 3: Make the custom columns sortable (optional)
+  function admissions_sortable_columns($columns) {
+	$columns['custom_roll_number'] = 'custom_roll_number';
+	$columns['custom_serial_number'] = 'custom_serial_number';
+	return $columns;
+  }
+  add_filter('manage_edit-admissions_sortable_columns', 'admissions_sortable_columns');
+  
+  

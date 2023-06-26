@@ -1,7 +1,7 @@
 <?php
             // Suppress any output
                                                             
-if (isset($_POST['generate_pdf'])) {
+if (isset($_POST['pub_generate_pdf'])) {
     
     
 
@@ -10,7 +10,7 @@ if (isset($_POST['generate_pdf'])) {
     // Include the TCPDF plugin file
     require_once $themeDir . '/plugins/tcpdf-main/tcpdf.php';
 
-    function generateCertificatePDF($backgroundImage,$IssueDate,$SerialNumber, $CertificateHolderName, $FathersName, $MothersName, $CourseName, $Institutename, $heldForm, $HeldformTo, $Grade, $RollNumber, $RegistrationNumber, $filename) {
+    function pub_generateCertificatePDF($backgroundImage,$IssueDate,$SerialNumber, $CertificateHolderName, $FathersName, $MothersName, $CourseName, $Institutename, $heldForm, $HeldformTo, $Grade, $RollNumber, $RegistrationNumber, $filename) {
         // Create new TCPDF instance
         $pdf = new TCPDF('L', 'mm', 'A4', true, 'UTF-8', false);
 
@@ -157,6 +157,6 @@ if (isset($_POST['generate_pdf'])) {
     $IssueDate = $_POST['IssueDate'];
     $filename = 'SCTC-'.$RollNumber.'.pdf';
 
-    generateCertificatePDF($backgroundImage,$IssueDate,$SerialNumber, $CertificateHolderName, $FathersName, $MothersName, $CourseName, $Institutename, $heldForm, $HeldformTo, $Grade, $RollNumber, $RegistrationNumber, $filename);
+    pub_generateCertificatePDF($backgroundImage,$IssueDate,$SerialNumber, $CertificateHolderName, $FathersName, $MothersName, $CourseName, $Institutename, $heldForm, $HeldformTo, $Grade, $RollNumber, $RegistrationNumber, $filename);
 }
 ?>
