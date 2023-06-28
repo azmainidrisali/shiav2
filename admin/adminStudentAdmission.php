@@ -163,14 +163,14 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             }
 
 
-                            if (isset($shiacomputeroption['adminStudentList'])) {
-                                $get_admsinStudentLink_id = $shiacomputeroption['adminStudentList']; // Get the selected page ID
-
-                                if ($get_admsinStudentLink_id) {
-                                    $get_admsinStudentLink_link = get_permalink($get_admsinStudentLink_id); // Get the permalink of the selected page
+                            if (isset($shiacomputeroption['adminStudentAdmission'])) {
+                                $get_adminStudentAdmission_id = $shiacomputeroption['adminStudentAdmission']; // Get the selected page ID
+        
+                                if ($get_adminStudentAdmission_id) {
+                                    $get_adminStudentAdmission_link = get_permalink($get_adminStudentAdmission_id); // Get the permalink of the selected page
                                 }
                             }
-                            $location = $get_admsinStudentLink_link; 
+                            $location = $get_adminStudentAdmission_link; 
 
                             echo "<meta http-equiv='refresh' content='0;url=$location' />";
                             exit;
@@ -540,7 +540,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
 
                         <?php wp_nonce_field( 'cpt_nonce_action', 'cpt_nonce_field' ); ?>
 
-                        <input type="submit" value="Register" id='submit' class="btn px-5 btn-primary">
+                        <input type="submit" value="SAVE DRAFT" id='submit' class="btn px-5 btn-primary">
 
                     </form>
                 </div>

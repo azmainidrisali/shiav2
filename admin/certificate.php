@@ -124,11 +124,13 @@ if (isset($_POST['generate_pdf'])) {
         $pdf->SetXY($resultNameX, $resultNameY);
         $pdf->Cell(0, 0, $Grade, 0, 1, 'C');
 
+
+
         // Clear output buffer
         ob_end_clean();
 
         // Output the PDF as a download
-        $pdf->Output($filename, 'D');
+        $pdf->Output($filename, 'I');
 
         // Terminate the script
         exit;
