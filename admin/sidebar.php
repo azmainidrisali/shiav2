@@ -26,6 +26,9 @@
         <a class="nav-link" href="<?php echo($get_adminPanel_link) ?>">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
+        <a class="nav-link" href="https://login.esms.com.bd/dashboard">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Sms server</span></a>
     </li>
 
     <!-- Divider -->
