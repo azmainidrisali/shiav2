@@ -48,83 +48,89 @@ if (isset($_POST['generate_pdf'])) {
         $pdf->SetTextColor(0, 0, 0); // Black color
 
         // Set text position
-        $SerialNumberX = 106; // X-coordinate
+        $SerialNumberX = 110; // X-coordinate
         $SerialNumberY = 63; // Y-coordinate
         $pdf->SetXY($SerialNumberX, $SerialNumberY);
         $pdf->Cell(0, 0, $IssueDate, 0, 1, 'L');
 
         // Set text position
-        $IssueDateX = 100; // X-coordinate
+        $IssueDateX = 111; // X-coordinate
         $IssueDateY = 55; // Y-coordinate
         $pdf->SetXY($IssueDateX, $IssueDateY);
         $pdf->Cell(0, 0, $SerialNumber, 0, 1, 'L');
 
         // Set text position
-        $RegistrationNumberX = 250; // X-coordinate
+        $RegistrationNumberX = 225; // X-coordinate
         $RegistrationNumberY = 52; // Y-coordinate
         $pdf->SetXY($RegistrationNumberX, $RegistrationNumberY);
         $pdf->Cell(0, 0, $RegistrationNumber, 0, 1, 'C');
 
         // Set text position
-        $rollNumberX = 250; // X-coordinate
+        $rollNumberX = 225; // X-coordinate
         $rollNumberY = 60; // Y-coordinate
         $pdf->SetXY($rollNumberX, $rollNumberY);
         $pdf->Cell(0, 0, $RollNumber, 0, 1, 'C');
         
         // Set text position
         $textX = 30; // X-coordinate
-        $textY = 94; // Y-coordinate
+        $textY = 92; // Y-coordinate
         $pdf->SetXY($textX, $textY);
         $pdf->SetFont('e111psto', 'B', 18);
         $pdf->Cell(0, 0, $CertificateHolderName, 0, 1, 'C');
 
         // Set text position
         $fathersNameX = 18; // X-coordinate
-        $fathersNameY = 106; // Y-coordinate
+        $fathersNameY = 103; // Y-coordinate
         // Write certificate content
         $pdf->SetXY($fathersNameX, $fathersNameY);
         $pdf->Cell(0, 0, $FathersName, 0, 1, 'C');
 
         // Set text position
         $mothersNameX = 19; // X-coordinate
-        $mothersNameY = 118; // Y-coordinate
+        $mothersNameY = 114; // Y-coordinate
         $pdf->SetXY($mothersNameX, $mothersNameY);
         $pdf->Cell(0, 0, $MothersName, 0, 1, 'C');
 
         // Set text position
         $courseNameX = 105; // X-coordinate
-        $courseNameY = 130; // Y-coordinate
+        $courseNameY = 125; // Y-coordinate
         $pdf->SetXY($courseNameX, $courseNameY);
         $pdf->Cell(0, 0, $CourseName, 0, 1, 'C');
 
         // Set text position
-        $instituteNameX = 19; // X-coordinate
-        $instituteNameY = 142; // Y-coordinate
+        $instituteNameX = 23; // X-coordinate
+        $instituteNameY = 136; // Y-coordinate
         $pdf->SetXY($instituteNameX, $instituteNameY);
         $pdf->Cell(0, 0, $Institutename, 0, 1, 'C');
 
         // Set text position
         $heldFromNameX = 110; // X-coordinate
-        $heldFromNameY = 153; // Y-coordinate
+        $heldFromNameY = 146; // Y-coordinate
 
         $pdf->SetXY($heldFromNameX, $heldFromNameY);
         $pdf->Cell(0, 0, $heldForm, 0, 1, 'L');
 
         // Set text position
         $heldtoNameX = 70; // X-coordinate
-        $heldtoNameY = 153; // Y-coordinate
+        $heldtoNameY = 146; // Y-coordinate
 
         $pdf->SetXY($heldtoNameX, $heldtoNameY);
         $pdf->Cell(0, 0, $HeldformTo, 0, 1, 'C');
         
         // Set text position
-        $resultNameX = 250; // X-coordinate
-        $resultNameY = 153; // Y-coordinate
+        $resultNameX = 230; // X-coordinate
+        $resultNameY = 146; // Y-coordinate
 
         $pdf->SetXY($resultNameX, $resultNameY);
         $pdf->Cell(0, 0, $Grade, 0, 1, 'C');
 
+        $qrCodeURL = 'https://app.shiacomputer.com/result-search/?rollNumber='.$RollNumber;
+        $qrCodeImage = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . urlencode($qrCodeURL);
 
+        // Set QR code position
+        $qrCodeX = 176; // X-coordinate
+        $qrCodeY = 168; // Y-coordinate
+        $pdf->Image($qrCodeImage, $qrCodeX, $qrCodeY, 25, 25, '', '', '', false, 300, '', false, false, 0, true);
 
         // Clear output buffer
         ob_end_clean();
@@ -144,7 +150,7 @@ if (isset($_POST['generate_pdf'])) {
             $get_adminCertificate_link = get_permalink($get_adminCertificate_id); // Get the permalink of the selected page
         }
     }
-    $backgroundImage = 'https://app.shiacomputer.com/wp-content/uploads/2023/06/New-Project-scaled.jpg';
+    $backgroundImage = 'https://app.shiacomputer.com/wp-content/uploads/2023/07/Certificatggge-shia-scaled.jpg';
     $CertificateHolderName = $_POST['CertificateHolderName'];
     $FathersName = $_POST['FathersName'];
     $MothersName = $_POST['MothersName'];
@@ -158,7 +164,6 @@ if (isset($_POST['generate_pdf'])) {
     $SerialNumber = $_POST['SerialNumber'];
     $IssueDate = $_POST['IssueDate'];
     $filename = 'SCTC-'.$RollNumber.'.pdf';
-
     generateCertificatePDF($backgroundImage,$IssueDate,$SerialNumber, $CertificateHolderName, $FathersName, $MothersName, $CourseName, $Institutename, $heldForm, $HeldformTo, $Grade, $RollNumber, $RegistrationNumber, $filename);
 }
 ?>

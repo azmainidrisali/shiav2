@@ -1551,313 +1551,312 @@ add_action('after_setup_theme', 'Chide_admin_bar');
 //sms function
 
 
+
+
+
+
+
 //registration number start
-// Admission student role number
-function add_custom_serial_number_meta_box() {
-    add_meta_box(
-        'custom_serial_number_meta_box', // Meta box ID
-        'Registration Number', // Meta box title
-        'generate_custom_serial_number_meta_box', // Callback function to render meta box content
-        'admissions', // Replace with your custom post type slug
-        'normal', // Meta box position (normal, side, advanced)
-        'default' // Meta box priority (high, core, default, low)
-    );
-}
-add_action('add_meta_boxes', 'add_custom_serial_number_meta_box');
+	function add_custom_serial_number_meta_box() {
+		add_meta_box(
+			'custom_serial_number_meta_box', // Meta box ID
+			'Registration Number', // Meta box title
+			'generate_custom_serial_number_meta_box', // Callback function to render meta box content
+			'admissions', // Replace with your custom post type slug
+			'normal', // Meta box position (normal, side, advanced)
+			'default' // Meta box priority (high, core, default, low)
+		);
+	}
+	add_action('add_meta_boxes', 'add_custom_serial_number_meta_box');
 
-// Callback function to render meta box content
-function generate_custom_serial_number_meta_box($post) {
-    $serial_number = get_post_meta($post->ID, 'custom_serial_number', true);
-    ?>
-    <p><strong>Registration NUMBER: </strong><?php echo $serial_number; ?></p>
-    <?php
-}
+	// Callback function to render meta box content
+	function generate_custom_serial_number_meta_box($post) {
+		$serial_number = get_post_meta($post->ID, 'custom_serial_number', true);
+		?>
+		<p><strong>Registration NUMBER: </strong><?php echo $serial_number; ?></p>
+		<?php
+	}
 
-// Generate and save custom serial number when a new post is published
-function save_custom_serial_number($new_status, $old_status, $post) {
-    // Check if the post is of your custom post type and if it transitioned to "publish" status
-    $post_type = $post->post_type;
-    if ($post_type !== 'admissions' || $new_status !== 'publish' || $old_status === 'publish') {
-        return;
-    }
+	// Generate and save custom serial number when a new post is published
+	function save_custom_serial_number($new_status, $old_status, $post) {
+		// Check if the post is of your custom post type and if it transitioned to "publish" status
+		$post_type = $post->post_type;
+		if ($post_type !== 'admissions' || $new_status !== 'publish' || $old_status === 'publish') {
+			return;
+		}
 
-    // Check if the serial number has already been generated for this post
-    $existing_serial_number = get_post_meta($post->ID, 'custom_serial_number', true);
-    if (!empty($existing_serial_number)) {
-        return; // Serial number already exists, no need to generate again
-    }
+		// Check if the serial number has already been generated for this post
+		$existing_serial_number = get_post_meta($post->ID, 'custom_serial_number', true);
+		if (!empty($existing_serial_number)) {
+			return; // Serial number already exists, no need to generate again
+		}
 
-    // Get the total number of published posts for your custom post type
-    $args = array(
-        'post_type'      => 'admissions', // Replace with your custom post type slug
-        'post_status'    => 'publish',
-        'posts_per_page' => -1,
-    );
-    $posts = get_posts($args);
-    $post_count = count($posts);
+		// Get the total number of published posts for your custom post type
+		$args = array(
+			'post_type'      => 'admissions', // Replace with your custom post type slug
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+		);
+		$posts = get_posts($args);
+		$post_count = count($posts);
 
-    // Determine the starting serial number with leading zeros
-    $starting_serial = str_pad($post_count + 110, 4, '0', STR_PAD_LEFT);
+		// Determine the starting serial number with leading zeros
+		$starting_serial = str_pad($post_count + 110, 4, '0', STR_PAD_LEFT);
 
-    // Generate the serial number
-    $serial_number = '2022' . $starting_serial;
+		// Generate the serial number
+		$serial_number = '2022' . $starting_serial;
 
-    // Save the serial number
-    update_post_meta($post->ID, 'custom_serial_number', $serial_number);
-}
-add_action('transition_post_status', 'save_custom_serial_number', 10, 3);
+		// Save the serial number
+		update_post_meta($post->ID, 'custom_serial_number', $serial_number);
+	}
+	add_action('transition_post_status', 'save_custom_serial_number', 10, 3);
+//registration number End
 
+//roll number start
+	function add_custom_roll_number_meta_box() {
+		add_meta_box(
+			'custom_roll_number_meta_box', // Meta box ID
+			'Roll Number', // Meta box title
+			'generate_custom_roll_number_meta_box', // Callback function to render meta box content
+			'admissions', // Replace with your custom post type slug
+			'normal', // Meta box position (normal, side, advanced)
+			'default' // Meta box priority (high, core, default, low)
+		);
+	}
+	add_action('add_meta_boxes', 'add_custom_roll_number_meta_box');
 
+	// Callback function to render meta box content
+	function generate_custom_roll_number_meta_box($post) {
+		$roll_number = get_post_meta($post->ID, 'custom_roll_number', true);
+		?>
+		<p><strong>Roll Number: </strong><?php echo $roll_number; ?></p>
+		<?php
+	}
 
-function add_custom_roll_number_meta_box() {
-    add_meta_box(
-        'custom_roll_number_meta_box', // Meta box ID
-        'Roll Number', // Meta box title
-        'generate_custom_roll_number_meta_box', // Callback function to render meta box content
-        'admissions', // Replace with your custom post type slug
-        'normal', // Meta box position (normal, side, advanced)
-        'default' // Meta box priority (high, core, default, low)
-    );
-}
-add_action('add_meta_boxes', 'add_custom_roll_number_meta_box');
+	// Generate and save unique roll number combined with sequential number when a new post is published
+	function save_custom_roll_number($post_id) {
+		// Check if the post is of your custom post type and if it is published
+		$post_type = get_post_type($post_id);
+		$post_status = get_post_status($post_id);
+		if ($post_type !== 'admissions' || $post_status !== 'publish') {
+			return;
+		}
 
-// Callback function to render meta box content
-function generate_custom_roll_number_meta_box($post) {
-    $roll_number = get_post_meta($post->ID, 'custom_roll_number', true);
-    ?>
-    <p><strong>Roll Number: </strong><?php echo $roll_number; ?></p>
-    <?php
-}
+		// Check if the roll number has already been generated for this post
+		$existing_roll_number = get_post_meta($post_id, 'custom_roll_number', true);
+		if (!empty($existing_roll_number)) {
+			return; // Roll number already exists, no need to generate again
+		}
 
-// Generate and save unique roll number combined with sequential number when a new post is published
-function save_custom_roll_number($post_id) {
-    // Check if the post is of your custom post type and if it is published
-    $post_type = get_post_type($post_id);
-    $post_status = get_post_status($post_id);
-    if ($post_type !== 'admissions' || $post_status !== 'publish') {
-        return;
-    }
+		// Get the total number of published posts for your custom post type
+		$args = array(
+			'post_type'      => 'admissions', // Replace with your custom post type slug
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+		);
+		$posts = get_posts($args);
+		$post_count = count($posts);
 
-    // Check if the roll number has already been generated for this post
-    $existing_roll_number = get_post_meta($post_id, 'custom_roll_number', true);
-    if (!empty($existing_roll_number)) {
-        return; // Roll number already exists, no need to generate again
-    }
+		// Determine the starting serial number
+		$starting_serial = str_pad($post_count + 1, 4, '0', STR_PAD_LEFT);
 
-    // Get the total number of published posts for your custom post type
-    $args = array(
-        'post_type'      => 'admissions', // Replace with your custom post type slug
-        'post_status'    => 'publish',
-        'posts_per_page' => -1,
-    );
-    $posts = get_posts($args);
-    $post_count = count($posts);
+		// Generate the roll number with the '2022' prefix and sequential number
+		$roll_number_prefix = '2022';
+		$roll_number = $roll_number_prefix . $starting_serial;
 
-    // Determine the sequential number with leading zeros
-    $sequential_number = $post_count;
-    if ($sequential_number < 10) {
-        $sequential_number = sprintf('%04d', $sequential_number);
-    }
-
-    // Generate the roll number with the '2022' prefix and sequential number
-    $roll_number_prefix = '2022';
-    $roll_number = $roll_number_prefix . $sequential_number;
-
-    // Save the roll number and sequential number
-    update_post_meta($post_id, 'custom_roll_number', $roll_number);
-    update_post_meta($post_id, 'sequential_number', $sequential_number);
-}
-add_action('save_post', 'save_custom_roll_number');
-
-
-
-
+		// Save the roll number
+		update_post_meta($post_id, 'custom_roll_number', $roll_number);
+	}
+	add_action('save_post', 'save_custom_roll_number');
 
 // roll number end
 
-
-//serial number
-function add_student_certificate_serial_number_meta_box() {
-    add_meta_box(
-        'student_certificate_serial_number_meta_box', // Meta box ID
-        'Certificate Serial Number', // Meta box title
-        'generate_student_certificate_serial_number_meta_box', // Callback function to render meta box content
-        'admissions', // Replace with your custom post type slug
-        'normal', // Meta box position (normal, side, advanced)
-        'default' // Meta box priority (high, core, default, low)
-    );
-}
-add_action('add_meta_boxes', 'add_student_certificate_serial_number_meta_box');
-
-// Callback function to render meta box content
-function generate_student_certificate_serial_number_meta_box($post) {
-    $serial_number = get_post_meta($post->ID, 'student_certificate_serial_number', true);
-    ?>
-    <p><strong>Certificate Serial Number: </strong><?php echo $serial_number; ?></p>
-    <?php
-}
-
-// Generate and save unique student certificate serial number starting from 8977 when a new post is created or updated
-function save_student_certificate_serial_number($post_id) {
-    // Check if the post is of your custom post type
-    $post_type = get_post_type($post_id);
-    if ($post_type !== 'admissions') {
-        return;
-    }
-
-    // Check if the post already has a certificate serial number
-    $serial_number = get_post_meta($post_id, 'student_certificate_serial_number', true);
-    if (!$serial_number) {
-        // Get the total number of published and draft posts for your custom post type
-        $args = array(
-            'post_type'      => 'admissions', // Replace with your custom post type slug
-            'post_status'    => array('publish', 'draft'),
-            'posts_per_page' => -1,
-        );
-        $posts = get_posts($args);
-        $post_count = count($posts);
-
-        // Determine the starting serial number
-        $starting_serial = str_pad(1330 + $post_count, 4, '0', STR_PAD_LEFT);
-
-        // Generate the certificate serial number with the '22' prefix
-        $serial_number = '22' . $starting_serial;
-
-        // Save the certificate serial number
-        update_post_meta($post_id, 'student_certificate_serial_number', $serial_number);
-    }
-}
-add_action('save_post', 'save_student_certificate_serial_number');
-
-//serial number
-
-// certificate Serial Number start
-
-function display_users_table() {
-    // Get all users
-    $users = get_users();
-
-    if (!empty($users)) {
-        // Start the table
-        echo '<table class="table table-bordered">';
-        echo '<thead><tr><th>Profile Picture</th><th>Registration Number</th><th>Syesteam ID</th><th>Username</th><th>Email</th><th>Roll number</th></tr></thead>';
-        echo '<tbody>';
-
-        // Loop through each user
-        foreach ($users as $user) {
-            $user_id = $user->ID;
-            $username = $user->user_login;
-            $email = $user->user_email;
-
-            // Get user's first post
-            $args = array(
-                'author' => $user_id,
-                'posts_per_page' => 1,
-                'orderby' => 'date',
-                'order' => 'ASC',
-                'post_type' => 'admissions', // Adjust the post type if necessary
-            );
-            $user_posts = get_posts($args);
-
-            $first_post_meta = '';
-            $first_post_meta2 = '';
-            $thumbnail_url = '';
-            if (!empty($user_posts)) {
-                // Get the custom meta value from the first post
-                $first_post_id = $user_posts[0]->ID;
-                $first_post_meta = get_post_meta($first_post_id, 'custom_roll_number', true);
-                $first_post_meta2 = get_post_meta($first_post_id, 'custom_serial_number', true);
-                $thumbnail_url = get_the_post_thumbnail_url($first_post_id, 'thumbnail');
-            }
-
-            // Display user data in table rows
-            echo '<tr>';
-            echo '<td><img width="100" src="' . $thumbnail_url . '"></td>';
-            echo '<td>' . $first_post_meta2 . '</td>';
-            echo '<td>' . $user_id . '</td>';
-            echo '<td>' . $username . '</td>';
-            echo '<td>' . $email . '</td>';
-            echo '<td>' . $first_post_meta . '</td>';
-            echo '</tr>';
-        }
-
-        // End the table
-        echo '</tbody></table>';
-    } else {
-        echo 'No users found.';
-    }
-}
-
-// Modify search query for custom post type "admissions"
-function custom_admissions_search_query($query) {
-	if (is_search() && $query->is_main_query() && isset($_GET['rollNumber'])) {
-	  $rollNumber = sanitize_text_field($_GET['rollNumber']);
-  
-	  $metaQuery = array(
-		'key' => 'custom_roll_number',
-		'value' => $rollNumber,
-		'compare' => '='
-	  );
-  
-	  $query->set('post_type', 'admissions');
-	  $query->set('meta_query', array($metaQuery));
+//serial number start
+	function add_student_certificate_serial_number_meta_box() {
+		add_meta_box(
+			'student_certificate_serial_number_meta_box', // Meta box ID
+			'Certificate Serial Number', // Meta box title
+			'generate_student_certificate_serial_number_meta_box', // Callback function to render meta box content
+			'admissions', // Replace with your custom post type slug
+			'normal', // Meta box position (normal, side, advanced)
+			'default' // Meta box priority (high, core, default, low)
+		);
 	}
-  }
-  add_action('pre_get_posts', 'custom_admissions_search_query');
-  
+	add_action('add_meta_boxes', 'add_student_certificate_serial_number_meta_box');
 
-
-// Function to handle the Ajax request and check user existence
-function check_user_existence() {
-    // Get the name entered by the user from the Ajax request
-    $user_name = $_POST['user_name'];
-
-    // Check if the user exists based on the name
-    $user = get_user_by('login', $user_name);
-
-    if ($user) {
-        // User exists
-        echo 'exists';
-    } else {
-        // User does not exist
-        echo 'not_exists';
-    }
-
-    exit; // Terminate the script after sending the response
-}
-add_action('wp_ajax_check_user', 'check_user_existence');
-add_action('wp_ajax_nopriv_check_user', 'check_user_existence');
-
-
-//custom wp-admin area post table
-// Step 1: Add custom columns to the admissions post type table
-function admissions_custom_columns($columns) {
-	$columns['custom_roll_number'] = 'Roll Number';
-	$columns['custom_serial_number'] = 'Registration Number';
-	return $columns;
-  }
-  add_filter('manage_admissions_posts_columns', 'admissions_custom_columns');
-  
-  // Step 2: Display custom field values in the custom columns
-  function admissions_custom_column($column, $post_id) {
-	if ($column === 'custom_roll_number') {
-	  $custom_roll_number = get_post_meta($post_id, 'custom_roll_number', true);
-	  echo $custom_roll_number;
+	// Callback function to render meta box content
+	function generate_student_certificate_serial_number_meta_box($post) {
+		$serial_number = get_post_meta($post->ID, 'student_certificate_serial_number', true);
+		?>
+		<p><strong>Certificate Serial Number: </strong><?php echo $serial_number; ?></p>
+		<?php
 	}
-  
-	if ($column === 'custom_serial_number') {
-	  $custom_serial_number = get_post_meta($post_id, 'custom_serial_number', true);
-	  echo $custom_serial_number;
+
+	// Generate and save unique student certificate serial number starting from 8977 when a new post is created or updated
+	function save_student_certificate_serial_number($post_id) {
+		// Check if the post is of your custom post type
+		$post_type = get_post_type($post_id);
+		if ($post_type !== 'admissions') {
+			return;
+		}
+
+		// Check if the post already has a certificate serial number
+		$serial_number = get_post_meta($post_id, 'student_certificate_serial_number', true);
+		if (!$serial_number) {
+			// Get the total number of published and draft posts for your custom post type
+			$args = array(
+				'post_type'      => 'admissions', // Replace with your custom post type slug
+				'post_status'    => array('publish', 'draft'),
+				'posts_per_page' => -1,
+			);
+			$posts = get_posts($args);
+			$post_count = count($posts);
+
+			// Determine the starting serial number
+			$starting_serial = str_pad(1330 + $post_count, 4, '0', STR_PAD_LEFT);
+
+			// Generate the certificate serial number with the '22' prefix
+			$serial_number = '22' . $starting_serial;
+
+			// Save the certificate serial number
+			update_post_meta($post_id, 'student_certificate_serial_number', $serial_number);
+		}
 	}
-  }
-  add_action('manage_admissions_posts_custom_column', 'admissions_custom_column', 10, 2);
-  
-  // Step 3: Make the custom columns sortable (optional)
-  function admissions_sortable_columns($columns) {
-	$columns['custom_roll_number'] = 'custom_roll_number';
-	$columns['custom_serial_number'] = 'custom_serial_number';
-	return $columns;
-  }
-  add_filter('manage_edit-admissions_sortable_columns', 'admissions_sortable_columns');
-  
-  
+	add_action('save_post', 'save_student_certificate_serial_number');
+
+//serial number end
+
+
+
+
+
+
+// table and other
+	function display_users_table() {
+		// Get all users
+		$users = get_users();
+
+		if (!empty($users)) {
+			// Start the table
+			echo '<table class="table table-bordered">';
+			echo '<thead><tr><th>Profile Picture</th><th>Registration Number</th><th>Syesteam ID</th><th>Username</th><th>Email</th><th>Roll number</th></tr></thead>';
+			echo '<tbody>';
+
+			// Loop through each user
+			foreach ($users as $user) {
+				$user_id = $user->ID;
+				$username = $user->user_login;
+				$email = $user->user_email;
+
+				// Get user's first post
+				$args = array(
+					'author' => $user_id,
+					'posts_per_page' => 1,
+					'orderby' => 'date',
+					'order' => 'ASC',
+					'post_type' => 'admissions', // Adjust the post type if necessary
+				);
+				$user_posts = get_posts($args);
+
+				$first_post_meta = '';
+				$first_post_meta2 = '';
+				$thumbnail_url = '';
+				if (!empty($user_posts)) {
+					// Get the custom meta value from the first post
+					$first_post_id = $user_posts[0]->ID;
+					$first_post_meta = get_post_meta($first_post_id, 'custom_roll_number', true);
+					$first_post_meta2 = get_post_meta($first_post_id, 'custom_serial_number', true);
+					$thumbnail_url = get_the_post_thumbnail_url($first_post_id, 'thumbnail');
+				}
+
+				// Display user data in table rows
+				echo '<tr>';
+				echo '<td><img width="100" src="' . $thumbnail_url . '"></td>';
+				echo '<td>' . $first_post_meta2 . '</td>';
+				echo '<td>' . $user_id . '</td>';
+				echo '<td>' . $username . '</td>';
+				echo '<td>' . $email . '</td>';
+				echo '<td>' . $first_post_meta . '</td>';
+				echo '</tr>';
+			}
+
+			// End the table
+			echo '</tbody></table>';
+		} else {
+			echo 'No users found.';
+		}
+	}
+
+	// Modify search query for custom post type "admissions"
+	function custom_admissions_search_query($query) {
+		if (is_search() && $query->is_main_query() && isset($_GET['rollNumber'])) {
+		$rollNumber = sanitize_text_field($_GET['rollNumber']);
+	
+		$metaQuery = array(
+			'key' => 'custom_roll_number',
+			'value' => $rollNumber,
+			'compare' => '='
+		);
+	
+		$query->set('post_type', 'admissions');
+		$query->set('meta_query', array($metaQuery));
+		}
+	}
+	add_action('pre_get_posts', 'custom_admissions_search_query');
+	
+
+
+	// Function to handle the Ajax request and check user existence
+	function check_user_existence() {
+		// Get the name entered by the user from the Ajax request
+		$user_name = $_POST['user_name'];
+
+		// Check if the user exists based on the name
+		$user = get_user_by('login', $user_name);
+
+		if ($user) {
+			// User exists
+			echo 'exists';
+		} else {
+			// User does not exist
+			echo 'not_exists';
+		}
+
+		exit; // Terminate the script after sending the response
+	}
+	add_action('wp_ajax_check_user', 'check_user_existence');
+	add_action('wp_ajax_nopriv_check_user', 'check_user_existence');
+
+
+	//custom wp-admin area post table
+	// Step 1: Add custom columns to the admissions post type table
+	function admissions_custom_columns($columns) {
+		$columns['custom_roll_number'] = 'Roll Number';
+		$columns['custom_serial_number'] = 'Registration Number';
+		return $columns;
+	}
+	add_filter('manage_admissions_posts_columns', 'admissions_custom_columns');
+	
+	// Step 2: Display custom field values in the custom columns
+	function admissions_custom_column($column, $post_id) {
+		if ($column === 'custom_roll_number') {
+		$custom_roll_number = get_post_meta($post_id, 'custom_roll_number', true);
+		echo $custom_roll_number;
+		}
+	
+		if ($column === 'custom_serial_number') {
+		$custom_serial_number = get_post_meta($post_id, 'custom_serial_number', true);
+		echo $custom_serial_number;
+		}
+	}
+	add_action('manage_admissions_posts_custom_column', 'admissions_custom_column', 10, 2);
+	
+	// Step 3: Make the custom columns sortable (optional)
+	function admissions_sortable_columns($columns) {
+		$columns['custom_roll_number'] = 'custom_roll_number';
+		$columns['custom_serial_number'] = 'custom_serial_number';
+		return $columns;
+	}
+	add_filter('manage_edit-admissions_sortable_columns', 'admissions_sortable_columns');
+	
+// table and other

@@ -79,7 +79,7 @@ get_header();
                     <div class="card">
                       <div class="card-body">
                         <div class="d-flex flex-column align-items-center text-center">
-                        <?php $thumbnail_url = get_the_post_thumbnail_url();?>
+                        <?php $thumbnail_url = 'https://th.bing.com/th/id/R.649e37baf7808c4df48c901e0302b1eb?rik=E1BFircZEscM5g&pid=ImgRaw&r=0';?>
                           <img src="<?php echo $thumbnail_url ?>" alt="Admin" class="rounded-circle" width="150">
                           <div class="mt-3">
                             <h4><?php the_title(); ?></h4>
@@ -145,118 +145,121 @@ get_header();
               </div>
 
               <style>
-                @font-face{ 
-                  font-family: 'E111agio';
-                  src: url('<?php echo esc_url(home_url()); ?>/wp-content/themes/shiav2/customfonts/eia111/e111psto.ttf');
-                }
-                .certificate-wrapper {
-                    background: #fff;
-                    margin: 20px auto;
-                    position: relative;
-                    text-align: center;
-                    width: 1000px; /* Set a fixed width for the wrapper */
-                    height: 700px; /* Set a fixed height for the wrapper */
-                }
+                    @font-face {
+                        font-family: 'E111agio';
+                        src: url('http://localhost/shiacomputer/wp-content/themes/shiav2/customfonts/eia111/e111psto.ttf');
+                    }
 
-                .certificate-image {
-                    width: 100%;
-                    height: auto;
-                }
+                    .certificate-wrapper {
+                        background: #fff;
+                        margin: 20px auto;
+                        position: relative;
+                        text-align: center;
+                        width: 1000px;
+                        /* Set a fixed width for the wrapper */
+                        height: 700px;
+                        /* Set a fixed height for the wrapper */
+                    }
 
-                .text {
-                    position: absolute;
-                    
-                    font-weight: bold;
-                }
+                    .certificate-image {
+                        width: 100%;
+                        height: auto;
+                    }
 
-                .roll-no {
-                  top: 174px;
-                  left: 898px;
-                  font-size: 13px;
-                }
+                    .text {
+                        position: absolute;
+                        font-weight: bold;
+                    }
+
+                    .roll-no {
+                        top: 177px;
+                        left: 862px;
+                        font-size: 13px;
+                    }
 
                     .reg-no {
-                    top: 203px;
-                    left: 899px;
-                    font-size: 13px;
-                }
+                        top: 204px;
+                        left: 864px;
+                        font-size: 13px;
+                    }
+
                     .publish-date {
-                    top: 210px;
-                    left: 371px;
-                    font-size: 13px;
-                }
+                        top: 211px;
+                        left: 377px;
+                        font-size: 13px;
+                    }
 
                     .name1 {
-                    top: 309px;
-                    left: 508px;
-                    font-family: "E111agio";
-                    font-size: 23px;
-                  color: #53555c;
-                }
+                        top: 299px;
+                        left: 494px;
+                        font-family: "E111agio";
+                        font-size: 23px;
+                        color: #53555c;
+                    }
 
-                .name2 {
-                    top: 350px;
-                    left: 461px;
-                    font-family: "E111agio";
-                    font-size: 23px;
-                  color: #53555c;
-                }
+                    .name2 {
+                        top: 340px;
+                        left: 450px;
+                        font-family: "E111agio";
+                        font-size: 23px;
+                        color: #53555c;
+                    }
 
-                .name3 {
-                    top: 391px;
-                    left: 462px;
-                    font-family: "E111agio";
-                    font-size: 23px;
-                  color: #53555c;
-                }
+                    .name3 {
+                        top: 375px;
+                        left: 451px;
+                        font-family: "E111agio";
+                        font-size: 23px;
+                        color: #53555c;
+                    }
 
-                .course {
-                    top: 430px;
-                    left: 587px;
-                    font-family: "E111agio";
-                    font-size: 23px;
-                  color: #53555c;
-                }
+                    .course {
+                        top: 413px;
+                        left: 572px;
+                        font-family: "E111agio";
+                        font-size: 23px;
+                        color: #53555c;
+                    }
 
-                .institute {
-                    top: 469px;
-                    left: 468px;
-                    font-family: "E111agio";
-                    font-size: 23px;
-                  color: #53555c;
-                }
+                    .institute {
+                        top: 449px;
+                        left: 448px;
+                        font-family: "E111agio";
+                        font-size: 23px;
+                        color: #53555c;
+                    }
 
-                .institute-id {
-                    top: 182px;
-                    left: 368px;
-                    font-size: 13px;
-                }
+                    .institute-id {
+                        top: 185px;
+                        left: 368px;
+                        font-size: 13px;
+                    }
 
                     .start-date {
-                    top: 505px;
-                    left: 385px;
-                    font-size: 13px;
-                    font-family: "E111agio";
-                    font-size: 23px;
-                  color: #53555c;
-                }
+                        top: 486px;
+                        left: 385px;
+                        font-size: 13px;
+                        font-family: "E111agio";
+                        font-size: 23px;
+                        color: #53555c;
+                    }
 
-                .end-date {
-                    top: 507px;
-                    left: 567px;
-                    font-size: 13px;
-                    font-family: "E111agio";
-                    font-size: 23px;
-                  color: #53555c;
-                }
+                    .end-date {
+                        top: 487px;
+                        left: 567px;
+                        font-size: 13px;
+                        font-family: "E111agio";
+                        font-size: 23px;
+                        color: #53555c;
+                    }
 
-                .grade {
-                    top: 508px;
-                    left: 907px;
-                    font-family: "E111agio";
-                    font-size: 23px;
-                  color: #53555c;
-                }
+                    .grade {
+                        top: 486px;
+                        left: 869px;
+                        font-family: "E111agio";
+                        font-size: 23px;
+                        color: #53555c;
+                    }
 
                     .logo {
                         top: 578px;
@@ -267,12 +270,12 @@ get_header();
                         height: 75px;
                         width: 100px;
                     }
-              </style>
+                </style>
 
                 
 
               <div class="certificate-wrapper" style="background: #fff;margin: 20px auto;position: relative;text-align: center;">
-                <img src="https://app.shiacomputer.com/wp-content/uploads/2023/06/New-Project-scaled.jpg" alt="pic" class="certificate-image">
+                <img src="https://app.shiacomputer.com/wp-content/uploads/2023/07/Certificatggge-shia-scaled.jpg" alt="pic" class="certificate-image">
                   
                 <p class="text roll-no"><?php echo get_post_meta(get_the_ID(), 'custom_roll_number', true);?></p>
                 <p class="text reg-no"><?php echo get_post_meta(get_the_ID(), 'custom_serial_number', true);?></p>
