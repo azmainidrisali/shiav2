@@ -144,6 +144,8 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                                     <td>
                                                         <a href="https://app.shiacomputer.com/wp-admin/post.php?post=<?php echo get_the_ID() ?>&action=edit" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                                         class="fas fa-download fa-sm text-white-50"></i> Super Access</a>
+                                                        <a href="<?php the_permalink(); ?>"><i
+                                                        class="fas fa-download fa-sm text-white-50"></i> View Profile</a>
                                                     </td>
                                                 </tr>
                                                 <?php

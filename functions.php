@@ -1,63 +1,61 @@
 <?php
 
-function add_theme_scripts(){
 
-    wp_enqueue_style( 'stylesheet', get_stylesheet_uri() );
+//script required start
+	function add_theme_scripts(){
 
-    wp_enqueue_style( 'bootstrapMin', get_template_directory_uri(). '/plugins/bootstrap/css/bootstrap.min.css', array(), '1.1', 'all' );
+		wp_enqueue_style( 'stylesheet', get_stylesheet_uri() );
 
-    //colorlibLoginPage start
-        wp_enqueue_style( 'Cl_bootstrapMin', get_template_directory_uri(). '/extfiles/colorlib/vendor/bootstrap/css/bootstrap.min.css', array(), '1.1', 'all' );
-        wp_enqueue_style( 'Cl_font-awesome', get_template_directory_uri(). '/extfiles/colorlib/fonts/font-awesome-4.7.0/css/font-awesome.min.css', array(), '1.1', 'all' );
-        wp_enqueue_style( 'Cl_icon-font', get_template_directory_uri(). '/extfiles/colorlib/fonts/Linearicons-Free-v1.0.0/icon-font.min.css', array(), '1.1', 'all' );
-        wp_enqueue_style( 'Cl_animate', get_template_directory_uri(). '/extfiles/colorlib/vendor/animate/animate.css', array(), '1.1', 'all' );
-        wp_enqueue_style( 'Cl_hamburgers', get_template_directory_uri(). '/extfiles/colorlib/vendor/css-hamburgers/hamburgers.min.css', array(), '1.1', 'all' );
-        wp_enqueue_style( 'Cl_animsition', get_template_directory_uri(). '/extfiles/colorlib/vendor/animsition/css/animsition.min.css', array(), '1.1', 'all' );
-        wp_enqueue_style( 'Cl_select2', get_template_directory_uri(). '/extfiles/colorlib/vendor/select2/select2.min.css', array(), '1.1', 'all' );
-        wp_enqueue_style( 'Cl_daterangepicker', get_template_directory_uri(). '/extfiles/colorlib/vendor/daterangepicker/daterangepicker.css', array(), '1.1', 'all' );
-        wp_enqueue_style( 'Cl_util', get_template_directory_uri(). '/extfiles/colorlib/css/util.css', array(), '1.1', 'all' );
-        wp_enqueue_style( 'Cl_main', get_template_directory_uri(). '/extfiles/colorlib/css/main.css', array(), '1.1', 'all' );
-    //colorlibLoginPage End
+		wp_enqueue_style( 'bootstrapMin', get_template_directory_uri(). '/plugins/bootstrap/css/bootstrap.min.css', array(), '1.1', 'all' );
 
-    
+		//colorlibLoginPage start
+			wp_enqueue_style( 'Cl_bootstrapMin', get_template_directory_uri(). '/extfiles/colorlib/vendor/bootstrap/css/bootstrap.min.css', array(), '1.1', 'all' );
+			wp_enqueue_style( 'Cl_font-awesome', get_template_directory_uri(). '/extfiles/colorlib/fonts/font-awesome-4.7.0/css/font-awesome.min.css', array(), '1.1', 'all' );
+			wp_enqueue_style( 'Cl_icon-font', get_template_directory_uri(). '/extfiles/colorlib/fonts/Linearicons-Free-v1.0.0/icon-font.min.css', array(), '1.1', 'all' );
+			wp_enqueue_style( 'Cl_animate', get_template_directory_uri(). '/extfiles/colorlib/vendor/animate/animate.css', array(), '1.1', 'all' );
+			wp_enqueue_style( 'Cl_hamburgers', get_template_directory_uri(). '/extfiles/colorlib/vendor/css-hamburgers/hamburgers.min.css', array(), '1.1', 'all' );
+			wp_enqueue_style( 'Cl_animsition', get_template_directory_uri(). '/extfiles/colorlib/vendor/animsition/css/animsition.min.css', array(), '1.1', 'all' );
+			wp_enqueue_style( 'Cl_select2', get_template_directory_uri(). '/extfiles/colorlib/vendor/select2/select2.min.css', array(), '1.1', 'all' );
+			wp_enqueue_style( 'Cl_daterangepicker', get_template_directory_uri(). '/extfiles/colorlib/vendor/daterangepicker/daterangepicker.css', array(), '1.1', 'all' );
+			wp_enqueue_style( 'Cl_util', get_template_directory_uri(). '/extfiles/colorlib/css/util.css', array(), '1.1', 'all' );
+			wp_enqueue_style( 'Cl_main', get_template_directory_uri(). '/extfiles/colorlib/css/main.css', array(), '1.1', 'all' );
+		//colorlibLoginPage End
 
-    //adminPanel start
-        wp_enqueue_style( 'admin_sb-admin-2', get_template_directory_uri(). '/extfiles/admin/css/sb-admin-2.min.css', array(), '1.1', 'all' );
-        wp_enqueue_style( 'admin_fontAwsome', get_template_directory_uri(). '/extfiles/admin/vendor/fontawesome-free/css/all.min.css', array(), '1.1', 'all' );
-        wp_enqueue_script( 'admin_Jquery', get_template_directory_uri(). '/extfiles/admin/vendor/jquery/jquery.min.js', true );
-        wp_enqueue_script( 'admin_Boottrap', get_template_directory_uri(). '/extfiles/admin/vendor/bootstrap/js/bootstrap.bundle.min.js', true );
-        wp_enqueue_script( 'admin_JqueryEase', get_template_directory_uri(). '/extfiles/admin/vendor/jquery-easing/jquery.easing.min.js', true );
-        wp_enqueue_script( 'admin_JsSb', get_template_directory_uri(). '/extfiles/admin/js/sb-admin-2.min.js', true );
-    //admin end
+		
 
-    wp_enqueue_script( 'bootstrapmain', get_template_directory_uri(). '/plugins/bootstrap/js/bootstrap.min.js', true );
-}
-add_action( 'wp_enqueue_scripts', 'add_theme_scripts' );
+		//adminPanel start
+			wp_enqueue_style( 'admin_sb-admin-2', get_template_directory_uri(). '/extfiles/admin/css/sb-admin-2.min.css', array(), '1.1', 'all' );
+			wp_enqueue_style( 'admin_fontAwsome', get_template_directory_uri(). '/extfiles/admin/vendor/fontawesome-free/css/all.min.css', array(), '1.1', 'all' );
+			wp_enqueue_script( 'admin_Jquery', get_template_directory_uri(). '/extfiles/admin/vendor/jquery/jquery.min.js', true );
+			wp_enqueue_script( 'admin_Boottrap', get_template_directory_uri(). '/extfiles/admin/vendor/bootstrap/js/bootstrap.bundle.min.js', true );
+			wp_enqueue_script( 'admin_JqueryEase', get_template_directory_uri(). '/extfiles/admin/vendor/jquery-easing/jquery.easing.min.js', true );
+			wp_enqueue_script( 'admin_JsSb', get_template_directory_uri(). '/extfiles/admin/js/sb-admin-2.min.js', true );
+		//admin end
 
-require_once('plugins/redux/ReduxCore/framework.php');
-require_once('plugins/redux/sample/sample-config.php');
-global $shiacomputeroption;
+		wp_enqueue_script( 'bootstrapmain', get_template_directory_uri(). '/plugins/bootstrap/js/bootstrap.min.js', true );
+	}
+	add_action( 'wp_enqueue_scripts', 'add_theme_scripts' );
 
+	require_once('plugins/redux/ReduxCore/framework.php');
+	require_once('plugins/redux/sample/sample-config.php');
+	global $shiacomputeroption;
+//script required End
 
+//adminbar settings
+	function hide_admin_bar() {
+		if (!current_user_can('administrator')) {
+			show_admin_bar(false);
+		}
+	}
+	add_action('after_setup_theme', 'hide_admin_bar');
 
-//custom wp thme settings start
-
-
-
-function hide_admin_bar() {
-    if (!current_user_can('administrator')) {
-        show_admin_bar(false);
-    }
-}
-add_action('after_setup_theme', 'hide_admin_bar');
-
-function Chide_admin_bar() {
-    if (current_user_can('administrator')) {
-        show_admin_bar(false);
-    }
-}
-add_action('after_setup_theme', 'Chide_admin_bar');
-
+	function Chide_admin_bar() {
+		if (current_user_can('administrator')) {
+			show_admin_bar(false);
+		}
+	}
+	add_action('after_setup_theme', 'Chide_admin_bar');
+//adminbar settings
 
 
 //admin login syesteam start
@@ -1658,7 +1656,7 @@ add_action('after_setup_theme', 'Chide_admin_bar');
 		$post_count = count($posts);
 
 		// Determine the starting serial number
-		$starting_serial = str_pad($post_count + 1, 4, '0', STR_PAD_LEFT);
+		$starting_serial = str_pad($post_count + 0, 4, '0', STR_PAD_LEFT);
 
 		// Generate the roll number with the '2022' prefix and sequential number
 		$roll_number_prefix = '2022';
@@ -1693,36 +1691,52 @@ add_action('after_setup_theme', 'Chide_admin_bar');
 	}
 
 	// Generate and save unique student certificate serial number starting from 8977 when a new post is created or updated
+	
+
 	function save_student_certificate_serial_number($post_id) {
 		// Check if the post is of your custom post type
 		$post_type = get_post_type($post_id);
 		if ($post_type !== 'admissions') {
 			return;
 		}
-
+	
 		// Check if the post already has a certificate serial number
 		$serial_number = get_post_meta($post_id, 'student_certificate_serial_number', true);
 		if (!$serial_number) {
-			// Get the total number of published and draft posts for your custom post type
+			// Get the maximum existing serial number
 			$args = array(
 				'post_type'      => 'admissions', // Replace with your custom post type slug
 				'post_status'    => array('publish', 'draft'),
 				'posts_per_page' => -1,
+				'meta_query'     => array(
+					array(
+						'key'     => 'student_certificate_serial_number',
+						'compare' => 'EXISTS',
+					),
+				),
+				'orderby'        => 'meta_value_num',
+				'meta_key'       => 'student_certificate_serial_number',
+				'order'          => 'DESC',
 			);
 			$posts = get_posts($args);
-			$post_count = count($posts);
-
-			// Determine the starting serial number
-			$starting_serial = str_pad(1330 + $post_count, 4, '0', STR_PAD_LEFT);
-
+	
+			if (!empty($posts)) {
+				$latest_serial = get_post_meta($posts[0]->ID, 'student_certificate_serial_number', true);
+				$starting_serial = intval(substr($latest_serial, 2)) + 1;
+			} else {
+				// No existing serial numbers, start from 221331
+				$starting_serial = 1331;
+			}
+	
 			// Generate the certificate serial number with the '22' prefix
-			$serial_number = '22' . $starting_serial;
-
+			$serial_number = '22' . str_pad($starting_serial, 4, '0', STR_PAD_LEFT);
+	
 			// Save the certificate serial number
 			update_post_meta($post_id, 'student_certificate_serial_number', $serial_number);
 		}
 	}
 	add_action('save_post', 'save_student_certificate_serial_number');
+	
 
 //serial number end
 
@@ -1860,3 +1874,12 @@ add_action('after_setup_theme', 'Chide_admin_bar');
 	add_filter('manage_edit-admissions_sortable_columns', 'admissions_sortable_columns');
 	
 // table and other
+
+
+function custom_admissions_single_template($single_template) {
+    if (is_singular('admissions')) {
+        $single_template = dirname(__FILE__) . '/admin/single-admissions.php';
+    }
+    return $single_template;
+}
+add_filter('single_template', 'custom_admissions_single_template');

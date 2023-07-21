@@ -275,7 +275,7 @@ get_header();
                 
 
               <div class="certificate-wrapper" style="background: #fff;margin: 20px auto;position: relative;text-align: center;">
-                <img src="https://app.shiacomputer.com/wp-content/uploads/2023/07/Certificatggge-shia-scaled.jpg" alt="pic" class="certificate-image">
+                <img src="http://app.shiacomputer.com/wp-content/uploads/2023/07/Certificatggge-shia-scaled.jpg" alt="pic" class="certificate-image">
                   
                 <p class="text roll-no"><?php echo get_post_meta(get_the_ID(), 'custom_roll_number', true);?></p>
                 <p class="text reg-no"><?php echo get_post_meta(get_the_ID(), 'custom_serial_number', true);?></p>
