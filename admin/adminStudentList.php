@@ -74,7 +74,6 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                             <th>Admission Date</th>
                                             <th>Status</th>
                                             <th>Action</th>
-                                            <th>Super Access</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -136,16 +135,33 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                                     <td class="status"><a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                                         class="fa-solid fa-check text-white-50"></i> Approved</a></td>
                                                     <td>
-                                                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                                        class="fas fa-download fa-sm text-white-50"></i> Admit Card</a>
-                                                        
-                                                    </button>
-                                                    </td>
-                                                    <td>
-                                                        <a href="https://app.shiacomputer.com/wp-admin/post.php?post=<?php echo get_the_ID() ?>&action=edit" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                                        <a href="https://localhost/shiacomputer/wp-admin/post.php?post=<?php echo get_the_ID() ?>&action=edit" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                                         class="fas fa-download fa-sm text-white-50"></i> Super Access</a>
-                                                        <a href="<?php the_permalink(); ?>"><i
-                                                        class="fas fa-download fa-sm text-white-50"></i> View Profile</a>
+                                                        <a href="<?php the_permalink(); ?>" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> View Profile</a>
+                                                        
+                                                        <?php require_once(get_template_directory(). '/admin/admitcard.php'); ?>
+                                                        <form method="post" enctype="multipart/form-data" id="pdfForm">
+                                                            <div class="form-group">
+                                                                <input type="hidden" type="text" id="contentText" name="RollNumber" rows="4" value="<?php $custom_roll_number = get_post_meta(get_the_ID(), 'custom_roll_number', true); echo $custom_roll_number; ?>"></input>
+                                                                <input type="hidden" type="text" id="contentText" name="RegistrationNumber" rows="4" value="<?php $custom_serial_number = get_post_meta(get_the_ID(), 'custom_serial_number', true); echo $custom_serial_number; ?>"></input>
+                                                                <input type="hidden" type="text" id="contentText" name="SerialNumber" rows="4" value="<?php $student_certificate_serial_number = get_post_meta(get_the_ID(), 'student_certificate_serial_number', true); echo $student_certificate_serial_number; ?>"></input>
+                                                                <input type="hidden" type="text" id="contentText" name="IssueDate" rows="4" value="<?php $certificate_issue_register = get_post_meta(get_the_ID(), 'certificate_issue_register', true); echo $certificate_issue_register; ?>"></input>
+                                                                <input type="hidden" type="text" id="contentText" name="CertificateHolderName" rows="4" value="<?php $student_name = get_post_meta(get_the_ID(), 'student_Name_register', true); echo $student_name; ?>"></input>
+                                                                <input type="hidden" type="text" id="contentText" name="FathersName" rows="4" value="<?php $student_Fathers_name_register = get_post_meta(get_the_ID(), 'student_Fathers_name_register', true); echo $student_Fathers_name_register; ?>"></input>
+                                                                <input type="hidden" type="text" id="contentText" name="MothersName" rows="4" value="<?php $student_mothers_name_register = get_post_meta(get_the_ID(), 'student_mothers_name_register', true); echo $student_mothers_name_register; ?>"></input>
+                                                                <input type="hidden" type="text" id="contentText" name="CourseName" rows="4" value="<?php $student_select_course_register = get_post_meta(get_the_ID(), 'student_select_course_register', true); echo $student_select_course_register; ?>"></input>
+                                                                <input type="hidden" type="text" id="contentText" name="Institutename" rows="4" value="Shia Computer traning Center"></input>
+                                                                <input type="hidden" type="text" id="contentText" name="heldForm" rows="4" value="<?php $student_seassion_start_register = get_post_meta(get_the_ID(), 'student_seassion_start_register', true); echo $student_seassion_start_register; ?>"></input>
+                                                                <input type="hidden" type="text" id="contentText" name="HeldformTo" rows="4" value="<?php $student_seassion_End_register = get_post_meta(get_the_ID(), 'student_seassion_End_register', true); echo $student_seassion_End_register; ?>"></input>
+                                                                <input type="hidden" type="text" id="contentText" name="Grade" rows="4" value="<?php $Stuent_result_register = get_post_meta(get_the_ID(), 'Stuent_result_register', true); echo $Stuent_result_register; ?>"></input>
+                                                                <?php $thumbnail_url2 = get_the_post_thumbnail_url();?>
+                                                                <input type="hidden" type="text" id="contentText" name="image" rows="4" value="http://localhost/shiacomputer/wp-content/uploads/2023/06/4-1.jpg"></input>
+                                                                <?php echo $thumbnail_url2 ?>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <input type="submit" class="btn-primary btn-sm" name="generateAdmitCard_pdf" value="Download Admit Card">
+                                                            </div>
+                                                        </form>
                                                     </td>
                                                 </tr>
                                                 <?php

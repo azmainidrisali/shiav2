@@ -106,6 +106,8 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                                     <td class="status"><a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                                         class="fa-solid fa-check text-white-50"></i> Draft</a></td>
                                                     <td>
+                                                        <a href="<?php echo home_url(); ?>/wp-admin/post.php?post=<?php echo get_the_ID() ?>&action=edit" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                                        class="fas fa-download fa-sm text-white-50"></i> Edit Admission</a>
                                                     <?php
                                                         if (isset($_POST['publish_button'])) {
                                                             $post_id = $_POST['post_id']; // Assuming you have the post ID available
@@ -115,14 +117,13 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                                             );
 
                                                                 
-                                                                // Execute the SendSMS function when the form is submitted
-                                                                $StudentPhoneNumber = '88'.$custom_student_contact_number;
-                                                                $registrationNumber = $custom_serial_number;
-                                                                $rollNumber = $roll_number;
-                                                                $courseName = $custom_student_select_course;
-                                                                $studentName = $custom_student_select_name;
-                                                                $message = "Congratulations! $studentName Your admission to $courseName is successful.\nRegistration Number: $registrationNumber\nRoll Number: $rollNumber\nWe look forward to welcoming you to our institution.";
-                                                                SendSMS($StudentPhoneNumber, $message);
+                                                               // Execute the SendSMS function when the form is submitted
+                                                               $StudentPhoneNumber = '88'.$custom_student_contact_number;
+                                                               $userNameEmail = get_post_meta(get_the_ID(), 'student_Email_register', true);
+                                                               $studentPass = get_post_meta(get_the_ID(), 'student_password_register', true);
+                                                               $studentName = $custom_student_select_name;
+                                                               $message = "Congratulations! $studentName Your admission to $courseName is successful.\nUser Name: $userNameEmail\nPassWord: $studentPass\n login Link: https://app.shiacomputer.com \nWe look forward to welcoming you to our institution.";
+                                                               SendSMS($StudentPhoneNumber, $message);
                                                             
 
                                                             wp_update_post($post_data);
@@ -158,10 +159,10 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                                         <form method="post" action="">
                                                             <input type="hidden" name="delete_post_id" value="<?php echo esc_attr(get_the_ID()); ?>">
                                                             <?php wp_nonce_field('delete_post_' . get_the_ID(), 'delete_post_nonce'); ?>
-                                                            <button type="submit" class="delete-post-button">Delete Post</button>
+                                                            <button type="submit" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">Delete admissions</button>
                                                         
                                                             <input class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" type="hidden" name="post_id" value="<?php echo get_the_ID() ?>"> <!-- Replace 123 with the actual post ID -->
-                                                            <input type="submit" name="publish_button" value="Approve Admission">
+                                                            <input type="submit" name="publish_button" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" value="Approve Admission">
                                                         </form>
                                                     </button>
                                                     </td>

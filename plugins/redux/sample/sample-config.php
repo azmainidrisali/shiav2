@@ -401,6 +401,13 @@
                 'data'    => 'pages',
                 'default' => '',
             ),
+            array(
+                'id'      => 'adminDueList',
+                'type'    => 'select',
+                'title'   => 'Admin Due List View',
+                'data'    => 'pages',
+                'default' => '',
+            ),
         ),
     ) );
     Redux::setSection($opt_name,array(

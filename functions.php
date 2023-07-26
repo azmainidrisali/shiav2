@@ -1736,8 +1736,6 @@
 		}
 	}
 	add_action('save_post', 'save_student_certificate_serial_number');
-	
-
 //serial number end
 
 
