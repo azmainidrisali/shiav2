@@ -155,7 +155,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                                                 <input type="hidden" type="text" id="contentText" name="HeldformTo" rows="4" value="<?php $student_seassion_End_register = get_post_meta(get_the_ID(), 'student_seassion_End_register', true); echo $student_seassion_End_register; ?>"></input>
                                                                 <input type="hidden" type="text" id="contentText" name="Grade" rows="4" value="<?php $Stuent_result_register = get_post_meta(get_the_ID(), 'Stuent_result_register', true); echo $Stuent_result_register; ?>"></input>
                                                                 <?php $thumbnail_url2 = get_the_post_thumbnail_url();?>
-                                                                <input type="hidden" type="text" id="contentText" name="image" rows="4" value="http://localhost/shiacomputer/wp-content/uploads/2023/06/4-1.jpg"></input>
+                                                                <input type="hidden" type="text" id="contentText" name="image" rows="4" value="<?php echo $thumbnail_url2 ?>"></input>
                                                                 <?php echo $thumbnail_url2 ?>
                                                             </div>
                                                             <div class="form-group">
