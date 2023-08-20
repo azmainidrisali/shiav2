@@ -1736,6 +1736,8 @@
 		}
 	}
 	add_action('save_post', 'save_student_certificate_serial_number');
+	
+
 //serial number end
 
 
@@ -1872,12 +1874,3 @@
 	add_filter('manage_edit-admissions_sortable_columns', 'admissions_sortable_columns');
 	
 // table and other
-
-
-function custom_admissions_single_template($single_template) {
-    if (is_singular('admissions')) {
-        $single_template = dirname(__FILE__) . '/admin/single-admissions.php';
-    }
-    return $single_template;
-}
-add_filter('single_template', 'custom_admissions_single_template');

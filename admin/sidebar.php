@@ -95,17 +95,6 @@
                     }
                 ?>
                 <a class="collapse-item" href="<?php echo($get_adminBatch_link) ?>">BATCH</a>
-
-                <?php
-                    if (isset($shiacomputeroption['adminDueList'])) {
-                        $get_adminDue_id = $shiacomputeroption['adminDueList']; // Get the selected page ID
-
-                        if ($get_adminDue_id) {
-                            $get_adminDue_link = get_permalink($get_adminDue_id); // Get the permalink of the selected page
-                        }
-                    }
-                ?>
-                <a class="collapse-item" href="<?php echo($get_adminDue_link) ?>">Due List</a>
             </div>
         </div>
     </li>

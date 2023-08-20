@@ -61,45 +61,45 @@ if (isset($_POST['pub_generate_pdf'])) {
 
         // Set text position
         $RegistrationNumberX = 225; // X-coordinate
-        $RegistrationNumberY = 52; // Y-coordinate
+        $RegistrationNumberY = 53.5; // Y-coordinate
         $pdf->SetXY($RegistrationNumberX, $RegistrationNumberY);
         $pdf->Cell(0, 0, $RollNumber, 0, 1, 'C');
 
         // Set text position
         $rollNumberX = 225; // X-coordinate
-        $rollNumberY = 60; // Y-coordinate
+        $rollNumberY = 61; // Y-coordinate
         $pdf->SetXY($rollNumberX, $rollNumberY);
         $pdf->Cell(0, 0, $RegistrationNumber, 0, 1, 'C');
         
         // Set text position
-        $textX = 30; // X-coordinate
-        $textY = 92; // Y-coordinate
+        $textX = 135; // X-coordinate
+        $textY = 91; // Y-coordinate
         $pdf->SetXY($textX, $textY);
-        $pdf->SetFont('e111psto', 'B', 18);
-        $pdf->Cell(0, 0, $CertificateHolderName, 0, 1, 'C');
+        $pdf->SetFont('e111psto', 'B', 21);
+        $pdf->Cell(0, 0, $CertificateHolderName, 0, 1, 'L');
 
         // Set text position
-        $fathersNameX = 18; // X-coordinate
-        $fathersNameY = 103; // Y-coordinate
+        $fathersNameX = 135; // X-coordinate
+        $fathersNameY = 102; // Y-coordinate
         // Write certificate content
         $pdf->SetXY($fathersNameX, $fathersNameY);
-        $pdf->Cell(0, 0, $FathersName, 0, 1, 'C');
+        $pdf->Cell(0, 0, $FathersName, 0, 1, 'L');
 
         // Set text position
-        $mothersNameX = 19; // X-coordinate
-        $mothersNameY = 114; // Y-coordinate
+        $mothersNameX = 135; // X-coordinate
+        $mothersNameY = 113; // Y-coordinate
         $pdf->SetXY($mothersNameX, $mothersNameY);
-        $pdf->Cell(0, 0, $MothersName, 0, 1, 'C');
+        $pdf->Cell(0, 0, $MothersName, 0, 1, 'L');
 
         // Set text position
-        $courseNameX = 105; // X-coordinate
-        $courseNameY = 125; // Y-coordinate
+        $courseNameX = 123; // X-coordinate
+        $courseNameY = 124; // Y-coordinate
         $pdf->SetXY($courseNameX, $courseNameY);
         $pdf->Cell(0, 0, $CourseName, 0, 1, 'C');
 
         // Set text position
-        $instituteNameX = 23; // X-coordinate
-        $instituteNameY = 136; // Y-coordinate
+        $instituteNameX = 49; // X-coordinate
+        $instituteNameY = 134.5; // Y-coordinate
         $pdf->SetXY($instituteNameX, $instituteNameY);
         $pdf->Cell(0, 0, $Institutename, 0, 1, 'C');
 
@@ -123,6 +123,8 @@ if (isset($_POST['pub_generate_pdf'])) {
 
         $pdf->SetXY($resultNameX, $resultNameY);
         $pdf->Cell(0, 0, $Grade, 0, 1, 'C');
+        
+        
 
         $qrCodeURL = 'https://app.shiacomputer.com/result-search/?rollNumber='.$RollNumber;
         $qrCodeImage = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . urlencode($qrCodeURL);

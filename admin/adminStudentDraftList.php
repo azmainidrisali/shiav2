@@ -110,7 +110,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                                         class="fas fa-download fa-sm text-white-50"></i> Edit Admission</a>
                                                     <?php
                                                         if (isset($_POST['publish_button'])) {
-                                                            $post_id = $_POST['post_id']; // Assuming you have the post ID available
+                                                            $post_id = $_POST['post_id']; 
                                                             $post_data = array(
                                                                 'ID' => $post_id,
                                                                 'post_status' => 'publish',
@@ -119,10 +119,11 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                                                 
                                                                // Execute the SendSMS function when the form is submitted
                                                                $StudentPhoneNumber = '88'.$custom_student_contact_number;
-                                                               $userNameEmail = get_post_meta(get_the_ID(), 'student_Email_register', true);
+                                                               $userNameEmail = get_post_meta(get_the_ID(), 'student_contact_number_register', true).'@shia.com';
                                                                $studentPass = get_post_meta(get_the_ID(), 'student_password_register', true);
                                                                $studentName = $custom_student_select_name;
-                                                               $message = "Congratulations! $studentName Your admission to $courseName is successful.\nUser Name: $userNameEmail\nPassWord: $studentPass\n login Link: https://app.shiacomputer.com \nWe look forward to welcoming you to our institution.";
+                                                               $courseName = get_post_meta(get_the_ID(), 'student_select_course_register', true);
+                                                               $message = "Congratulations! $studentName Your admission to $courseName is successful at Shia Computer Traning center.\nYour User ID: $userNameEmail\nPassWord: $studentPass\n Visit to: https://shiacomputer.com/login";
                                                                SendSMS($StudentPhoneNumber, $message);
                                                             
 

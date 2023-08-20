@@ -79,7 +79,7 @@ get_header();
                     <div class="card">
                       <div class="card-body">
                         <div class="d-flex flex-column align-items-center text-center">
-                        <?php $thumbnail_url = 'https://th.bing.com/th/id/R.649e37baf7808c4df48c901e0302b1eb?rik=E1BFircZEscM5g&pid=ImgRaw&r=0';?>
+                        <?php $thumbnail_url = get_the_post_thumbnail_url(get_the_ID());?>
                           <img src="<?php echo $thumbnail_url ?>" alt="Admin" class="rounded-circle" width="150">
                           <div class="mt-3">
                             <h4><?php the_title(); ?></h4>
@@ -147,7 +147,7 @@ get_header();
               <style>
                     @font-face {
                         font-family: 'E111agio';
-                        src: url('http://localhost/shiacomputer/wp-content/themes/shiav2/customfonts/eia111/e111psto.ttf');
+                        src: url('https://app.shiacomputer.com/wp-content/themes/shiav2/customfonts/eia111/e111psto.ttf');
                     }
 
                     .certificate-wrapper {
@@ -270,12 +270,28 @@ get_header();
                         height: 75px;
                         width: 100px;
                     }
+                    .qr-code {
+        position: absolute;
+        bottom: 44px;
+        right: 316px;
+        transform: translate(0, 0); /* Reset the translation on larger screens */
+    }
+
+    @media screen and (max-width: 768px) {
+        .qr-code {
+            position: absolute;
+            bottom: 44px;
+        right: 316px;
+            transform: translate(0, 0); /* Reset the translation on smaller screens */
+        }
+    }
+
                 </style>
 
                 
 
               <div class="certificate-wrapper" style="background: #fff;margin: 20px auto;position: relative;text-align: center;">
-                <img src="http://app.shiacomputer.com/wp-content/uploads/2023/07/Certificatggge-shia-scaled.jpg" alt="pic" class="certificate-image">
+                <img src="https://app.shiacomputer.com/wp-content/uploads/2023/07/Certificatggge-shia-scaled.jpg" alt="pic" class="certificate-image">
                   
                 <p class="text roll-no"><?php echo get_post_meta(get_the_ID(), 'custom_roll_number', true);?></p>
                 <p class="text reg-no"><?php echo get_post_meta(get_the_ID(), 'custom_serial_number', true);?></p>
@@ -289,6 +305,13 @@ get_header();
                 <p class="text start-date" ><?php echo get_post_meta(get_the_ID(), 'student_seassion_start_register', true);?></p>
                 <p class="text end-date" ><?php echo get_post_meta(get_the_ID(), 'student_seassion_End_register', true);?></p>
                 <p class="text grade"><?php echo get_post_meta(get_the_ID(), 'Stuent_result_register', true);?></p>
+                <?php
+                    $custom_roll_number = get_post_meta(get_the_ID(), 'custom_roll_number', true);
+                    $qrCodeURL = 'https://app.shiacomputer.com/result-search/?rollNumber=' . $custom_roll_number;
+                    $qrCodeImage = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . urlencode($qrCodeURL);
+                    ?>
+                    <img src="<?php echo $qrCodeImage; ?>" alt="QR Code" class="certificateImg qr-code" width="96">
+                
               </div>
 
               <script>
