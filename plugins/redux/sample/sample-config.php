@@ -394,6 +394,13 @@
                 'data'    => 'pages',
                 'default' => '',
             ),
+            array(
+                'id'      => 'AdminDueStudentList',
+                'type'    => 'select',
+                'title'   => 'Due List',
+                'data'    => 'pages',
+                'default' => '',
+            ),
         ),
     ) );
     Redux::setSection($opt_name,array(

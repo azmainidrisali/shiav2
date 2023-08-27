@@ -162,6 +162,16 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                 SendSMS($StudentPhoneNumber, $message);
                             }
 
+                            $accountInfo = $_POST['submitType'];
+
+                            if ($accountInfo === 'publish' || $accountInfo === 'draft') {
+                                $studentnameS = $post_Student_STudentName;
+                                $payedSAmount = $post_Student_PayAmount;
+                                $Information  = $post_Student_selectCourse;
+                                server_income($studentnameS, $payedSAmount, $Information);
+                            }
+                            
+
 
                             if (isset($shiacomputeroption['adminStudentAdmission'])) {
                                 $get_adminStudentAdmission_id = $shiacomputeroption['adminStudentAdmission']; // Get the selected page ID

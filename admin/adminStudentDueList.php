@@ -4,6 +4,42 @@ require_once(get_template_directory(). '/admin/header.php');
 ?>
 
 <?php
+                            if (isset($_POST['update_custom_field'])) {
+                            // Get the post ID from the form
+                            $post_id = intval($_POST['post_id']);
+                            
+                            $courseFee = $_POST['Course_fee'];
+
+                            $payedAmount = $_POST['custom_field_value'];
+                            $PreviousTotal = $_POST['Pay_amount_register'];
+                            $total = $payedAmount + $PreviousTotal;
+
+                            $dueTotal = $courseFee - $total;
+
+                            
+                            // Get the value from the form
+                            $custom_field_value = sanitize_text_field($total);
+                            $custom_field_value2 = sanitize_text_field($dueTotal);
+
+                            
+
+
+                            // Update the custom field
+                            update_post_meta($post_id, 'student_pay_amount_register', $custom_field_value);
+                            update_post_meta($post_id, 'student_due_amount_register', $custom_field_value2);
+                            
+                            
+                            $studentnameS = $_POST['nameStudent'];
+                            $payedSAmount = $_POST['custom_field_value'];
+                            $Information  = 'test From the app';
+                            server_income($studentnameS, $payedSAmount, $Information);
+
+                            echo "<meta http-equiv='refresh' content='0;url=https://localhost/shiacomputer/admin-due-list/' />";
+                            exit;
+                        }
+                        ?>
+
+<?php
 // Check if the current user is an administrator
 if (is_user_logged_in() && current_user_can('administrator')) {
     
@@ -38,7 +74,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
             <th>Serial Number.</th>
             <th>REG No.</th>
             <th>Roll No.</th>
-            <th>Batch</th>
+            <th>Due Amount</th>
             <th>Photo</th>
             <th>Student Name</th>
             <th>Course Name</th>
@@ -93,7 +129,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             echo $roll_number;
                         }
                     ?></td>
-                    <td><?php $custom_student_purpose_register = get_post_meta(get_the_ID(), 'student_batch_register', true); echo $custom_student_purpose_register; ?></td>
+                    <td><?php $custom_student_Due_register = get_post_meta(get_the_ID(), 'student_due_amount_register', true); echo $custom_student_Due_register; ?></td>
                     <td class="d-flex align-items-center">
                         <div class="img">
                             <?php $thumbnail_url = get_the_post_thumbnail_url(); ?>
@@ -162,6 +198,23 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             }
                         }
                         ?>
+
+                        
+
+                        <form method="post">
+                            <input type="hidden" type="text" name="post_id" required value="<?php echo get_the_ID() ?>">
+                            <input type="hidden" type="text" name="Course_fee" required value="<?php $CourseFees = get_post_meta(get_the_ID(), 'student_Admission_date_fee_register', true); echo $CourseFees ?>">
+                            <input type="hidden" type="text" name="Pay_amount_register" required value="<?php $payAmount = get_post_meta(get_the_ID(), 'student_pay_amount_register', true); echo $payAmount ?>">
+                            <input type="hidden" type="text" name="nameStudent" required value="<?php $nameRegister = get_post_meta(get_the_ID(), 'student_Name_register', true); echo $nameRegister ?>">
+
+                            <label for="custom_field_value">New Student Pay Amount:</label>
+                            <input type="number" name="custom_field_value" required>
+
+                            <input type="submit" class="btn-primary btn-sm" name="update_custom_field" value="Admit Crad">
+                        </form>
+                        
+                        
+
                         <form method="post" action="">
                             <input type="hidden" name="delete_post_id" value="<?php echo esc_attr(get_the_ID()); ?>">
                             <?php wp_nonce_field('delete_post_' . get_the_ID(), 'delete_post_nonce'); ?>

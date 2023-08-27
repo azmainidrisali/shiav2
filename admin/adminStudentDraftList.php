@@ -36,8 +36,6 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                     <thead>
                                         <tr>
                                             <th>Serial Number.</th>
-                                            <th>REG No.</th>
-                                            <th>Roll No.</th>
                                             <th>Batch</th>
                                             <th>Photo</th>
                                             <th>Student Name</th>
@@ -45,7 +43,6 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                             <th>Course Name</th>
                                             <th>Contact</th>
                                             <th>Admission Date</th>
-                                            <th>Status</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -74,23 +71,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                                     }
                                                     ?>
                                                     </td>
-                                                <td><?php
-
-                                                    $custom_serial_number = get_post_meta(get_the_ID(), 'custom_serial_number', true);
-
-                                                    // Display the custom serial number if it exists
-                                                    if ($custom_serial_number) {
-                                                        echo $custom_serial_number;
-                                                    }
-                                                    ?>
-                                                    </td>
-                                                    <td><?php
-                                                    $roll_number = get_post_meta(get_the_ID(), 'custom_roll_number', true);
-                                                    if (!empty($roll_number)) {
-                                                        echo $roll_number;
-                                                    }
-                                                    ?>
-                                                    </td>
+                                                
                                                     <td><?php $custom_student_purpose_register = get_post_meta(get_the_ID(), 'student_batch_register', true); echo $custom_student_purpose_register; ?></td>
                                                     <td class="d-flex align-items-center">
                                                     <div class="img">
@@ -103,8 +84,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                                     <td><?php $custom_student_select_course = get_post_meta(get_the_ID(), 'student_select_course_register', true); echo $custom_student_select_course; ?></td>
                                                     <td><?php $custom_student_contact_number = get_post_meta(get_the_ID(), 'student_contact_number_register', true); echo $custom_student_contact_number; ?></td>
                                                     <td><?php $custom_student_Admission_date = get_post_meta(get_the_ID(), 'student_Admission_date_register', true); echo $custom_student_Admission_date; ?></td>
-                                                    <td class="status"><a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                                        class="fa-solid fa-check text-white-50"></i> Draft</a></td>
+                                                    
                                                     <td>
                                                         <a href="<?php echo home_url(); ?>/wp-admin/post.php?post=<?php echo get_the_ID() ?>&action=edit" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                                         class="fas fa-download fa-sm text-white-50"></i> Edit Admission</a>
@@ -160,10 +140,10 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                                         <form method="post" action="">
                                                             <input type="hidden" name="delete_post_id" value="<?php echo esc_attr(get_the_ID()); ?>">
                                                             <?php wp_nonce_field('delete_post_' . get_the_ID(), 'delete_post_nonce'); ?>
-                                                            <button type="submit" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">Delete admissions</button>
+                                                            <button type="submit" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">Delete</button>
                                                         
                                                             <input class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" type="hidden" name="post_id" value="<?php echo get_the_ID() ?>"> <!-- Replace 123 with the actual post ID -->
-                                                            <input type="submit" name="publish_button" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" value="Approve Admission">
+                                                            <input type="submit" name="publish_button" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" value="Approve">
                                                         </form>
                                                     </button>
                                                     </td>

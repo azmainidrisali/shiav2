@@ -84,6 +84,17 @@
                     }
                 ?>
                 <a class="collapse-item" href="<?php echo($get_adminStudentDraft_link) ?>">Student Draft List</a>
+
+                <?php
+                    if (isset($shiacomputeroption['AdminDueStudentList'])) {
+                        $get_AdminDueStudentList_id = $shiacomputeroption['AdminDueStudentList']; // Get the selected page ID
+
+                        if ($get_AdminDueStudentList_id) {
+                            $get_AdminDueStudentList_link = get_permalink($get_AdminDueStudentList_id); // Get the permalink of the selected page
+                        }
+                    }
+                ?>
+                <a class="collapse-item" href="<?php echo($get_AdminDueStudentList_link) ?>">Student Due List</a>
                 
                 <?php
                     if (isset($shiacomputeroption['adminBatch'])) {

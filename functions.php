@@ -31,7 +31,7 @@
 			wp_enqueue_script( 'admin_JqueryEase', get_template_directory_uri(). '/extfiles/admin/vendor/jquery-easing/jquery.easing.min.js', true );
 			wp_enqueue_script( 'admin_JsSb', get_template_directory_uri(). '/extfiles/admin/js/sb-admin-2.min.js', true );
 		//admin end
-
+    
 		wp_enqueue_script( 'bootstrapmain', get_template_directory_uri(). '/plugins/bootstrap/js/bootstrap.min.js', true );
 	}
 	add_action( 'wp_enqueue_scripts', 'add_theme_scripts' );
@@ -1874,3 +1874,50 @@
 	add_filter('manage_edit-admissions_sortable_columns', 'admissions_sortable_columns');
 	
 // table and other
+
+function server_income($studentnameS,$payedSAmount,$Information){
+	// API endpoint URL
+	$apiUrl = 'https://accounts.shiacomputer.com/pages/api.php';
+	
+	// Data to send
+	$data = array(
+		'UserId' => 1,
+		'Title' => $studentnameS,
+		'Dates' => 06-06-2023,
+		'CategoryId' => 26,
+		'AccountId' => 1,
+		'Amount' => $payedSAmount,
+		'Description' => $Information
+	);
+	
+	// API credentials
+	$username = 'admin';
+	$password = 'admin';
+	
+	// Set up HTTP headers for Basic Authentication
+	$headers = array(
+		'Authorization: Basic ' . base64_encode($username . ':' . $password)
+	);
+	
+	// Set up cURL
+	$ch = curl_init($apiUrl);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch, CURLOPT_POST, true);
+	curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+	curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+	
+	// Execute cURL request and get response
+	$response = curl_exec($ch);
+	
+	// Check for cURL errors
+	//if (curl_errno($ch)) {
+		//echo 'cURL Error: ' . curl_error($ch);
+	//} else {
+		// Close cURL session
+		//curl_close($ch);
+	
+		// Print the API response
+		//echo $response;
+	//}
+
+};

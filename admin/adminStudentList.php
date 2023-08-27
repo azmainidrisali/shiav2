@@ -11,7 +11,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
     require_once(get_template_directory(). '/admin/dashboardheader.php');?>
 
         <!-- Begin Page Content -->
-        <div class="container-fluid">
+        
 
             <!-- Page Heading -->
             <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -37,7 +37,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
             
 
             <section class="ftco-section">
-                <div class="container">
+                <div class="widthtable">
                     <div class="row justify-content-center">
                         <div class="col-md-6 text-center mb-5">
                             <h2 class="heading-section">Student List</h2>
@@ -55,7 +55,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                 <select id="rowsPerPageSelect" class="form-control" onchange="changeRowsPerPage(this.value)">
                                     <option value="10">10</option>
                                     <option value="20">20</option>
-                                    <option value="30">30</option>
+                                    <option value="30">30</option>]
                                     <option value="30">1000</option>
                                 </select>
                             </div>
@@ -158,7 +158,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                                                 <input type="hidden" type="text" id="contentText" name="image" rows="4" value="<?php echo $thumbnail_url2 ?>"></input>
                                                             </div>
                                                             <div class="form-group">
-                                                                <input type="submit" class="btn-primary btn-sm" name="generateAdmitCard_pdf" value="Download Admit Card">
+                                                            <input type="submit" class="btn-primary btn-sm" name="generateAdmitCard_pdf" value="Admit Crad">
                                                             </div>
                                                         </form>
                                                         <?php require_once(get_template_directory(). '/admin/regcard.php'); ?>
@@ -180,7 +180,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                                                 <input type="hidden" type="text" id="contentText" name="image" rows="4" value="<?php echo $thumbnail_url2 ?>"></input>
                                                             </div>
                                                             <div class="form-group">
-                                                                <input type="submit" class="btn-primary btn-sm" name="generateRegCard_pdf" value="Download reg Card">
+                                                                <input type="submit" class="btn-primary btn-sm" name="generateRegCard_pdf" value="Reg Card">
                                                             </div>
                                                         </form>
                                                     </td>
@@ -349,7 +349,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
 
             <!-- Content Row End -->
 
-        </div>
+        
         <!-- /.container-fluid -->
 
     <?php require_once(get_template_directory(). '/admin/dashboardfooter.php');
