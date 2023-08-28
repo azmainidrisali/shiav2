@@ -77,6 +77,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
             <th>Due Amount</th>
             <th>Photo</th>
             <th>Student Name</th>
+            
             <th>Course Name</th>
             <th>Contact</th>
             <th>Admission Date</th>
@@ -137,7 +138,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                         </div>
                     </td>
                     <td><?php $custom_student_select_name = get_post_meta(get_the_ID(), 'student_Name_register', true); echo $custom_student_select_name; ?></td>
-                    <td><?php $custom_student_fathers_Name = get_post_meta(get_the_ID(), 'student_Fathers_name_register', true); echo $custom_student_fathers_Name; ?></td>
+                    <!-- <td><?php //$custom_student_fathers_Name = get_post_meta(get_the_ID(), 'student_Fathers_name_register', true); echo $custom_student_fathers_Name; ?></td> -->
                     <td><?php $custom_student_select_course = get_post_meta(get_the_ID(), 'student_select_course_register', true); echo $custom_student_select_course; ?></td>
                     <td><?php $custom_student_contact_number = get_post_meta(get_the_ID(), 'student_contact_number_register', true); echo $custom_student_contact_number; ?></td>
                     <td><?php $custom_student_Admission_date = get_post_meta(get_the_ID(), 'student_Admission_date_register', true); echo $custom_student_Admission_date; ?></td>
@@ -199,43 +200,35 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                         }
                         ?>
 
-                        
+                        <button type="button" class="btn-primary btn-sm" data-toggle="modal" data-target="#exampleModalCenter">Pay Due</button>
 
-                        <form method="post">
-                            <input type="hidden" type="text" name="post_id" required value="<?php echo get_the_ID() ?>">
-                            <input type="hidden" type="text" name="Course_fee" required value="<?php $CourseFees = get_post_meta(get_the_ID(), 'student_Admission_date_fee_register', true); echo $CourseFees ?>">
-                            <input type="hidden" type="text" name="Pay_amount_register" required value="<?php $payAmount = get_post_meta(get_the_ID(), 'student_pay_amount_register', true); echo $payAmount ?>">
-                            <input type="hidden" type="text" name="nameStudent" required value="<?php $nameRegister = get_post_meta(get_the_ID(), 'student_Name_register', true); echo $nameRegister ?>">
+                        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content rounded-0">
+                                    <div class="modal-body p-4 px-5">
 
-                            <label for="custom_field_value">New Student Pay Amount:</label>
-                            <input type="number" name="custom_field_value" required>
+                                        
+                                        <div class="main-content text-center">
+                                            
+                                            <p class="mb-4">Total Due Aount : <?php $payAmount2 = get_post_meta(get_the_ID(), 'student_pay_amount_register', true); echo $payAmount2 ?></p>
+                                            <form method="post">
+                                                <input type="hidden" type="text" name="post_id" required value="<?php echo get_the_ID() ?>">
+                                                <input type="hidden" type="text" name="Course_fee" required value="<?php $CourseFees = get_post_meta(get_the_ID(), 'student_Admission_date_fee_register', true); echo $CourseFees ?>">
+                                                <input type="hidden" type="text" name="Pay_amount_register" required value="<?php $payAmount = get_post_meta(get_the_ID(), 'student_pay_amount_register', true); echo $payAmount ?>">
+                                                <input type="hidden" type="text" name="nameStudent" required value="<?php $nameRegister = get_post_meta(get_the_ID(), 'student_Name_register', true); echo $nameRegister ?>">
 
-                            <input type="submit" class="btn-primary btn-sm" name="update_custom_field" value="Admit Crad">
-                        </form>
-                        
-                        
+                                                <label for="custom_field_value">New Student Pay Amount:</label>
+                                                <input type="number" class="form-control text-center" name="custom_field_value" required>
 
-                        <form method="post" action="">
-                            <input type="hidden" name="delete_post_id" value="<?php echo esc_attr(get_the_ID()); ?>">
-                            <?php wp_nonce_field('delete_post_' . get_the_ID(), 'delete_post_nonce'); ?>
-                            <?php
-                                if ($postStatus === 'draft') {
-                                    ?><button type="submit" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">Delete admissions</button>
-                                    <input class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" type="hidden" name="post_id" value="<?php echo get_the_ID() ?>"> <!-- Replace 123 with the actual post ID -->
-                                    <input type="submit" name="publish_button" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" value="Approve Admission">
-                                    <a href="<?php echo home_url(); ?>/wp-admin/post.php?post=<?php echo get_the_ID() ?>&action=edit" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Edit Admission</a>
-                            <?php
-                                } elseif ($postStatus === 'publish') {
-                                    ?><a href="<?php echo home_url(); ?>/wp-admin/post.php?post=<?php echo get_the_ID() ?>&action=edit" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Edit Admission</a><?php 
-                                } else {
-                                    // Handle other post statuses if needed
-                                    echo '<span class="badge badge-secondary">' . $postStatus . '</span>';
-                                }
-                            ?>
-                            
+                                                <input type="submit" class="btn-primary btn-sm" name="update_custom_field" value="Add Payment">
+                                            </form>
 
-                            
-                        </form>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </td>
                 </tr>
                 <?php

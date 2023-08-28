@@ -109,7 +109,27 @@ add_action('save_post', 'save_custom_roll_number');
 
 
 
+<form method="post" action="">
+                            <input type="hidden" name="delete_post_id" value="<?php echo esc_attr(get_the_ID()); ?>">
+                            <?php wp_nonce_field('delete_post_' . get_the_ID(), 'delete_post_nonce'); ?>
+                            <?php
+                                if ($postStatus === 'draft') {
+                                    ?><button type="submit" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">Delete admissions</button>
+                                    <input class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" type="hidden" name="post_id" value="<?php echo get_the_ID() ?>"> <!-- Replace 123 with the actual post ID -->
+                                    <input type="submit" name="publish_button" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" value="Approve Admission">
+                                    <a href="<?php echo home_url(); ?>/wp-admin/post.php?post=<?php echo get_the_ID() ?>&action=edit" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm m-3"><i class="fas fa-download fa-sm text-white-50"></i> Edit Admission</a>
+                            <?php
+                                } elseif ($postStatus === 'publish') {
+                                    ?><a href="<?php echo home_url(); ?>/wp-admin/post.php?post=<?php echo get_the_ID() ?>&action=edit" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm m-3"><i class="fas fa-download fa-sm text-white-50"></i> Edit Admission</a><?php 
+                                } else {
+                                    // Handle other post statuses if needed
+                                    echo '<span class="badge badge-secondary">' . $postStatus . '</span>';
+                                }
+                            ?>
+                            
 
+                            
+                        </form>
 
 
 

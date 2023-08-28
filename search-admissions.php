@@ -35,12 +35,27 @@ get_header();
         $args = array(
           'post_type' => 'admissions',
           'meta_query' => array(
+            'relation' => 'AND', // Combining multiple meta queries
             array(
-              'key' => 'custom_roll_number',
-              'value' => $rollNumber,
-              'compare' => '='
+                'key' => 'custom_roll_number',
+                'value' => $rollNumber,
+                'compare' => '='
+            ),
+            array(
+                'relation' => 'AND', // Combining multiple conditions within this OR meta query
+                array(
+                    'key' => 'Stuent_result_register',
+                    'value' => '',
+                    'compare' => '!=' // Check if the value is not empty
+                ),
+                array(
+                    'key' => 'certificate_issue_register',
+                    'value' => '',
+                    'compare' => '!=' // Check if the value is not empty
+                ),
             )
-          )
+        )
+        
         );
       
         $query = new WP_Query($args);
@@ -145,148 +160,148 @@ get_header();
               </div>
 
               <style>
-                    @font-face {
-                        font-family: 'E111agio';
-                        src: url('https://app.shiacomputer.com/wp-content/themes/shiav2/customfonts/eia111/e111psto.ttf');
-                    }
+                  @font-face {
+                      font-family: 'E111agio';
+                      src: url('https://app.shiacomputer.com/wp-content/themes/shiav2/customfonts/eia111/e111psto.ttf');
+                  }
 
-                    .certificate-wrapper {
-                        background: #fff;
-                        margin: 20px auto;
-                        position: relative;
-                        text-align: center;
-                        width: 1000px;
-                        /* Set a fixed width for the wrapper */
-                        height: 700px;
-                        /* Set a fixed height for the wrapper */
-                    }
+                  .certificate-wrapper {
+                      background: #fff;
+                      margin: 20px auto;
+                      position: relative;
+                      text-align: center;
+                      width: 1000px;
+                      /* Set a fixed width for the wrapper */
+                      height: 700px;
+                      /* Set a fixed height for the wrapper */
+                  }
 
-                    .certificate-image {
-                        width: 100%;
-                        height: auto;
-                    }
+                  .certificate-image {
+                      width: 100%;
+                      height: auto;
+                  }
 
-                    .text {
-                        position: absolute;
-                        font-weight: bold;
-                    }
+                  .text {
+                      position: absolute;
+                      font-weight: bold;
+                  }
 
-                    .roll-no {
-                        top: 177px;
-                        left: 862px;
-                        font-size: 13px;
-                    }
+                  .roll-no {
+                      top: 177px;
+                      left: 862px;
+                      font-size: 13px;
+                  }
 
-                    .reg-no {
-                        top: 204px;
-                        left: 864px;
-                        font-size: 13px;
-                    }
+                  .reg-no {
+                      top: 204px;
+                      left: 864px;
+                      font-size: 13px;
+                  }
 
-                    .publish-date {
-                        top: 211px;
-                        left: 377px;
-                        font-size: 13px;
-                    }
+                  .publish-date {
+                      top: 211px;
+                      left: 377px;
+                      font-size: 13px;
+                  }
 
-                    .name1 {
-                        top: 299px;
-                        left: 494px;
-                        font-family: "E111agio";
-                        font-size: 23px;
-                        color: #53555c;
-                    }
+                  .name1 {
+                      top: 299px;
+                      left: 494px;
+                      font-family: "E111agio";
+                      font-size: 23px;
+                      color: #53555c;
+                  }
 
-                    .name2 {
-                        top: 340px;
-                        left: 450px;
-                        font-family: "E111agio";
-                        font-size: 23px;
-                        color: #53555c;
-                    }
+                  .name2 {
+                      top: 340px;
+                      left: 450px;
+                      font-family: "E111agio";
+                      font-size: 23px;
+                      color: #53555c;
+                  }
 
-                    .name3 {
-                        top: 375px;
-                        left: 451px;
-                        font-family: "E111agio";
-                        font-size: 23px;
-                        color: #53555c;
-                    }
+                  .name3 {
+                      top: 375px;
+                      left: 451px;
+                      font-family: "E111agio";
+                      font-size: 23px;
+                      color: #53555c;
+                  }
 
-                    .course {
-                        top: 413px;
-                        left: 572px;
-                        font-family: "E111agio";
-                        font-size: 23px;
-                        color: #53555c;
-                    }
+                  .course {
+                      top: 413px;
+                      left: 572px;
+                      font-family: "E111agio";
+                      font-size: 23px;
+                      color: #53555c;
+                  }
 
-                    .institute {
-                        top: 449px;
-                        left: 448px;
-                        font-family: "E111agio";
-                        font-size: 23px;
-                        color: #53555c;
-                    }
+                  .institute {
+                      top: 449px;
+                      left: 448px;
+                      font-family: "E111agio";
+                      font-size: 23px;
+                      color: #53555c;
+                  }
 
-                    .institute-id {
-                        top: 185px;
-                        left: 368px;
-                        font-size: 13px;
-                    }
+                  .institute-id {
+                      top: 185px;
+                      left: 368px;
+                      font-size: 13px;
+                  }
 
-                    .start-date {
-                        top: 486px;
-                        left: 385px;
-                        font-size: 13px;
-                        font-family: "E111agio";
-                        font-size: 23px;
-                        color: #53555c;
-                    }
+                  .start-date {
+                      top: 486px;
+                      left: 385px;
+                      font-size: 13px;
+                      font-family: "E111agio";
+                      font-size: 23px;
+                      color: #53555c;
+                  }
 
-                    .end-date {
-                        top: 487px;
-                        left: 567px;
-                        font-size: 13px;
-                        font-family: "E111agio";
-                        font-size: 23px;
-                        color: #53555c;
-                    }
+                  .end-date {
+                      top: 487px;
+                      left: 567px;
+                      font-size: 13px;
+                      font-family: "E111agio";
+                      font-size: 23px;
+                      color: #53555c;
+                  }
 
-                    .grade {
-                        top: 486px;
-                        left: 869px;
-                        font-family: "E111agio";
-                        font-size: 23px;
-                        color: #53555c;
-                    }
+                  .grade {
+                      top: 486px;
+                      left: 869px;
+                      font-family: "E111agio";
+                      font-size: 23px;
+                      color: #53555c;
+                  }
 
-                    .logo {
-                        top: 578px;
-                        left: 290px;
-                        font-family: arial;
-                        font-weight: bold;
-                        font-size: 13px;
-                        height: 75px;
-                        width: 100px;
-                    }
-                    .qr-code {
-        position: absolute;
-        bottom: 44px;
-        right: 316px;
-        transform: translate(0, 0); /* Reset the translation on larger screens */
-    }
+                  .logo {
+                      top: 578px;
+                      left: 290px;
+                      font-family: arial;
+                      font-weight: bold;
+                      font-size: 13px;
+                      height: 75px;
+                      width: 100px;
+                  }
+                  .qr-code {
+                      position: absolute;
+                      bottom: 44px;
+                      right: 316px;
+                      transform: translate(0, 0); /* Reset the translation on larger screens */
+                  }
 
-    @media screen and (max-width: 768px) {
-        .qr-code {
-            position: absolute;
-            bottom: 44px;
-        right: 316px;
-            transform: translate(0, 0); /* Reset the translation on smaller screens */
-        }
-    }
+                  @media screen and (max-width: 768px) {
+                      .qr-code {
+                          position: absolute;
+                          bottom: 44px;
+                      right: 316px;
+                          transform: translate(0, 0); /* Reset the translation on smaller screens */
+                      }
+                  }
 
-                </style>
+              </style>
 
                 
 
@@ -336,11 +351,13 @@ get_header();
             <?php
           }
         } else {
-          echo '<p>No results found.</p>';
+          echo '<p>Result haven\'t been published.</p>';
         }
       
         wp_reset_postdata();
-      }
+        } else {
+            echo '<p>No results found.</p>';
+        }
     ?>
 
   </div>
