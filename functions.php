@@ -1921,3 +1921,20 @@ function server_income($studentnameS,$payedSAmount,$Information){
 	//}
 
 };
+
+
+//custom student role
+function student_user() {
+    // Define the capabilities for the student role
+    $capabilities = array(
+        'read' => true, // Students can read content
+        'edit_posts' => true, // Students can edit their own posts
+        'delete_posts' => false, // Students cannot delete posts
+    );
+
+    // Create the student role
+    add_role('student', 'Student', $capabilities);
+}
+
+// Hook this function into the 'init' action
+add_action('init', 'student_user');
