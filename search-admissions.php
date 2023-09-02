@@ -5,7 +5,7 @@ get_header();
 
 
 <div class="container mt-5">
-  <h2>Search Admissions</h2>
+  <h2>Search Result</h2>
   <?php
     if (isset($shiacomputeroption['PublicResultSearch'])) {
         $get_PublicResultSearch_id = $shiacomputeroption['PublicResultSearch']; // Get the selected page ID
@@ -26,7 +26,7 @@ get_header();
       <button type="submit" class="btn btn-primary">Search</button>
     </form>
 
-    <h3>Search Results:</h3>
+    <h3></h3>
 
     <?php
       if (isset($_GET['rollNumber'])) {
@@ -351,7 +351,18 @@ get_header();
             <?php
           }
         } else {
-          echo '<p>Result haven\'t been published.</p>';
+         ?>
+         
+          <div class="alert alert-warning" role="alert">
+            <h4 class="alert-heading">Sorry</h4>
+            <p>We understand you're looking for specific results. Please note that the results you're seeking have not been published or approved as of yet. We appreciate your patience and assure you that as soon as they are available, we will make them accessible to you.
+
+Should you encounter any difficulties in your search or have any inquiries, please do not hesitate to reach out to us. Our dedicated support team is here to assist you.</p>
+            <hr>
+            <p class="mb-0">Thank you for your understanding.</p>
+          </div>
+         
+         <?php
         }
       
         wp_reset_postdata();
