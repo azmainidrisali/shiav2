@@ -93,6 +93,18 @@ if (isset($_POST['update_posts'])) {
             $args = array(
                 'post_type'      => 'admissions',
                 'posts_per_page' => -1, // Retrieve all admissions posts
+                'meta_query'     => array(
+                    'relation' => 'OR', // Use OR relation to retrieve posts where the field is empty
+                    array(
+                        'key'     => 'Stuent_result_register', // Replace with the actual meta key
+                        'value'   => '', // Check if the value is empty
+                        'compare' => '=', // Use '=' to check if the value is empty
+                    ),
+                    array(
+                        'key'     => 'Stuent_result_register', // Replace with the actual meta key
+                        'compare' => 'NOT EXISTS', // Check if the key does not exist
+                    ),
+                ),
             );
 
             $admissions_query = new WP_Query($args);
