@@ -32,9 +32,9 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                 Earnings (Monthly)</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800"><div>
-    <?php echo $server_quota_html; ?>
-</div>
-</div>
+                                    <?php echo $server_quota_html; ?>
+                                </div>
+                                </div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-calendar fa-2x text-gray-300"></i>

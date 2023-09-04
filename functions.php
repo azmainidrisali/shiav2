@@ -1938,3 +1938,119 @@ function student_user() {
 
 // Hook this function into the 'init' action
 add_action('init', 'student_user');
+
+
+// Register Custom Post Type
+function custom_batch_post_type() {
+
+    $labels = array(
+        'name'                  => _x( 'Batches', 'Post Type General Name', 'shiaTd' ),
+        'singular_name'         => _x( 'Batch', 'Post Type Singular Name', 'shiaTd' ),
+        'menu_name'             => __( 'Batches', 'shiaTd' ),
+        'name_admin_bar'        => __( 'Batch', 'shiaTd' ),
+        'archives'              => __( 'Batch Archives', 'shiaTd' ),
+        'attributes'            => __( 'Batch Attributes', 'shiaTd' ),
+        'parent_item_colon'     => __( 'Parent Batch:', 'shiaTd' ),
+        'all_items'             => __( 'All Batches', 'shiaTd' ),
+        'add_new_item'          => __( 'Add New Batch', 'shiaTd' ),
+        'add_new'               => __( 'Add New', 'shiaTd' ),
+        'new_item'              => __( 'New Batch', 'shiaTd' ),
+        'edit_item'             => __( 'Edit Batch', 'shiaTd' ),
+        'update_item'           => __( 'Update Batch', 'shiaTd' ),
+        'view_item'             => __( 'View Batch', 'shiaTd' ),
+        'view_items'            => __( 'View Batches', 'shiaTd' ),
+        'search_items'          => __( 'Search Batch', 'shiaTd' ),
+        'not_found'             => __( 'Not found', 'shiaTd' ),
+        'not_found_in_trash'    => __( 'Not found in Trash', 'shiaTd' ),
+        'featured_image'        => __( 'Featured Image', 'shiaTd' ),
+        'set_featured_image'    => __( 'Set featured image', 'shiaTd' ),
+        'remove_featured_image' => __( 'Remove featured image', 'shiaTd' ),
+        'use_featured_image'    => __( 'Use as featured image', 'shiaTd' ),
+        'insert_into_item'      => __( 'Insert into Batch', 'shiaTd' ),
+        'uploaded_to_this_item' => __( 'Uploaded to this Batch', 'shiaTd' ),
+        'items_list'            => __( 'Batches list', 'shiaTd' ),
+        'items_list_navigation' => __( 'Batches list navigation', 'shiaTd' ),
+        'filter_items_list'     => __( 'Filter Batches list', 'shiaTd' ),
+    );
+    $args = array(
+        'label'                 => __( 'Batch', 'shiaTd' ),
+        'description'           => __( 'Custom Batch Post Type', 'shiaTd' ),
+        'labels'                => $labels,
+        'supports'              => array( 'title'),
+        'taxonomies'            => array( 'category', 'post_tag' ), // You can include other taxonomies here if needed.
+        'hierarchical'          => false,
+        'public'                => true,
+        'show_ui'               => true,
+        'show_in_menu'          => true,
+        'menu_position'         => 5, // You can change this to adjust the position in the admin menu.
+        'menu_icon'             => 'dashicons-analytics', // You can choose a different icon from the Dashicons library.
+        'show_in_admin_bar'     => true,
+        'show_in_nav_menus'     => true,
+        'can_export'            => true,
+        'has_archive'           => true,
+        'rewrite'               => array( 'slug' => 'batch' ), // Change the slug as needed.
+        'exclude_from_search'   => true,
+        'publicly_queryable'    => true,
+        'capability_type'       => 'post',
+    );
+    register_post_type( 'batch', $args );
+
+}
+add_action( 'init', 'custom_batch_post_type', 0 );
+
+function add_batch_session_start_field() {
+    add_meta_box("custom_batch_session_start", "Session Start", "render_batch_session_start_field", "batch", "normal", "low");
+}
+add_action("admin_init", "add_batch_session_start_field");
+
+function render_batch_session_start_field($post) {
+    $data = get_post_custom($post->ID);
+    $session_start = isset($data['batch_session_start']) ? esc_attr($data['batch_session_start'][0]) : '';
+
+    echo '<input type="date" name="batch_session_start" id="batch_session_start" value="' . $session_start . '" placeholder="Session Start"/>';
+}
+
+function save_batch_session_start_field($post_id) {
+    if (isset($_POST["batch_session_start"])) {
+        update_post_meta($post_id, "batch_session_start", sanitize_text_field($_POST["batch_session_start"]));
+    }
+}
+add_action("save_post", "save_batch_session_start_field");
+
+function add_batch_session_end_field() {
+    add_meta_box("custom_batch_session_end", "Session End", "render_batch_session_end_field", "batch", "normal", "low");
+}
+add_action("admin_init", "add_batch_session_end_field");
+
+function render_batch_session_end_field($post) {
+    $data = get_post_custom($post->ID);
+    $session_end = isset($data['batch_session_end']) ? esc_attr($data['batch_session_end'][0]) : '';
+
+    echo '<input type="date" name="batch_session_end" id="batch_session_end" value="' . $session_end . '" placeholder="Session End"/>';
+}
+
+function save_batch_session_end_field($post_id) {
+    if (isset($_POST["batch_session_end"])) {
+        update_post_meta($post_id, "batch_session_end", sanitize_text_field($_POST["batch_session_end"]));
+    }
+}
+add_action("save_post", "save_batch_session_end_field");
+
+function add_batch_certificate_issue_date_field() {
+    add_meta_box("custom_batch_certificate_issue_date", "Certificate Issue Date", "render_batch_certificate_issue_date_field", "batch", "normal", "low");
+}
+add_action("admin_init", "add_batch_certificate_issue_date_field");
+
+function render_batch_certificate_issue_date_field($post) {
+    $data = get_post_custom($post->ID);
+    $certificate_issue_date = isset($data['batch_certificate_issue_date']) ? esc_attr($data['batch_certificate_issue_date'][0]) : '';
+
+    echo '<input type="date" name="batch_certificate_issue_date" id="batch_certificate_issue_date" value="' . $certificate_issue_date . '" placeholder="Certificate Issue Date"/>';
+}
+
+function save_batch_certificate_issue_date_field($post_id) {
+    if (isset($_POST["batch_certificate_issue_date"])) {
+        update_post_meta($post_id, "batch_certificate_issue_date", sanitize_text_field($_POST["batch_certificate_issue_date"]));
+    }
+}
+add_action("save_post", "save_batch_certificate_issue_date_field");

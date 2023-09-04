@@ -19,109 +19,158 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                         class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
             </div>
 
-            <!-- Content Row -->
-            <div class="row">
-                <div class="col-md-6">
-                    <div id="primary" class="content-area">
-                        <div class="category-form">
-                            <h2>Submit a Category</h2>
-                            <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" class="needs-validation" novalidate>
-                                <input type="hidden" name="action" value="submit_category">
-                                
-                                <div class="form-group">
-                                <label for="category_name">Category Name:</label>
-                                <input type="text" name="category_name" class="form-control" required>
-                                <div class="invalid-feedback">Please provide a category name.</div>
-                                </div>
-                                
-                                <div class="form-group">
-                                <label for="category_description">Category Description:</label>
-                                <textarea name="category_description" class="form-control" required></textarea>
-                                <div class="invalid-feedback">Please provide a category description.</div>
-                                </div>
-                                
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                <div class="category-list">
-                <h2>Category List</h2>
-                    <?php
-                        $args = array(
-                        'taxonomy' => 'batch',
-                        'hide_empty' => false
-                        );
-                        $categories = get_categories($args);
-
-                        if (!empty($categories)) {
-                        foreach ($categories as $category) {
-                            echo '<div class="category-item d-flex justify-content-between p-3">';
-                            echo '<span class="category-name">' . esc_html($category->name) . '</span>';
-                            echo '<button type="button" class="btn btn-danger delete-category" data-category-id="' . esc_attr($category->term_id) . '">Delete</button>';
-                            echo '</div>';
-                            echo '<div class="loading-spinner d-none">';
-                            echo '<div class="spinner-border text-primary" role="status">';
-                            echo '<span class="visually-hidden">Loading...</span>';
-                            echo '</div>';
-                            echo '</div>';
-                        }
-                        } else {
-                        echo '<p>No categories found.</p>';
-                        }
-                    ?>
-                    </div>
-                </div>   
-            </div>
-
-            <!-- Bootstrap Loading Spinner -->
-            <div class="loading-spinner d-none">
-                <div class="spinner-border text-primary" role="status">
-                    <span class="visually-hidden">.</span>
-                </div>
-            </div>
-
-            <script>
-            // AJAX request to delete category
-            var deleteButtons = document.querySelectorAll('.delete-category');
-            deleteButtons.forEach(function(button) {
-                button.addEventListener('click', function() {
-                var categoryId = this.getAttribute('data-category-id');
-                var data = new FormData();
-                data.append('action', 'delete_category');
-                data.append('category_id', categoryId);
-
-                var xhr = new XMLHttpRequest();
-                xhr.open('POST', '<?php echo esc_url(admin_url('admin-post.php')); ?>', true);
+            <?php
+                if (isset($_POST['update_custom_field'])) {
+                // Get the post ID from the form
+                $post_id = intval($_POST['post_id']);
                 
-                // Show loading spinner
-                var loadingSpinner = document.querySelector('.loading-spinner');
-                loadingSpinner.classList.remove('d-none');
+                $seassionStartDate = $_POST['seassion_start'];
+                $seassionEndDate = $_POST['seassion_end'];
+                $certificateIssueDate = $_POST['certificateIssueDate'];
 
-                xhr.onload = function() {
-                    if (xhr.status === 200) {
-                    // Category deleted successfully, remove it from the list
-                    var categoryItem = button.closest('.category-item');
-                    categoryItem.parentNode.removeChild(categoryItem);
+                // Update the custom field
+                update_post_meta($post_id, 'batch_session_start', $seassionStartDate);
+                update_post_meta($post_id, 'batch_session_end', $seassionEndDate);
+                update_post_meta($post_id, 'batch_certificate_issue_date', $certificateIssueDate);
+                
+                //redirect
+                    if (isset($shiacomputeroption['adminBatch'])) {
+                        $get_adminBatch_id = $shiacomputeroption['adminBatch']; // Get the selected page ID
+
+                        if ($get_adminBatch_id) {
+                            $get_adminBatch_link = get_permalink($get_adminBatch_id); // Get the permalink of the selected page
+                        }
                     }
-                    
-                    // Hide loading spinner
-                    loadingSpinner.classList.add('d-none');
-                };
-                
-                xhr.send(data);
-                });
-            });
-            </script>
+                    $location = $get_adminBatch_link; 
+
+                    echo "<meta http-equiv='refresh' content='0;url=$location' />";
+                    exit;
+                    }
+                //redirect
+            ?>
+
+
             
             
+            <div class="container mt-5">
+                <h2>Batch List</h2>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Batch ID</th>
+                            <th>BATCH</th> <!-- Add this column for post title -->
+                            <th>Session Start</th>
+                            <th>Session End</th>
+                            <th>Certificate Issue Date</th>
+                            <th>Edit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $args = array(
+                            'post_type' => 'batch', // Replace with your custom post type name
+                            'posts_per_page' => -1,
+                        );
+
+                        $batch_query = new WP_Query($args);
+
+                        if ($batch_query->have_posts()) :
+                            while ($batch_query->have_posts()) : $batch_query->the_post();
+                                $batch_id = get_the_ID();
+                                $session_start = get_post_meta($batch_id, 'batch_session_start', true);
+                                $session_end = get_post_meta($batch_id, 'batch_session_end', true);
+                                $certificate_issue_date = get_post_meta($batch_id, 'batch_certificate_issue_date', true);
+                                $post_title = get_the_title(); // Get the post title
+                                ?>
+
+                                <tr>
+                                    <td><?php echo $batch_id; ?></td>
+                                    <td><?php echo esc_html($post_title); ?></td> <!-- Display the post title -->
+                                    <td><?php echo esc_html($session_start); ?></td>
+                                    <td><?php echo esc_html($session_end); ?></td>
+                                    <td><?php echo esc_html($certificate_issue_date); ?></td>
+                                    <td>
+                                        <button type="button" class="btn-primary btn-sm" data-toggle="modal" data-target="#exampleModalCenter<?php echo get_the_ID() ?>">Edit</button>
+
+                                        <div class="modal fade" id="exampleModalCenter<?php echo get_the_ID() ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                <div class="modal-content rounded-0">
+                                                    <div class="modal-body p-4 px-5">
+
+                                                        
+                                                        <div class="main-content text-center">
+                                                            
+                                                            <p class="mb-4">Total Due Aount : <?php $seassion_end2 = get_post_meta(get_the_ID(), 'student_due_amount_register', true); echo $seassion_end2 ?></p>
+                                                            <form method="post">
+                                                                <input type="hidden" name="post_id" required value="<?php echo get_the_ID(); ?>">
+                                                                
+                                                                <div>
+                                                                    <label for="seassion_start">Seassion Start</label>
+                                                                    <input type="date" name="seassion_start" id="seassion_start" required value="<?php echo esc_attr($seassion_start); ?>">
+                                                                </div>
+
+                                                                <div>
+                                                                    <label for="seassion_end">Seassion End</label>
+                                                                    <input type="date" name="seassion_end" id="seassion_end" required value="<?php echo esc_attr($seassion_end); ?>">
+                                                                </div>
+                                                                
+                                                                <div>
+                                                                    <label for="certificateIssueDate">Certificate Issue Date</label>
+                                                                    <input type="date" name="certificateIssueDate" id="certificateIssueDate" required value="<?php echo esc_attr($certificate_issue_date); ?>">
+                                                                </div>
+
+                                                                <input type="submit" class="btn-primary btn-sm" name="update_custom_field" value="Add Payment">
+                                                            </form>
+
+                                                            
+
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                            <?php endwhile;
+                        else :
+                            ?>
+                            <tr>
+                                <td colspan="5">No batches found.</td>
+                            </tr>
+                        <?php
+                        endif;
+                        wp_reset_postdata();
+                        ?>
+                    </tbody>
+                </table>
+            </div>
 
 
             <!-- Content Row End -->
 
         </div>
         <!-- /.container-fluid -->
+
+        <script>
+            // JavaScript to calculate Seassion End and Certificate Issue Date
+            document.getElementById('seassion_start').addEventListener('change', function() {
+                var startDate = new Date(this.value);
+                var endDate = new Date(startDate);
+                
+                // Calculate the last day of the month for Seassion End
+                endDate.setMonth(endDate.getMonth() + 6); // Add 6 months
+                endDate.setDate(0); // Set to the last day of the month
+
+                document.getElementById('seassion_end').valueAsDate = endDate;
+
+                var certificateIssueDate = new Date(endDate);
+                certificateIssueDate.setDate(certificateIssueDate.getDate() + 1); // Add 1 day
+                document.getElementById('certificateIssueDate').valueAsDate = certificateIssueDate;
+            });
+        </script>
+
 
     <?php require_once(get_template_directory(). '/admin/dashboardfooter.php');
     
