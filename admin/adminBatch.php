@@ -23,10 +23,20 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                 if (isset($_POST['update_custom_field'])) {
                 // Get the post ID from the form
                 $post_id = intval($_POST['post_id']);
+
                 
+                $newPostTitle = $_POST['Seassion_name'];
                 $seassionStartDate = $_POST['seassion_start'];
                 $seassionEndDate = $_POST['seassion_end'];
                 $certificateIssueDate = $_POST['certificateIssueDate'];
+
+                $post_data = array(
+                    'ID' => $post_id,
+                    'post_title' => $newPostTitle,
+                );
+                wp_update_post($post_data);
+                
+                
 
                 // Update the custom field
                 update_post_meta($post_id, 'batch_session_start', $seassionStartDate);
@@ -99,11 +109,14 @@ if (is_user_logged_in() && current_user_can('administrator')) {
 
                                                         
                                                         <div class="main-content text-center">
-                                                            
-                                                            <p class="mb-4">Total Due Aount : <?php $seassion_end2 = get_post_meta(get_the_ID(), 'student_due_amount_register', true); echo $seassion_end2 ?></p>
                                                             <form method="post">
                                                                 <input type="hidden" name="post_id" required value="<?php echo get_the_ID(); ?>">
-                                                                
+
+                                                                <div>
+                                                                    <label for="seassion_start">Seassion Name</label>
+                                                                    <input type="text" name="Seassion_name" required value="<?php echo esc_html($post_title); ?>">
+                                                                </div>
+
                                                                 <div>
                                                                     <label for="seassion_start">Seassion Start</label>
                                                                     <input type="date" name="seassion_start" id="seassion_start" required value="<?php echo esc_attr($seassion_start); ?>">
