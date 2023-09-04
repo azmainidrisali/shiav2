@@ -21,42 +21,92 @@ if (is_user_logged_in() && current_user_can('administrator')) {
 
             <?php
                 if (isset($_POST['update_custom_field'])) {
-                // Get the post ID from the form
-                $post_id = intval($_POST['post_id']);
+                    // Get the post ID from the form
+                    $post_id = intval($_POST['post_id']);
 
-                
-                $newPostTitle = $_POST['Seassion_name'];
-                $seassionStartDate = $_POST['seassion_start'];
-                $seassionEndDate = $_POST['seassion_end'];
-                $certificateIssueDate = $_POST['certificateIssueDate'];
+                    
+                    $newPostTitle = $_POST['Seassion_name'];
+                    $seassionStartDate = $_POST['seassion_start'];
+                    $seassionEndDate = $_POST['seassion_end'];
+                    $certificateIssueDate = $_POST['certificateIssueDate'];
 
-                $post_data = array(
-                    'ID' => $post_id,
-                    'post_title' => $newPostTitle,
-                );
-                wp_update_post($post_data);
-                
-                
+                    $post_data = array(
+                        'ID' => $post_id,
+                        'post_title' => $newPostTitle,
+                    );
+                    wp_update_post($post_data);
+                    
+                    
 
-                // Update the custom field
-                update_post_meta($post_id, 'batch_session_start', $seassionStartDate);
-                update_post_meta($post_id, 'batch_session_end', $seassionEndDate);
-                update_post_meta($post_id, 'batch_certificate_issue_date', $certificateIssueDate);
-                
-                //redirect
-                    if (isset($shiacomputeroption['adminBatch'])) {
-                        $get_adminBatch_id = $shiacomputeroption['adminBatch']; // Get the selected page ID
+                    // Update the custom field
+                    update_post_meta($post_id, 'batch_session_start', $seassionStartDate);
+                    update_post_meta($post_id, 'batch_session_end', $seassionEndDate);
+                    update_post_meta($post_id, 'batch_certificate_issue_date', $certificateIssueDate);
+                    
+                    //redirect
+                        if (isset($shiacomputeroption['adminBatch'])) {
+                            $get_adminBatch_id = $shiacomputeroption['adminBatch']; // Get the selected page ID
 
-                        if ($get_adminBatch_id) {
-                            $get_adminBatch_link = get_permalink($get_adminBatch_id); // Get the permalink of the selected page
+                            if ($get_adminBatch_id) {
+                                $get_adminBatch_link = get_permalink($get_adminBatch_id); // Get the permalink of the selected page
+                            }
                         }
-                    }
-                    $location = $get_adminBatch_link; 
+                        $location = $get_adminBatch_link; 
 
-                    echo "<meta http-equiv='refresh' content='0;url=$location' />";
-                    exit;
-                    }
+                        echo "<meta http-equiv='refresh' content='0;url=$location' />";
+                        exit;
+                };
                 //redirect
+            
+            ?>
+
+            <?php
+            
+                if (isset($_POST['create_batch'])) {
+                    // Define the new post title
+                    $newPostTitle = sanitize_text_field($_POST['session_name']); // Replace with your desired title
+                    
+                    // Define the custom field values
+                    $sessionStartDate = sanitize_text_field($_POST['seassion_start']);
+                    $sessionEndDate = sanitize_text_field($_POST['seassion_end']);
+                    $certificateIssueDate = sanitize_text_field($_POST['certificateIssueDate']);
+                    
+                    // Create the new batch post
+                    $newBatch = array(
+                        'post_title' => $newPostTitle,
+                        'post_type' => 'batch', // Custom post type name
+                        'post_status' => 'publish', // Publish the post
+                    );
+                
+                    $newBatchID = wp_insert_post($newBatch); // Insert the post and get the post ID
+                    
+                    // Check if the post was successfully created
+                    if ($newBatchID) {
+                        // Update the custom fields for the new batch
+                        update_post_meta($newBatchID, 'batch_session_start', $sessionStartDate);
+                        update_post_meta($newBatchID, 'batch_session_end', $sessionEndDate);
+                        update_post_meta($newBatchID, 'batch_certificate_issue_date', $certificateIssueDate);
+                
+                        // Redirect to the newly created batch
+                        // $newBatchLink = get_permalink($newBatchID);
+                        //redirect
+                            if (isset($shiacomputeroption['adminBatch'])) {
+                                $get_adminBatch_id = $shiacomputeroption['adminBatch']; // Get the selected page ID
+
+                                if ($get_adminBatch_id) {
+                                    $get_adminBatch_link = get_permalink($get_adminBatch_id); // Get the permalink of the selected page
+                                }
+                            }
+                            $location = $get_adminBatch_link; 
+
+                            echo "<meta http-equiv='refresh' content='0;url=$location' />";
+                            exit;
+                        //redirect
+                    } else {
+                        echo 'Error: Failed to create the batch.';
+                    };
+                }
+            
             ?>
 
 
@@ -64,6 +114,48 @@ if (is_user_logged_in() && current_user_can('administrator')) {
             
             <div class="container mt-5">
                 <h2>Batch List</h2>
+                <button type="button" class="btn-primary btn-sm" data-toggle="modal" data-target="#exampleModalCenterrr">Add new Batch</button>
+
+                                        <div class="modal fade" id="exampleModalCenterrr" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                <div class="modal-content rounded-0">
+                                                    <div class="modal-body p-4 px-5">
+
+                                                        
+                                                        <div class="main-content text-center">
+                                                        <form method="post">
+    <div class="form-group">
+        <label for="session_name">Session Name</label>
+        <input type="text" class="form-control" name="session_name" id="session_name" placeholder="Session Name" required>
+    </div>
+
+    <div class="form-group">
+        <label for="seassion_start">Session Start</label>
+        <input type="date" class="form-control" name="seassion_start" id="seassion_start" placeholder="Session Start" required>
+    </div>
+
+    <div class="form-group">
+        <label for="seassion_end">Session End</label>
+        <input type="date" class="form-control" name="seassion_end" id="seassion_end" placeholder="Session End" required>
+    </div>
+
+    <div class="form-group">
+        <label for="certificateIssueDate">Certificate Issue Date</label>
+        <input type="date" class="form-control" name="certificateIssueDate" id="certificateIssueDate" placeholder="Certificate Issue Date" required>
+    </div>
+
+    <button type="submit" class="btn btn-primary" name="create_batch">Create New Batch</button>
+</form>
+
+
+                                                            
+
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                 <table class="table table-striped">
                     <thead>
                         <tr>
