@@ -46,7 +46,6 @@ if (isset($_POST['update_posts'])) {
 
             // $custom_student_contact_number = $_POST['phonenumber'];
             // echo $custom_student_contact_number;
-            
 
             // $StudentPhoneNumber = '88'.$custom_student_contact_number;
             // $studentName = 'test';
@@ -60,13 +59,30 @@ if (isset($_POST['update_posts'])) {
             $updated_post_titles[] = $new_title;
         }
 
-        // Update the custom field "student_purpose_register"
+        // Update the custom field "Stuent_result_register"
         $new_purpose = isset($_POST['purpose_' . $post_id]) ? $_POST['purpose_' . $post_id] : '';
         update_post_meta($post_id, 'Stuent_result_register', $new_purpose);
+
+        // Update the custom field "certificate_issue_register"
+        $new_certificate_issue = isset($_POST['certificate_issue_' . $post_id]) ? $_POST['certificate_issue_' . $post_id] : '';
+        update_post_meta($post_id, 'certificate_issue_register', $new_certificate_issue);
     }
 
     // Set the success message
     $success_message = 'Bulk update completed successfully.';
+
+    // Redirect to a desired page after deleting the post
+    if (isset($shiacomputeroption['adminResultSubmission'])) { 
+        $get_adminResultSubmission_id = $shiacomputeroption['adminResultSubmission']; // Get the selected page ID
+
+        if ($get_adminResultSubmission_id) {
+            $get_adminResultSubmission_link = get_permalink($get_adminResultSubmission_id); // Get the permalink of the selected page
+        }
+    }
+    $location = $get_adminResultSubmission_link;
+
+    echo "<meta http-equiv='refresh' content='0;url=$location' />";
+    exit;
 }
 ?>
 
@@ -112,7 +128,7 @@ if (isset($_POST['update_posts'])) {
             if ($admissions_query->have_posts()) {
                 echo '<table class="table">';
                 echo '<thead class="thead-light">';
-                echo '<tr><th scope="col"><input type="checkbox" id="select-all-checkbox"></th><th scope="col">Student Name</th><th scope="col">Batch Number</th><th scope="col">Content</th><th scope="col">Results</th></tr>';
+                echo '<tr><th scope="col"><input type="checkbox" id="select-all-checkbox"></th><th scope="col">Roll Number</th><th scope="col">Student Name</th><th scope="col">Batch</th><th scope="col">Results</th><th scope="col">Certificate Issue Date</th></tr>';
                 echo '</thead>';
                 echo '<tbody>';
 
@@ -120,21 +136,23 @@ if (isset($_POST['update_posts'])) {
                     $admissions_query->the_post();
                     $post_id = get_the_ID();
                     $post_title = get_the_title();
-                    $post_content = get_the_content();
                     $purpose_value = get_post_meta($post_id, 'Stuent_result_register', true);
+                    $certificate_issue_value = get_post_meta($post_id, 'certificate_issue_register', true);
+                    $roll_number_value = get_post_meta($post_id, 'custom_roll_number', true);
                     $batch_value = get_post_meta($post_id, 'student_batch_register', true);
 
                     echo '<tr>';
                     echo '<td><input type="checkbox" class="bulk-update-checkbox" name="selected_posts[]" value="' . $post_id . '"></td>';
+                    echo '<td><p>' . esc_html($roll_number_value) . '</p></td>';
                     echo '<td><input type="text" class="form-control" name="title_' . $post_id . '" value="' . $post_title . '"></td>';
-                    echo '<td><input type="text" data-purpose="'. $batch_value .'" class="form-control" name="student_batch_register" value="' . $batch_value . '" redonly></td>';
-                    echo '<td>' . $post_content . '</td>';
+                    echo '<td><p>' . esc_html($batch_value) . '</p></td>';
                     echo '<td><select class="form-control" name="purpose_' . $post_id . '">';
                     echo '<option value="">Select Result</option>';
                     echo '<option value="A+" ' . selected($purpose_value, 'A+', false) . '>A+</option>';
                     echo '<option value="A" ' . selected($purpose_value, 'A', false) . '>A</option>';
                     echo '<option value="A-" ' . selected($purpose_value, 'A-', false) . '>A-</option>';
                     echo '</select></td>';
+                    echo '<td><input type="text"  id="datepick33" class="form-control" name="certificate_issue_' . $post_id . '" value="' . $certificate_issue_value . '"></td>';
                     echo '</tr>';
                 }
 
@@ -209,6 +227,13 @@ if (isset($_POST['update_posts'])) {
 
 ?>
 <script>
+
+$(document).ready(function(){
+
+    $("#datepick33").datepicker({
+        dateFormat: "dd-mm-yy",
+    });
+});
     // Select All button functionality
     var selectAllBtn = document.getElementById('select-all-btn');
     var selectAllCheckbox = document.getElementById('select-all-checkbox');
