@@ -116,46 +116,45 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                 <h2>Batch List</h2>
                 <button type="button" class="btn-primary btn-sm" data-toggle="modal" data-target="#exampleModalCenterrr">Add new Batch</button>
 
-                                        <div class="modal fade" id="exampleModalCenterrr" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                                <div class="modal-content rounded-0">
-                                                    <div class="modal-body p-4 px-5">
-
-                                                        
-                                                        <div class="main-content text-center">
-                                                        <form method="post">
-    <div class="form-group">
-        <label for="session_name">Session Name</label>
-        <input type="text" class="form-control" name="session_name" id="session_name" placeholder="Session Name" required>
-    </div>
-
-    <div class="form-group">
-        <label for="seassion_start">Session Start</label>
-        <input type="date" class="form-control" name="seassion_start" id="seassion_start" placeholder="Session Start" required>
-    </div>
-
-    <div class="form-group">
-        <label for="seassion_end">Session End</label>
-        <input type="date" class="form-control" name="seassion_end" id="seassion_end" placeholder="Session End" required>
-    </div>
-
-    <div class="form-group">
-        <label for="certificateIssueDate">Certificate Issue Date</label>
-        <input type="date" class="form-control" name="certificateIssueDate" id="certificateIssueDate" placeholder="Certificate Issue Date" required>
-    </div>
-
-    <button type="submit" class="btn btn-primary" name="create_batch">Create New Batch</button>
-</form>
-
-
-                                                            
-
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
+                    <div class="modal fade" id="exampleModalCenterrr" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content rounded-0">
+                                <div class="modal-body p-4 px-5">
+                                    
+                                    <div class="main-content text-center">
+                                    <form method="post">
+                                        <div class="form-group">
+                                            <label for="session_name">Session Name</label>
+                                            <input type="text" class="form-control" name="session_name" id="session_name" placeholder="Session Name" required>
                                         </div>
+
+                                        <div class="form-group">
+                                            <label for="seassion_start">Session Start</label>
+                                            <input type="text" class="form-control" name="seassion_start" id="seassion_start2" placeholder="Session Start" required>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="seassion_end">Session End</label>
+                                            <input type="text" class="form-control" name="seassion_end" id="seassion_end2" placeholder="Session End" required>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="certificateIssueDate">Certificate Issue Date</label>
+                                            <input type="text" class="form-control" name="certificateIssueDate" id="certificateIssueDate2" placeholder="Certificate Issue Date" required>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-primary" name="create_batch">Create New Batch</button>
+                                    </form>
+
+
+                                        
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 <table class="table table-striped">
                     <thead>
                         <tr>
@@ -206,22 +205,22 @@ if (is_user_logged_in() && current_user_can('administrator')) {
 
                                                                 <div>
                                                                     <label for="seassion_start">Seassion Name</label>
-                                                                    <input type="text" name="Seassion_name" required value="<?php echo esc_html($post_title); ?>">
+                                                                    <input type="text" class="form-control" name="Seassion_name" required value="<?php echo esc_html($post_title); ?>">
                                                                 </div>
 
                                                                 <div>
                                                                     <label for="seassion_start">Seassion Start</label>
-                                                                    <input type="date" name="seassion_start" id="seassion_start" required value="<?php echo esc_attr($seassion_start); ?>">
+                                                                    <input type="text" class="form-control" name="seassion_start" id="seassion_start" required value="<?php echo esc_attr($session_start); ?>">
                                                                 </div>
 
                                                                 <div>
                                                                     <label for="seassion_end">Seassion End</label>
-                                                                    <input type="date" name="seassion_end" id="seassion_end" required value="<?php echo esc_attr($seassion_end); ?>">
+                                                                    <input type="text" class="form-control" name="seassion_end" id="seassion_end" required value="<?php echo esc_attr($session_end); ?>">
                                                                 </div>
                                                                 
                                                                 <div>
                                                                     <label for="certificateIssueDate">Certificate Issue Date</label>
-                                                                    <input type="date" name="certificateIssueDate" id="certificateIssueDate" required value="<?php echo esc_attr($certificate_issue_date); ?>">
+                                                                    <input type="text" class="form-control" name="certificateIssueDate" id="certificateIssueDate" required value="<?php echo esc_attr($certificate_issue_date); ?>">
                                                                 </div>
 
                                                                 <input type="submit" class="btn-primary btn-sm" name="update_custom_field" value="Add Payment">
@@ -235,6 +234,42 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <?php
+                                        
+                                        if (isset($_POST['delete_post_id'])) {
+                                            $post_id = $_POST['delete_post_id'];
+                                        
+                                            // Verify the nonce for security
+                                            if (wp_verify_nonce($_POST['delete_post_nonce'], 'delete_post_' . $post_id) && current_user_can('delete_post', $post_id)) {
+                                                // Delete the post
+                                                wp_delete_post($post_id, true);
+                                        
+                                                // Redirect to a desired page after deleting the post
+                                                if (isset($shiacomputeroption['adminBatch'])) {
+                                                    $get_adminBatch_id = $shiacomputeroption['adminBatch']; // Get the selected page ID
+                    
+                                                    if ($get_adminBatch_id) {
+                                                        $get_adminBatch_link = get_permalink($get_adminBatch_id); // Get the permalink of the selected page
+                                                    }
+                                                }
+                                                $location = $get_adminBatch_link; 
+                    
+                                                echo "<meta http-equiv='refresh' content='0;url=$location' />";
+                                                exit;
+                                            } else {
+                                                // Display an error message or handle invalid request
+                                                echo 'Invalid delete request.';
+                                            }
+                                        }
+                                        
+                                        ?>
+
+                                        <form method="post" action="">
+                                            <input type="hidden" name="delete_post_id" value="<?php echo esc_attr(get_the_ID()); ?>">
+                                            <?php wp_nonce_field('delete_post_' . get_the_ID(), 'delete_post_nonce'); ?>
+                                            <button type="submit" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">Delete</button>
+                                        </form>
                                     </td>
                                 </tr>
 
@@ -259,21 +294,29 @@ if (is_user_logged_in() && current_user_can('administrator')) {
         <!-- /.container-fluid -->
 
         <script>
-            // JavaScript to calculate Seassion End and Certificate Issue Date
-            document.getElementById('seassion_start').addEventListener('change', function() {
-                var startDate = new Date(this.value);
-                var endDate = new Date(startDate);
-                
-                // Calculate the last day of the month for Seassion End
-                endDate.setMonth(endDate.getMonth() + 6); // Add 6 months
-                endDate.setDate(0); // Set to the last day of the month
+            
 
-                document.getElementById('seassion_end').valueAsDate = endDate;
-
-                var certificateIssueDate = new Date(endDate);
-                certificateIssueDate.setDate(certificateIssueDate.getDate() + 1); // Add 1 day
-                document.getElementById('certificateIssueDate').valueAsDate = certificateIssueDate;
+            $(document).ready(function(){
+                $("#seassion_start").datepicker({
+                    dateFormat: "dd-mm-yy",
+                });
+                $("#seassion_end").datepicker({
+                    dateFormat: "dd-mm-yy",
+                });
+                $("#certificateIssueDate").datepicker({
+                    dateFormat: "dd-mm-yy",
+                });
+                $("#seassion_start2").datepicker({
+                    dateFormat: "dd-mm-yy",
+                });
+                $("#seassion_end2").datepicker({
+                    dateFormat: "dd-mm-yy",
+                });
+                $("#certificateIssueDate2").datepicker({
+                    dateFormat: "dd-mm-yy",
+                });
             });
+
         </script>
 
 

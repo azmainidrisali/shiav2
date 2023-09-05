@@ -34,7 +34,7 @@ require_once(get_template_directory(). '/admin/header.php');
                             $IDNoSDN  = $_POST['IDno'] ;
                             $Information  = 'Admission Due Fee Paid by '. $studentnameS .' ID NO :'. $IDNoSDN;
                             
-                            api_income($studentnameS, $payedSAmount, $Information);
+                            server_income($studentnameS, $payedSAmount, $Information);
 
                             if (isset($shiacomputeroption['AdminDueStudentList'])) {
                                 $get_adminDueLink_id = $shiacomputeroption['AdminDueStudentList']; // Get the selected page ID

@@ -1877,13 +1877,15 @@
 
 function server_income($studentnameS,$payedSAmount,$Information){
 	// API endpoint URL
-	$apiUrl = 'https://accounts.shiacomputer.com/pages/api.php';
+	$apiUrl = 'https://accounts.shiacomputer.com/auth02api/income-api.php';
+
+	date_default_timezone_set('Your_Timezone'); // Replace with the appropriate timezone
 	
 	// Data to send
 	$data = array(
 		'UserId' => 1,
 		'Title' => $studentnameS,
-		'Dates' => 06-06-2023,
+		'Dates' => date("Y-m-d"),
 		'CategoryId' => 26,
 		'AccountId' => 1,
 		'Amount' => $payedSAmount,
@@ -2007,7 +2009,7 @@ function render_batch_session_start_field($post) {
     $data = get_post_custom($post->ID);
     $session_start = isset($data['batch_session_start']) ? esc_attr($data['batch_session_start'][0]) : '';
 
-    echo '<input type="date" name="batch_session_start" id="batch_session_start" value="' . $session_start . '" placeholder="Session Start"/>';
+    echo '<input type="text" name="batch_session_start" id="batch_session_start" value="' . $session_start . '" placeholder="Session Start"/>';
 }
 
 function save_batch_session_start_field($post_id) {
@@ -2026,7 +2028,7 @@ function render_batch_session_end_field($post) {
     $data = get_post_custom($post->ID);
     $session_end = isset($data['batch_session_end']) ? esc_attr($data['batch_session_end'][0]) : '';
 
-    echo '<input type="date" name="batch_session_end" id="batch_session_end" value="' . $session_end . '" placeholder="Session End"/>';
+    echo '<input type="text" name="batch_session_end" id="batch_session_end" value="' . $session_end . '" placeholder="Session End"/>';
 }
 
 function save_batch_session_end_field($post_id) {
@@ -2045,7 +2047,7 @@ function render_batch_certificate_issue_date_field($post) {
     $data = get_post_custom($post->ID);
     $certificate_issue_date = isset($data['batch_certificate_issue_date']) ? esc_attr($data['batch_certificate_issue_date'][0]) : '';
 
-    echo '<input type="date" name="batch_certificate_issue_date" id="batch_certificate_issue_date" value="' . $certificate_issue_date . '" placeholder="Certificate Issue Date"/>';
+    echo '<input type="text" name="batch_certificate_issue_date" id="batch_certificate_issue_date" value="' . $certificate_issue_date . '" placeholder="Certificate Issue Date"/>';
 }
 
 function save_batch_certificate_issue_date_field($post_id) {
@@ -2054,3 +2056,4 @@ function save_batch_certificate_issue_date_field($post_id) {
     }
 }
 add_action("save_post", "save_batch_certificate_issue_date_field");
+

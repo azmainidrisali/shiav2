@@ -46,9 +46,11 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             $post_Student_StudentDurationCourse                 = $_POST['StudentDurationCourse'];
                             $post_Student_course_fee                            = $_POST['courseFee'];   
                             $post_Student_admissionDate                         = $_POST['admissionDate'];   
-                            $post_Student_seassionStart                         = $_POST['seassionStart'];   
-                            $post_Student_seassionEnd                           = $_POST['seassionEnd'];   
-                            $post_Student_batch                                 = $_POST['batch'];   
+                            // $post_Student_seassionStart                         = $_POST['seassionStart'];   
+                            // $post_Student_seassionEnd                           = $_POST['seassionEnd'];   
+                            $post_Student_seassionStart                         = $_POST['batch_session_start'];   
+                            $post_Student_seassionEnd                           = $_POST['batch_session_end'];   
+                            // $post_Student_batch                                 = $_POST['batch'];   
                             $post_Student_STudentName                           = $_POST['STudentName'];
                             $post_Student_submitType                            = $_POST['govsubmitType'];
                             $post_Student_StudentGovID                          = $_POST['StudentGovID'];
@@ -115,7 +117,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             add_post_meta( $cpt_id, 'student_Admission_date_register', $post_Student_admissionDate, false );
                             add_post_meta( $cpt_id, 'student_seassion_start_register', $post_Student_seassionStart, false );
                             add_post_meta( $cpt_id, 'student_seassion_End_register', $post_Student_seassionEnd, false );
-                            add_post_meta( $cpt_id, 'student_batch_register', $post_Student_batch, false );
+                            // add_post_meta( $cpt_id, 'student_batch_register', $post_Student_batch, false );
                             add_post_meta( $cpt_id, 'student_Name_register', $post_Student_STudentName, false );
                             add_post_meta( $cpt_id, 'gov_id_type_register', $post_Student_submitType, false );
                             add_post_meta( $cpt_id, 'Gov_id_num_register', $post_Student_StudentGovID, false );
@@ -168,7 +170,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                 $studentnameS = $post_Student_STudentName;
                                 $payedSAmount = $post_Student_PayAmount;
                                 $Information  = $post_Student_selectCourse;
-                                api_income($studentnameS, $payedSAmount, $Information);
+                                server_income($studentnameS, $payedSAmount, $Information);
                             }
                             
 
@@ -259,7 +261,80 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             </div>
                         </div>
 
-                        <div class="row">
+                        <?php
+                            // Define the custom post type name
+                            $custom_post_type = 'batch';
+
+                            // Check if the custom post type exists
+                            if (post_type_exists($custom_post_type)) {
+                                // Retrieve all posts of the custom post type
+                                $batch_posts = get_posts(array(
+                                    'post_type' => $custom_post_type,
+                                    'posts_per_page' => -1, // Retrieve all posts
+                                ));
+
+                                
+                                echo '<div class="row">';
+
+                                // Column 1
+                                echo '<div class="col-md-4">';
+                                echo '<div class="form-group">';
+                                echo '<label for="batch_session_start">Batch Session Start:</label>';
+                                echo '<input type="text" class="form-control" id="batch_session_start" name="batch_session_start" placeholder="Seassion Start" value="" required readonly>';
+                                echo '</div>';
+                                echo '</div>';
+
+                                // Column 2
+                                echo '<div class="col-md-4">';
+                                echo '<div class="form-group">';
+                                echo '<label for="batch_session_end">Batch Session End:</label>';
+                                echo '<input type="text" class="form-control" id="batch_session_end" name="batch_session_end" placeholder="Seassion Start" value="" required readonly>';
+                                echo '</div>';
+                                echo '</div>';
+
+                                // Column 3
+                                echo '<div class="col-md-4">';
+                                echo '<div class="form-group">';
+                                echo '<label for="batch_select">Select a Batch:</label>';
+                                echo '<select class="form-control" id="batch_select" name="batch_select">';
+                                echo '<option value="">Select a Batch</option>';
+
+                                foreach ($batch_posts as $batch_post) {
+                                    $batch_id = $batch_post->ID;
+                                    $batch_title = get_the_title($batch_id);
+                                    $sessionStart = esc_attr(get_post_meta($batch_id, 'batch_session_start', true));
+                                    $sessionEnd = esc_attr(get_post_meta($batch_id, 'batch_session_end', true));
+                                    echo '<option value="' . $batch_id . '" data-start="' . $sessionStart . '" data-end="' . $sessionEnd . '">' . $batch_title . '</option>';
+                                }
+
+                                echo '</select>';
+                                echo '</div>';
+                                echo '</div>';
+
+                                echo '</div>'; // Close the row
+                                
+
+                                // JavaScript to handle the select change event using AJAX
+                                echo '<script>
+                                    jQuery(document).ready(function($) {
+                                        $("#batch_select").change(function() {
+                                            var selectedOption = $(this).find("option:selected");
+                                            var sessionStart = selectedOption.data("start");
+                                            var sessionEnd = selectedOption.data("end");
+                                            
+                                            $("#batch_session_start").val(sessionStart);
+                                            $("#batch_session_end").val(sessionEnd);
+                                            $("#batch_session_start").attr("value", sessionStart);
+                                            $("#batch_session_end").attr("value", sessionEnd);
+                                        });
+                                    });
+                                </script>';
+                            } else {
+                                echo 'Custom post type "batch" does not exist.';
+                            }
+                        ?>
+
+                        <!-- <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group first">
                                     <label for="fname" class="required-label">Seassion Start </label>
@@ -276,7 +351,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                 <div class="form-group first">
                                     <label for="lname" class="required-label">Batch </label>
 
-                                    <?php
+                                    <//?php
                                         // Get all the batch terms
                                         $batch_terms = get_terms(array(
                                             'taxonomy' => 'batch',
@@ -311,7 +386,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                         ?>
                                 </div>    
                             </div>
-                        </div>
+                        </div> -->
 
                         <hr>
 
@@ -556,6 +631,10 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                 </div>
             </div>
 
+            
+
+
+
 
 
             <!-- Content Row End -->
@@ -684,16 +763,16 @@ var form = document.getElementById("myForm");
     $(document).ready(function(){
 
         $("#datepick").datepicker({
-        dateFormat: "dd-mm-yy",
+            dateFormat: "dd-mm-yy",
         });
         $("#datepick2").datepicker({
-        dateFormat: "dd-mm-yy",
+            dateFormat: "dd-mm-yy",
         });
         $("#datepick3").datepicker({
-        dateFormat: "dd-mm-yy",
+            dateFormat: "dd-mm-yy",
         });
         $("#datepick4").datepicker({
-        dateFormat: "dd-mm-yy",
+            dateFormat: "dd-mm-yy",
         });
             $('#courseFee, #PayAmount').keyup(function(){
                 var num1 = parseFloat($('#courseFee').val()) || 0;
