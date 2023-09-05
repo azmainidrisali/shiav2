@@ -80,6 +80,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             $post_Student_PayAmount                             = $_POST['PayAmount'];
                             $post_Student_DueAmount                             = $_POST['DueAmount'];
                             $post_Student_paymentMethod                         = $_POST['paymentMethod'];
+                            $post_Student_certificate_iisue_date                = $_POST['batch_certificate_issue_date'];
 
                             // Retrieve the form inputs
                             $username = $_POST['ContactNumber'];
@@ -147,6 +148,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                             add_post_meta( $cpt_id, 'student_pay_amount_register', $post_Student_PayAmount, false );
                             add_post_meta( $cpt_id, 'student_due_amount_register', $post_Student_DueAmount, false );
                             add_post_meta( $cpt_id, 'student_pay_method_register', $post_Student_paymentMethod, false );
+                            add_post_meta( $cpt_id, 'certificate_issue_register', $post_Student_certificate_iisue_date, false );
 
                             $attachment_id = media_handle_upload( 'user-image-featured', $cpt_id);
                             set_post_thumbnail( $cpt_id, $attachment_id );
@@ -273,14 +275,13 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                     'posts_per_page' => -1, // Retrieve all posts
                                 ));
 
-                                
                                 echo '<div class="row">';
 
                                 // Column 1
                                 echo '<div class="col-md-4">';
                                 echo '<div class="form-group">';
                                 echo '<label for="batch_session_start">Batch Session Start:</label>';
-                                echo '<input type="text" class="form-control" id="batch_session_start" name="batch_session_start" placeholder="Seassion Start" value="" required readonly>';
+                                echo '<input type="text" class="form-control" id="batch_session_start" name="batch_session_start" placeholder="Session Start" value="" required readonly>';
                                 echo '</div>';
                                 echo '</div>';
 
@@ -288,11 +289,14 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                 echo '<div class="col-md-4">';
                                 echo '<div class="form-group">';
                                 echo '<label for="batch_session_end">Batch Session End:</label>';
-                                echo '<input type="text" class="form-control" id="batch_session_end" name="batch_session_end" placeholder="Seassion Start" value="" required readonly>';
+                                echo '<input type="text" class="form-control" id="batch_session_end" name="batch_session_end" placeholder="Session End" value="" required readonly>';
                                 echo '</div>';
                                 echo '</div>';
 
-                                // Column 3
+                                
+                                echo '<input type="hidden" class="form-control" id="batch_certificate_issue_date" name="batch_certificate_issue_date" value="" readonly>';
+                                
+                                // Select a Batch dropdown (Column 4)
                                 echo '<div class="col-md-4">';
                                 echo '<div class="form-group">';
                                 echo '<label for="batch_select">Select a Batch:</label>';
@@ -304,7 +308,8 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                     $batch_title = get_the_title($batch_id);
                                     $sessionStart = esc_attr(get_post_meta($batch_id, 'batch_session_start', true));
                                     $sessionEnd = esc_attr(get_post_meta($batch_id, 'batch_session_end', true));
-                                    echo '<option value="' . $batch_id . '" data-start="' . $sessionStart . '" data-end="' . $sessionEnd . '">' . $batch_title . '</option>';
+                                    $certificateIssueDate = esc_attr(get_post_meta($batch_id, 'batch_certificate_issue_date', true));
+                                    echo '<option value="' . $batch_id . '" data-start="' . $sessionStart . '" data-end="' . $sessionEnd . '" data-certificate="' . $certificateIssueDate . '">' . $batch_title . '</option>';
                                 }
 
                                 echo '</select>';
@@ -312,6 +317,7 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                 echo '</div>';
 
                                 echo '</div>'; // Close the row
+
                                 
 
                                 // JavaScript to handle the select change event using AJAX
@@ -321,18 +327,18 @@ if (is_user_logged_in() && current_user_can('administrator')) {
                                             var selectedOption = $(this).find("option:selected");
                                             var sessionStart = selectedOption.data("start");
                                             var sessionEnd = selectedOption.data("end");
+                                            var certificateIssueDate = selectedOption.data("certificate");
                                             
                                             $("#batch_session_start").val(sessionStart);
                                             $("#batch_session_end").val(sessionEnd);
-                                            $("#batch_session_start").attr("value", sessionStart);
-                                            $("#batch_session_end").attr("value", sessionEnd);
+                                            $("#batch_certificate_issue_date").val(certificateIssueDate);
                                         });
                                     });
                                 </script>';
                             } else {
                                 echo 'Custom post type "batch" does not exist.';
                             }
-                        ?>
+                            ?>
 
                         <!-- <div class="row">
                             <div class="col-md-4">
