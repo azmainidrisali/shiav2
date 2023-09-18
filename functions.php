@@ -204,6 +204,27 @@
 		}
 		add_action('wp_login', 'redirect_admin_after_login', 10, 2);
 
+		function custom_redirect_student_role($user_login, $user) {
+			// Check if the user has the "student" role
+			if ( in_array( 'student', $user->roles ) || in_array( 'subscriber', $user->roles ) ) {
+				global $shiacomputeroption;
+
+                if (isset($shiacomputeroption['studentPanelLink'])) {
+                    $get_studentpanel_id = $shiacomputeroption['studentPanelLink']; // Get the selected page ID
+
+                    if ($get_studentpanel_id) {
+                        $get_studentpanel_link = get_permalink($get_studentpanel_id); // Get the permalink of the selected page
+                    }
+                }
+				$redirect_url3 = $get_studentpanel_link;
+
+				wp_redirect( $redirect_url3 ); // Replace with the URL of your custom page
+				exit();
+			}
+		}
+		add_action('wp_login', 'custom_redirect_student_role', 10, 2);
+		
+
 
         
         
