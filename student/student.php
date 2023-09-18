@@ -1,9 +1,7 @@
 <?php 
 /* Template Name: StudentPage */
 require_once(get_template_directory(). '/admin/header.php');
-?>
 
-<?php
 // Check if the current user is an administrator
 if (is_user_logged_in()) {
     ?>
@@ -11,14 +9,45 @@ if (is_user_logged_in()) {
 
         <div class="content">
             <div class="container">
-                <div class="row">
+            <?php
+                // Custom query to retrieve the first post from the 'admissions' post type
+                $args = array(
+                    'post_type' => 'admissions',
+                    'posts_per_page' => 1, // Get only one post
+                    'post_status' => 'publish',
+                );
+
+                $admissions_query = new WP_Query($args);
+
+                if ($admissions_query->have_posts()) :
+                    $admissions_query->the_post();
+                    ?>
+                    <div class="row">
                     <div class="col-sm-12">
                         <!-- meta -->
                         <div class="profile-user-box card-box bg-custom">
                             <div class="row">
-                                <div class="col-sm-6"><span class="float-left mr-3"><img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" class="thumb-lg rounded-circle"></span>
+                                <div class="col-sm-6"><span class="float-left mr-3">
+                                    <?php
+                                        // Get the post thumbnail URL
+                                        $thumbnail_url = get_the_post_thumbnail_url(get_the_ID(), 'thumbnail'); // You can change 'thumbnail' to other image size names
+
+                                        // Display the post thumbnail URL
+                                        if (!empty($thumbnail_url)) {
+                                            echo '<img src="' . esc_url($thumbnail_url) . '"  alt="" class="thumb-lg rounded-circle"> />';
+                                        }
+                                    ?>
+                                    </span>
                                     <div class="media-body text-white">
-                                        <h4 class="mt-1 mb-1 font-18">Michael A. Franklin</h4>
+                                        <?php
+                                    // Get the custom meta field 'student_Name_register'
+                                        $student_name_register = get_post_meta(get_the_ID(), 'student_Name_register', true);
+
+                                        // Display the custom meta field
+                                        if (!empty($student_name_register)) {
+                                            echo '<h4 class="mt-1 mb-1 font-18">' . esc_html($student_name_register) . '</h4>';
+                                        }
+                                        ?>
                                         <p class="font-13 text-light">User Experience Specialist</p>
                                         <p class="text-light mb-0">California, United States</p>
                                     </div>
@@ -238,6 +267,14 @@ if (is_user_logged_in()) {
                     <!-- end col -->
                 </div>
                 <!-- end row -->
+                    <?php
+                    wp_reset_postdata();
+                else :
+                    // No posts found in the 'admissions' post type
+                    echo 'No admissions found.';
+                endif;
+            ?>
+
             </div>
             <!-- container -->
         </div>
