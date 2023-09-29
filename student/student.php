@@ -10,11 +10,15 @@ if (is_user_logged_in()) {
         <div class="content">
             <div class="container">
             <?php
+                // Get the current user's ID
+                $current_user_id = get_current_user_id();
+
                 // Custom query to retrieve the first post from the 'admissions' post type
                 $args = array(
                     'post_type' => 'admissions',
                     'posts_per_page' => 1, // Get only one post
                     'post_status' => 'publish',
+                    'author' => $current_user_id, // Only retrieve posts by the current user
                 );
 
                 $admissions_query = new WP_Query($args);
@@ -34,7 +38,7 @@ if (is_user_logged_in()) {
 
                                         // Display the post thumbnail URL
                                         if (!empty($thumbnail_url)) {
-                                            echo '<img src="' . esc_url($thumbnail_url) . '"  alt="" class="thumb-lg rounded-circle"> />';
+                                            echo '<img src="' . esc_url($thumbnail_url) . '"  alt="" class="thumb-lg rounded-circle">';
                                         }
                                     ?>
                                     </span>
@@ -48,8 +52,18 @@ if (is_user_logged_in()) {
                                             echo '<h4 class="mt-1 mb-1 font-18">' . esc_html($student_name_register) . '</h4>';
                                         }
                                         ?>
-                                        <p class="font-13 text-light">User Experience Specialist</p>
-                                        <p class="text-light mb-0">California, United States</p>
+
+                                        <?php
+                                            // Get the custom meta field 'Student_SSC_Roll_register'
+                                            $student_ssc_roll = get_post_meta(get_the_ID(), 'Student_SSC_Roll_register', true);
+
+                                            // Get the custom meta field 'custom_serial_number'
+                                            $custom_serial_number = get_post_meta(get_the_ID(), 'custom_serial_number', true);
+
+                                            // Display the 'Student_SSC_Roll_register' and 'custom_serial_number' meta fields
+                                            echo '<p class="font-13 text-light">' .'Roll Number :'. esc_html($student_ssc_roll) . '</p>';
+                                            echo '<p class="text-light mb-0">' . esc_html($custom_serial_number) . '</p>';
+                                        ?>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
